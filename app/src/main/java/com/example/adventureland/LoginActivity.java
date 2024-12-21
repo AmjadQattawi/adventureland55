@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 public class LoginActivity extends AppCompatActivity {
@@ -45,12 +46,12 @@ public class LoginActivity extends AppCompatActivity {
         aboutSection = findViewById(R.id.about_section);
 
         // Open the drawer when DrawerIcon is clicked
-        DrawerIcon.setOnClickListener(v -> drawerLayout.openDrawer(Gravity.START));
+        DrawerIcon.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
         // Close the drawer when closeDrawer is clicked
         closeDrawer.setOnClickListener(v -> {
-            if (drawerLayout.isDrawerOpen(Gravity.START)) {
-                drawerLayout.closeDrawer(Gravity.START);
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
 
@@ -58,25 +59,27 @@ public class LoginActivity extends AppCompatActivity {
         checkBalanceSection.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, BalanceActivity.class);
             startActivity(intent);
-            drawerLayout.closeDrawer(Gravity.START); // Close drawer after navigation
+            drawerLayout.closeDrawer(GravityCompat.START); // Close drawer after navigation
         });
 
         // Navigate to AboutActivity when "About" is clicked
         aboutSection.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, AboutActivity.class);
             startActivity(intent);
-            drawerLayout.closeDrawer(Gravity.START); // Close drawer after navigation
+            drawerLayout.closeDrawer(GravityCompat.START); // Close drawer after navigation
         });
         // Login Button Click
         btnLogin.setOnClickListener(v -> {
             String phoneNumber = etPhoneNumber.getText().toString();
             String password = etPassword.getText().toString();
 
-            if (phoneNumber.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-            }
+//            if (phoneNumber.isEmpty() || password.isEmpty()) {
+//                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
+                Intent i=new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(i);
+//            }
         });
 
         // Navigate to SignUpActivity

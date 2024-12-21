@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="0dp"
+            android:padding="5dp"
             android:gravity="center_horizontal">
 
             <!-- Header (Logo + Title) -->
@@ -28,8 +28,8 @@
 
                 <ImageView
                     android:id="@+id/drawer"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
                     android:src="@drawable/drawer"
                     android:layout_gravity="end"
                     android:layout_marginEnd="10dp"
@@ -42,14 +42,13 @@
                     android:layout_width="200dp"
                     android:layout_height="180dp"
                     android:src="@drawable/logo"
-                    android:contentDescription="@string/logo_description"
                     android:layout_marginBottom="0dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/welcome"
-                    android:textColor="@color/purple_700"
+                    android:textColor="@color/purple"
                     android:textStyle="bold"
                     android:textSize="30sp"
                     android:layout_marginBottom="4dp" />
@@ -58,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/create_your_account"
-                    android:textColor="@color/dark_gray"
+                    android:textColor="@color/purple"
                     android:textSize="16sp"
                     android:layout_marginBottom="24dp" />
             </LinearLayout>
@@ -72,6 +71,8 @@
                 android:background="@drawable/rounded_input_bg"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
+                android:textSize="17sp"
+                android:textColorHint="@color/purple"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginBottom="16dp"
@@ -85,6 +86,8 @@
                 android:background="@drawable/rounded_input_bg"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
+                android:textColorHint="@color/purple"
+                android:textSize="17sp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginBottom="16dp"
@@ -98,6 +101,8 @@
                 android:background="@drawable/rounded_input_bg"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
+                android:textColorHint="@color/purple"
+                android:textSize="17sp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:inputType="textPassword"
@@ -106,9 +111,9 @@
             <Button
                 android:id="@+id/btn_signup"
                 android:layout_width="150dp"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:text="@string/sign_up"
-                android:backgroundTint="@color/primaryButtonColor"
+                android:backgroundTint="@color/purple"
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/rounded_input_bg" />
@@ -149,9 +154,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/already_have_account_login"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:layout_marginTop="0dp"
-                android:textColor="@color/dark_gray"
+                android:textColor="@color/purple"
                 android:layout_gravity="center" />
         </LinearLayout>
     </ScrollView>
@@ -161,7 +166,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/primaryButtonColor"
+        android:background="@color/purple"
         android:layout_gravity="start">
 
         <!-- Close Button -->

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cartView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="false"
+        app:cardCornerRadius="0dp"
+        app:cardBackgroundColor="@android:color/transparent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_card">
+
+            <ImageView
+                android:id="@+id/back_card"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/leftarrows"
+                android:contentDescription="Notification Icon" />
+
+            <TextView
+                android:id="@+id/card_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Card"
+                android:textSize="25sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textAlignment="center"
+
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:id="@+id/background1"
+        android:layout_width="150dp"
+        android:layout_height="140dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cartView"
+        android:layout_margin="25dp"
+        android:background="@drawable/rounded_box"
+        />
+    <ImageView
+        android:id="@+id/addCardIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/addcard"
+        app:layout_constraintStart_toStartOf="@id/background1"
+        app:layout_constraintEnd_toEndOf="@id/background1"
+        app:layout_constraintTop_toTopOf="@id/background1"
+        android:layout_marginTop="20dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/addCardIcon"
+        app:layout_constraintStart_toStartOf="@id/background1"
+        app:layout_constraintEnd_toEndOf="@id/background1"
+        android:text="Add Card"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+
+        />
+
+    <View
+        android:id="@+id/background2"
+        android:layout_width="150dp"
+        android:layout_height="140dp"
+        app:layout_constraintStart_toEndOf="@id/background1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cartView"
+        android:layout_margin="25dp"
+        android:background="@drawable/rounded_box"
+        />
+    <ImageView
+        android:id="@+id/rechargeIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/recharge"
+        app:layout_constraintStart_toStartOf="@id/background2"
+        app:layout_constraintEnd_toEndOf="@id/background2"
+        app:layout_constraintTop_toTopOf="@id/background2"
+        android:layout_marginTop="20dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/rechargeIcon"
+        app:layout_constraintStart_toStartOf="@id/background2"
+        app:layout_constraintEnd_toEndOf="@id/background2"
+        android:text="Recharge"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+
+        />
+
+    <View
+        android:id="@+id/background3"
+        android:layout_width="150dp"
+        android:layout_height="140dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/background1"
+        android:layout_margin="25dp"
+        android:background="@drawable/rounded_box"
+        />
+    <ImageView
+        android:id="@+id/checkBalancrIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/checkbalance"
+        app:layout_constraintStart_toStartOf="@id/background3"
+        app:layout_constraintEnd_toEndOf="@id/background3"
+        app:layout_constraintTop_toTopOf="@id/background3"
+        android:layout_marginTop="20dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/checkBalancrIcon"
+        app:layout_constraintStart_toStartOf="@id/background3"
+        app:layout_constraintEnd_toEndOf="@id/background3"
+        android:text="Check Balance"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+
+
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

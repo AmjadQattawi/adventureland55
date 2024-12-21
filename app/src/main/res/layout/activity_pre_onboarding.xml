@@ -3,14 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ferris_wheel_background"
     tools:context=".PreOnboardingActivity">
 
-    <!-- Transparent overlay -->
+    <!-- صورة الخلفية -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_onboarding" />
+
+    <!-- التدرج فوق الصورة -->
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#AA000000" />
+        android:background="@drawable/background_onboarding_color" />
+
+
 
     <!-- Welcome Text -->
     <LinearLayout

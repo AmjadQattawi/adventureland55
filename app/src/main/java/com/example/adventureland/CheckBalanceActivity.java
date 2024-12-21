@@ -16,7 +16,7 @@ public class CheckBalanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_balance);
         // Back button functionality
-        ImageView backArrow = findViewById(R.id.backArrow);
+        ImageView backArrow = findViewById(R.id.back_card);
         backArrow.setOnClickListener(v -> finish()); // Close this activity and go back
     }
 }

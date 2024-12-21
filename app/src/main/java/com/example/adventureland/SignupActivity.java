@@ -85,11 +85,11 @@ public class SignupActivity extends AppCompatActivity {
             String phoneNumber = etPhoneNumber.getText().toString();
             String password = etPassword.getText().toString();
 
-            if (name.isEmpty() || phoneNumber.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-            } else {
+//            if (name.isEmpty() || phoneNumber.isEmpty() || password.isEmpty()) {
+//                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+//            } else {
                 Toast.makeText(this, "Signup successful", Toast.LENGTH_SHORT).show();
-            }
+//            }
         });
 
         // Navigate to LoginActivity

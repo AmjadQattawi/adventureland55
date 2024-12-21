@@ -18,7 +18,7 @@ public class BalanceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_balance);
-        ImageView backArrow = findViewById(R.id.backArrow);
+        ImageView backArrow = findViewById(R.id.back_card);
         backArrow.setOnClickListener(v -> finish()); // Close this activity and go back
 
         // Check button to navigate to the second screen

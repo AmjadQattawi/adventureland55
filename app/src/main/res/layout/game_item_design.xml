@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="15dp"
+        android:padding="8dp"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/Game"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="150dp"
+                android:layout_height="120dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="0dp"
+                android:layout_marginLeft="10dp"
+                app:cardBackgroundColor="@android:color/transparent">
+
+                <ImageView
+                    android:id="@+id/game1"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:src="@drawable/game4"
+                    android:scaleType="fitXY"
+
+                    />
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/Game"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="18sp"
+                android:text="Bumper Cars"
+                android:textColor="@color/purple"
+                android:layout_margin="15dp"
+                />
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintStart_toEndOf="@id/Game"
+                android:text="Drive and bump into others in a ….."
+                android:textSize="14sp"
+                android:layout_marginLeft="15dp"
+
+                />
+            <TextView
+                android:id="@+id/age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/desc"
+                app:layout_constraintStart_toEndOf="@id/Game"
+                android:text="Age:  +6"
+                android:textSize="14sp"
+                android:layout_marginLeft="15dp"
+                />
+            <LinearLayout
+                android:id="@+id/stars"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@id/Game"
+                app:layout_constraintTop_toBottomOf="@id/age"
+                android:layout_margin="10dp">
+                <ImageView
+                    android:id="@+id/star1"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/star"
+                    />
+                <ImageView
+                    android:id="@+id/star2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/star"
+                    />
+                <ImageView
+                    android:id="@+id/star3"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/star"
+                    />
+                <ImageView
+                    android:id="@+id/star4"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/star"
+                    />
+                <ImageView
+                    android:id="@+id/star5"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/star"
+                    />
+
+                <TextView
+                    android:id="@+id/rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.0"
+                    android:textSize="14sp"
+                    android:layout_margin="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/purple"
+                    />
+
+            </LinearLayout>
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

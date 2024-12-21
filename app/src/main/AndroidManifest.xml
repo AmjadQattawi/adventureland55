@@ -22,12 +22,6 @@
             android:name=".BalanceActivity"
             android:exported="false" />
         <activity
-            android:name=".DrawerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginNextActivity"
-            android:exported="false" />
-        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -48,9 +42,14 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"/>
+
+
+
+
     </application>
 
 </manifest>

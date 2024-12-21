@@ -5,13 +5,14 @@
     <color name="purple">#3D348B</color>
     <color name="green">#2BC840</color>
     <color name="yellow">#F7B801</color>
-    <color name="purple_700">#512DA8</color>
     <color name="light_gray">#DADADA</color>
     <color name="dark_gray">#7A7A7A</color>
     <color name="light_background">#F5F5F5</color>
     <color name="purple_500">#9C27B0</color>
     <color name="primaryTextColor">#333333</color>
     <color name="secondaryTextColor">#777777</color>
-    <color name="primaryButtonColor">#3c348c</color>
 
+    <color name="gray">#EAEAEA</color>
+    <color name="lightPurple">#7678ED</color>
+    <color name="colorTextOfNeedLogin">#606060</color>
 </resources>

@@ -16,15 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-<!--    <com.google.android.material.tabs.TabLayout-->
-<!--        android:id="@+id/tabLayout"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginBottom="16dp"-->
-<!--        app:tabIndicator="@drawable/dot_selector"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/navigationButtons"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
     <LinearLayout
         android:id="@+id/navigationButtons"
@@ -43,8 +34,8 @@
             android:text="Skip"
             android:textColor="@android:color/darker_gray"
             android:background="@drawable/skip_btn"
-            android:backgroundTint="#00FFFFFF"
-            android:textSize="20sp" />
+            android:backgroundTint="@color/purple"
+            android:textSize="22sp" />
 
         <ImageButton
             android:id="@+id/btnBack"

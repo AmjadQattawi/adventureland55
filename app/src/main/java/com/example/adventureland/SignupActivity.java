@@ -145,7 +145,8 @@ public class SignupActivity extends AppCompatActivity {
                 "+962798435444",  //موجود في realtime database رح يجيبلك Account already exists with this phone number
                 "+962785654555" ,  // موجود في realtime database رح يجيبلك Account already exists with this phone number
                 "+962781235123" ,
-                "+962792345678"
+                "+962792345678" ,
+                "+962797776888"
         );
 
         return allowedPhoneNumbers.contains(phoneNumber);

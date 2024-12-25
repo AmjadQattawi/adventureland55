@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "786325610969",
+    "firebase_url": "https://p1111111-default-rtdb.firebaseio.com",
+    "project_id": "p1111111",
+    "storage_bucket": "p1111111.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786325610969:android:4b117dc5b9ccb4957cf9c8",
+        "android_client_info": {
+          "package_name": "com.example.adventureland"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLvbVZv7iknUYuiiqQLIQIdw-0vOeZMPk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

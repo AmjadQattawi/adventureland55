@@ -7,6 +7,7 @@
 
     <!-- Main Content -->
     <ScrollView
+        android:id="@+id/scroll_view_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_background"
@@ -108,6 +109,22 @@
                 android:inputType="textPassword"
                 android:layout_marginBottom="16dp" />
 
+            <EditText
+                android:id="@+id/et_otp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:hint="Enter OTP"
+                android:background="@drawable/rounded_input_bg"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColorHint="@color/purple"
+                android:textSize="17sp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="16dp"
+                android:inputType="number"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/btn_signup"
                 android:layout_width="150dp"
@@ -160,6 +177,13 @@
                 android:layout_gravity="center" />
         </LinearLayout>
     </ScrollView>
+
+    <!-- FrameLayout for HomeFragment -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <!-- Side Drawer Content -->
     <LinearLayout

@@ -134,7 +134,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    private boolean isPhoneNumberAllowed(String phoneNumber) {
+ /*  private boolean isPhoneNumberAllowed(String phoneNumber) {
         // قائمة الأرقام المسموح بها في "Phone Numbers for Testing"
         List<String> allowedPhoneNumbers = Arrays.asList(
                 "+962798435444",  //موجود في realtime database رح يجيبلك Account already exists with this phone number
@@ -145,7 +145,7 @@ public class SignupActivity extends AppCompatActivity {
         );
 
         return allowedPhoneNumbers.contains(phoneNumber);
-    }
+    }  */
 
     private void checkIfPhoneExists(String phoneNumber, String name, String password) {
         usersRef.orderByChild("phone").equalTo(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {

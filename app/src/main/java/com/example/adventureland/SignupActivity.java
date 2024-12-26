@@ -129,15 +129,10 @@ public class SignupActivity extends AppCompatActivity {
         // أضف رمز البلد
         String fullPhoneNumber = "+962" + phone;
 
-        // تحقق من أن الرقم موجود في "Phone Numbers for Testing"
-        if (!isPhoneNumberAllowed(fullPhoneNumber)) {
-            showToast("Phone number is not exist in database(cant testing) .");
-            return;
-        }
-
-        // تحقق من أن الرقم غير مسجل في قاعدة البيانات
+        // إرسال OTP مباشرة دون التحقق من القائمة
         checkIfPhoneExists(fullPhoneNumber, name, password);
     }
+
 
     private boolean isPhoneNumberAllowed(String phoneNumber) {
         // قائمة الأرقام المسموح بها في "Phone Numbers for Testing"

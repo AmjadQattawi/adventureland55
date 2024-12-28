@@ -43,6 +43,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+
+
+
+
         seeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

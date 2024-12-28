@@ -104,9 +104,9 @@ public class SignupActivity extends AppCompatActivity {
             startActivity(new Intent(SignupActivity.this, LoginActivity.class));
         });
 
-        googleSignup.setOnClickListener(v -> showToast("Google Signup Clicked"));
-        facebookSignup.setOnClickListener(v -> showToast("Facebook Signup Clicked"));
-        twitterSignup.setOnClickListener(v -> showToast("Twitter Signup Clicked"));
+        googleSignup.setOnClickListener(v -> showToast("Google "));
+        facebookSignup.setOnClickListener(v -> showToast("Facebook "));
+        twitterSignup.setOnClickListener(v -> showToast("Twitter "));
     }
 //////
 
@@ -120,39 +120,50 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
+        // تحقق من أن الرقم مكون من 9 أرقام
+        if (!isPhoneNineDigits(phone)) {
+            showToast("Phone number must be exactly 9 digits");
+            return;
+        }
+
         // تحقق من أن كلمة المرور تحتوي على 6 أحرف على الأقل
         if (password.length() < 6) {
             showToast("Password must be at least 6 characters");
             return;
         }
 
+        // تحقق من أن الرقم يبدأ بـ 77 أو 78 أو 79
+        if (!isPhoneStartsWithAllowedPrefixes(phone)) {
+            showToast("Phone number must start with 77, 78, or 79");
+            return;
+        }
+
         // أضف رمز البلد
         String fullPhoneNumber = "+962" + phone;
 
-        // إرسال OTP مباشرة دون التحقق من القائمة
-        checkIfPhoneExists(fullPhoneNumber, name, password);
+        // إخفاء EditText للـ OTP في البداية
+        etOtp.setVisibility(View.GONE);
+
+        // التحقق من وجود الهاتف قبل إرسال رمز OTP
+        checkPhoneNumberInFirebase(fullPhoneNumber, name, password);
     }
 
+    private boolean isPhoneNineDigits(String phone) {
+        // تحقق من أن الرقم يحتوي على 9 أرقام فقط
+        return phone.length() == 9 && phone.matches("[0-9]+");
+    }
 
- /*  private boolean isPhoneNumberAllowed(String phoneNumber) {
-        // قائمة الأرقام المسموح بها في "Phone Numbers for Testing"
-        List<String> allowedPhoneNumbers = Arrays.asList(
-                "+962798435444",  //موجود في realtime database رح يجيبلك Account already exists with this phone number
-                "+962785654555" ,  // موجود في realtime database رح يجيبلك Account already exists with this phone number
-                "+962781235123" ,
-                "+962792345678" ,
-                "+962797776888"
-        );
+    private boolean isPhoneStartsWithAllowedPrefixes(String phone) {
+        // تحقق من أن الرقم يبدأ بـ 77 أو 78 أو 79
+        return phone.startsWith("77") || phone.startsWith("78") || phone.startsWith("79");
+    }
 
-        return allowedPhoneNumbers.contains(phoneNumber);
-    }  */
-
-    private void checkIfPhoneExists(String phoneNumber, String name, String password) {
+    private void checkPhoneNumberInFirebase(String phoneNumber, String name, String password) {
         usersRef.orderByChild("phone").equalTo(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    // الرقم موجود بالفعل
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // الرقم موجود، أرسل OTP
                     showToast("Account already exists with this phone number.");
                 } else {
                     // الرقم غير موجود - أرسل رمز OTP
@@ -170,40 +181,6 @@ public class SignupActivity extends AppCompatActivity {
                         }
                         verifyCode(code, name, phoneNumber, password);
                     });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                showToast("Error checking phone number: " + error.getMessage());
-            }
-        });
-    }
-
-////
-
-    private void checkPhoneNumberInFirebase(String phone, String name, String password) {
-        // تحقق من وجود الرقم في Firebase
-        usersRef.orderByChild("phone").equalTo(phone).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // الرقم موجود، أرسل OTP
-                    sendVerificationCode(phone);
-                    // إظهار EditText للـ OTP
-                    etOtp.setVisibility(View.VISIBLE);
-                    btnSignup.setText("Verify Code");
-
-                    btnSignup.setOnClickListener(v -> {
-                        String code = etOtp.getText().toString().trim();
-                        if (TextUtils.isEmpty(code)) {
-                            showToast("Enter the verification code");
-                            return;
-                        }
-                        verifyCode(code, name, phone, password);
-                    });
-                } else {
-                    showToast("Phone number not registered.");
                 }
             }
 
@@ -242,9 +219,6 @@ public class SignupActivity extends AppCompatActivity {
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
-
-    /////
-
     private void verifyCode(String code, String name, String phone, String password) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
@@ -277,11 +251,9 @@ public class SignupActivity extends AppCompatActivity {
         findViewById(R.id.scroll_view_main).setVisibility(View.GONE); // إخفاء المحتوى الرئيسي
         findViewById(R.id.fragment_container).setVisibility(View.VISIBLE); // إظهار حاوية الفراجمنت
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new HomeFragment())
-                .commit();
+        Intent i = new Intent(SignupActivity.this, MainActivity.class);
+        startActivity(i);
     }
-
 
     private void showToast(String message) {
         Toast.makeText(SignupActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -301,6 +273,7 @@ public class SignupActivity extends AppCompatActivity {
             this.password = password;
         }
     }
+
 
 
 

@@ -16,12 +16,18 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.adventureland.fragments.HomeFragment;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usersRef;
+
+    private String verificationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +74,11 @@ public class LoginActivity extends AppCompatActivity {
 
         // Set Login Button Action
         btnLogin.setOnClickListener(v -> handleLogin());
+
+        // Set Forgot Password Action
+        tvForgotPassword.setOnClickListener(v -> openForgotPasswordDialog());
+
+
     }
 
     private void setupDrawerActions() {
@@ -105,6 +118,8 @@ public class LoginActivity extends AppCompatActivity {
         twitterLogin.setOnClickListener(v -> Toast.makeText(this, "Twitter Login Clicked", Toast.LENGTH_SHORT).show());
     }
 
+
+
     private void handleLogin() {
         String phone = etPhoneNumber.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
@@ -131,13 +146,14 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (dbPassword != null && dbPassword.equals(password)) {
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+////
 
-                            // Navigate to HomeFragment
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_contain, new HomeFragment())
-                                    .addToBackStack(null)  // Optional, adds it to the back stack
-                                    .commit();
 
+                            Intent i=new Intent(LoginActivity.this,MainActivity.class);
+                            startActivity(i);
+
+
+////
                             return;
                         }
                     }
@@ -153,4 +169,140 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void openForgotPasswordDialog() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Reset Password");
+
+        final EditText input = new EditText(this);
+        input.setHint("Enter your phone number");
+        builder.setView(input);
+
+        builder.setPositiveButton("Next", (dialog, which) -> {
+            String phone = input.getText().toString().trim();
+
+            if (TextUtils.isEmpty(phone) || phone.length() != 9) {
+                Toast.makeText(this, "Enter a valid 9-digit phone number", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String fullPhoneNumber = "+962" + phone;
+
+            usersRef.orderByChild("phone").equalTo(fullPhoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        sendVerificationCode(fullPhoneNumber);
+                        showResetPasswordDialog(fullPhoneNumber);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Phone number not registered", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(LoginActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private void showResetPasswordDialog(String phoneNumber) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Reset Password");
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        final EditText otpInput = new EditText(this);
+        otpInput.setHint("Enter OTP");
+        layout.addView(otpInput);
+
+        final EditText newPasswordInput = new EditText(this);
+        newPasswordInput.setHint("Enter New Password");
+        layout.addView(newPasswordInput);
+
+        builder.setView(layout);
+
+        builder.setPositiveButton("Reset", (dialog, which) -> {
+            String otp = otpInput.getText().toString().trim();
+            String newPassword = newPasswordInput.getText().toString().trim();
+
+            if (TextUtils.isEmpty(otp) || TextUtils.isEmpty(newPassword)) {
+                Toast.makeText(this, "Fill all fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (newPassword.length() < 6) {
+                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            verifyCode(otp, phoneNumber, newPassword);
+        });
+
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private void sendVerificationCode(String phoneNumber) {
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(firebaseAuth)
+                        .setPhoneNumber(phoneNumber)
+                        .setTimeout(60L, TimeUnit.SECONDS)
+                        .setActivity(this)
+                        .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                            @Override
+                            public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                                Toast.makeText(LoginActivity.this, "Verification Completed", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onVerificationFailed(@NonNull FirebaseException e) {
+                                Toast.makeText(LoginActivity.this, "Verification Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                                super.onCodeSent(s, token);
+                                verificationId = s;
+                                Toast.makeText(LoginActivity.this, "Code Sent", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+
+    private void verifyCode(String code, String phoneNumber, String newPassword) {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                usersRef.orderByChild("phone").equalTo(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                            userSnapshot.getRef().child("password").setValue(newPassword);
+                            Toast.makeText(LoginActivity.this, "Password reset successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(LoginActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(LoginActivity.this, "Verification Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+
+
 }

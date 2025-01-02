@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <androidx.cardview.widget.CardView
         android:id="@+id/GamesView"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="57dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:cardElevation="0dp"
@@ -17,6 +19,7 @@
         app:cardUseCompatPadding="false"
         app:cardCornerRadius="0dp"
         app:cardBackgroundColor="@android:color/transparent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,7 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/leftarrows" />
+                android:src="@drawable/left_arrow" />
 
             <TextView
                 android:id="@+id/card_title"
@@ -41,54 +44,50 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="Games"
-                android:textSize="25sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="20sp"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textAlignment="center"
-
-
-                />
+                android:textAlignment="center" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <SearchView
-        android:id="@+id/search_view"
-        android:layout_width="330dp"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/games_sv_searchGames"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/GamesView"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"
-        android:textColor="@android:color/black"
-        android:background="@drawable/rounded_search"
-        android:queryHint="What are you looking for?"
-        android:backgroundTint="@color/gray"
-        android:layout_marginLeft="10dp"
-        />
+        android:layout_marginTop="85dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="29dp"
+        android:background="@drawable/search_shape"
+        app:searchHintIcon="@null"
+        app:iconifiedByDefault="false"
+        app:queryBackground="@android:color/transparent"
+        app:queryHint="@string/games_search_hint"
+        android:focusable="false"
+        app:searchIcon="@drawable/search_icon"
+        app:closeIcon="@drawable/purble_x"/>
+
     <ImageView
         android:id="@+id/filterIcon"
-        android:layout_width="50dp"
-        android:layout_height="25dp"
-        android:src="@drawable/filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/GamesView"
-        app:layout_constraintStart_toEndOf="@id/search_view"
-        android:layout_marginTop="27dp"
-
-        />
+        android:layout_width="26dp"
+        android:layout_height="24dp"
+        android:layout_below="@+id/GamesView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/filter" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclergames"
+        android:id="@+id/games_rv_games"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/search_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/game_item_design"
-        android:layout_margin="5dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/games_sv_searchGames"
+        android:scrollbarThumbVertical="@color/purple"/>
 
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

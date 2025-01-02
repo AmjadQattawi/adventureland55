@@ -16,46 +16,57 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
+<!--    <View-->
+<!--        android:layout_width="268dp"-->
+<!--        android:layout_height="268dp"-->
+<!--        android:layout_marginStart="46dp"-->
+<!--        android:layout_marginTop="115dp"-->
+<!--        android:layout_marginEnd="46dp"-->
+<!--        android:alpha="0.4"-->
+<!--        android:background="@drawable/yellow_circle_onboarding"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <LinearLayout
-        android:id="@+id/navigationButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent">
+    <Button
+        android:id="@+id/btnSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginBottom="54dp"
+        android:background="@drawable/skip_btn"
+        android:backgroundTint="@color/purple"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Skip"
+        android:textColor="@color/purple"
+        android:textSize="23sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
-            android:id="@+id/btnSkip"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginEnd="90dp"
-            android:text="Skip"
-            android:textColor="@android:color/darker_gray"
-            android:background="@drawable/skip_btn"
-            android:backgroundTint="@color/purple"
-            android:textSize="22sp" />
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="52dp"
+        android:background="@drawable/back_btn_shape"
+        android:paddingEnd="3dp"
+        android:src="@drawable/arrow_left"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnNext" />
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="15dp"
-            android:background="@drawable/rounded_arrows_style"
-            android:src="@drawable/back_arrow"
-            android:visibility="invisible"
-           />
-
-        <ImageButton
-            android:id="@+id/btnNext"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/rounded_arrows_style"
-            android:contentDescription="Next"
-            android:scaleType="center"
-            android:src="@drawable/forward_arrow" />
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/btnNext"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="37dp"
+        android:layout_marginBottom="52dp"
+        android:background="@drawable/next_btn_shape"
+        android:contentDescription="Next"
+        android:scaleType="center"
+        android:src="@drawable/arrow_right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

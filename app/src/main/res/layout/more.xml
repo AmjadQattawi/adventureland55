@@ -28,7 +28,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/leftarrows" />
+                android:src="@drawable/left_arrow" />
 
             <TextView
                 android:id="@+id/card_title"
@@ -39,11 +39,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="More"
-                android:textSize="25sp"
                 android:textColor="@color/white"
-                android:textStyle="bold"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="20sp"
                 android:textAlignment="center"
-
                 />
 
 

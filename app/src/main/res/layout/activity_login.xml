@@ -6,9 +6,9 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:background="@drawable/login_pattern">
 
-    <!-- Main Content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,174 +18,221 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Drawer Icon -->
+
             <ImageView
                 android:id="@+id/drawer"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:src="@drawable/drawer"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="16dp"
+                android:layout_width="0dp"
+                android:layout_height="21dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="27dp"
                 android:clickable="true"
-                android:focusable="true" />
-
-        <!-- Logo -->
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="200dp"
-            android:layout_height="180dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="@string/app_logo"
-            android:src="@drawable/logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.5" />
-
-        <!-- Welcome Text -->
-        <TextView
-            android:id="@+id/tv_welcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Welcome back!"
-            android:textColor="@color/purple"
-            android:textStyle="bold"
-            android:textSize="30sp"
-            app:layout_constraintTop_toBottomOf="@id/logo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-
-        <!-- Login Subtitle -->
-        <TextView
-            android:id="@+id/tv_login_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login to your account"
-            android:textColor="@color/purple"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/tv_welcome"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp" />
-
-        <!-- Phone Number Input -->
-        <EditText
-            android:id="@+id/et_phone_number"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:hint="Phone number"
-            android:textColorHint="@color/purple"
-            android:background="@drawable/rounded_input_bg"
-            android:padding="20dp"
-            android:textSize="17sp"
-            app:layout_constraintTop_toBottomOf="@id/tv_login_prompt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="28dp"
-            android:layout_marginTop="24dp" />
-
-        <!-- Password Input -->
-        <EditText
-            android:id="@+id/et_password"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:hint="Password"
-            android:background="@drawable/rounded_input_bg"
-            android:padding="20dp"
-            android:textSize="17sp"
-            android:inputType="textPassword"
-            android:textColorHint="@color/purple"
-            app:layout_constraintTop_toBottomOf="@id/et_phone_number"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="28dp"
-            android:layout_marginTop="16dp" />
-
-        <!-- Login Button -->
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="@string/login"
-            android:backgroundTint="@color/purple"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/rounded_input_bg"
-            app:layout_constraintTop_toBottomOf="@id/et_password"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="24dp" />
-
-        <!-- Forgot Password -->
-        <TextView
-            android:id="@+id/tv_forgot_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            android:textColor="@color/purple"
-            android:textSize="17sp"
-            app:layout_constraintTop_toBottomOf="@id/btn_login"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp" />
-
-        <!-- Social Media Icons -->
-        <LinearLayout
-            android:id="@+id/social_media_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_forgot_password">
+                android:focusable="true"
+                android:src="@drawable/menu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/google_login"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:id="@+id/logo"
+                android:layout_width="238dp"
+                android:layout_height="238dp"
+                android:layout_marginTop="58dp"
+                android:contentDescription="@string/app_logo"
+                android:src="@drawable/logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.5" />
+
+            <TextView
+                android:id="@+id/tv_welcome"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:text="Welcome back!"
+                android:textColor="@color/purple"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/logo" />
+
+            <TextView
+                android:id="@+id/tv_login_prompt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:gravity="center"
+                android:text="Login to your account"
+                android:textColor="@color/purple"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="53dp"
+                android:layout_marginHorizontal="28dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/rounded_input_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_login_prompt">
+
+                <TextView
+                    android:id="@+id/tv_country_code"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppins_light"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="8dp"
+                    android:text="+962"
+                    android:textColor="#606060"
+                    android:textColorHint="#606060"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="1dp"
+                    android:layout_height="50dp"
+                    android:background="@color/purple"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_country_code"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_phone_number"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/poppins_light"
+                    android:hint="Phone number"
+                    android:inputType="phone"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:textColor="#606060"
+                    android:textColorHint="#606060"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/divider"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="0dp"
+                android:layout_height="53dp"
+                android:layout_marginHorizontal="28dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="96dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/rounded_input_bg"
+                android:fontFamily="@font/poppins_light"
+                android:gravity="start"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:paddingStart="26dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="14dp"
+                android:textColorHint="#606060"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_login_prompt" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_login"
+                android:layout_width="0dp"
+                android:layout_height="53dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/bg_btn"
+                android:backgroundTint="@color/purple"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="@string/login"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_forgot_password" />
+
+
+            <TextView
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="192dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="28dp"
+                android:fontFamily="@font/poppins_light"
+                android:text="Forgot Password?"
+                android:textColor="#606060"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.889"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_password" />
+
+            <CheckBox
+                android:id="@+id/cb_remember_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="192dp"
+                android:buttonTint="@color/purple"
+                android:fontFamily="@font/poppins_light"
+                android:gravity="center"
+                android:text="Remember me"
+                android:textColor="#606060"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.108"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_password" />
+
+            <TextView
+                android:id="@+id/tv_signup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/google" />
+                android:fontFamily="@font/poppins_light"
+                android:text="Don't have an account? Sign up"
+                android:textColor="@color/purple"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.767"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_login"
+                android:gravity="center"/>
 
-            <ImageView
-                android:id="@+id/facebook_login"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/facebook" />
-
-            <ImageView
-                android:id="@+id/twitter_login"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/twitter" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_signup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Don’t have an account? Sign up"
-            android:textColor="@color/purple"
-            android:textSize="17sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/social_media_layout" />
+            <FrameLayout
+                android:id="@+id/fragment_contain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="-3dp"
+                tools:layout_editor_absoluteY="-1dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <!-- Side Drawer Content -->
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
@@ -193,7 +240,6 @@
         android:background="@color/purple"
         android:layout_gravity="start">
 
-        <!-- Close Button -->
         <ImageView
             android:id="@+id/close_drawer"
             android:layout_width="30dp"
@@ -203,7 +249,6 @@
             android:clickable="true"
             android:focusable="true" />
 
-        <!-- Check Card Balance -->
         <LinearLayout
             android:id="@+id/check_balance_section"
             android:layout_width="match_parent"
@@ -215,8 +260,8 @@
 
             <ImageView
                 android:id="@+id/card_1_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
                 android:src="@drawable/card_1" />
 
             <TextView
@@ -225,17 +270,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="Check your card balance"
+                android:fontFamily="@font/poppins_light"
                 android:textSize="16sp"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
-        <!-- Separator Line -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/holo_orange_light" />
+            android:background="@color/yellow"
+            android:layout_marginStart="52.5dp"/>
 
-        <!-- About -->
         <LinearLayout
             android:id="@+id/about_section"
             android:layout_width="match_parent"
@@ -247,25 +292,27 @@
 
             <ImageView
                 android:id="@+id/info_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/info" />
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/question_mark" />
 
             <TextView
                 android:id="@+id/about_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="About"
+                android:text="FAQ"
+                android:fontFamily="@font/poppins_light"
                 android:textSize="16sp"
                 android:textColor="@android:color/white" />
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- FrameLayout for Fragment -->
-    <FrameLayout
-        android:id="@+id/fragment_contain"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/yellow"
+            android:layout_marginStart="52.5dp"/>
+
+    </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

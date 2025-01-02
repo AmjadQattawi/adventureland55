@@ -63,9 +63,6 @@ public class SignupActivity extends AppCompatActivity {
         etOtp = findViewById(R.id.et_otp);
         btnSignup = findViewById(R.id.btn_signup);
         tvLogin = findViewById(R.id.tv_login);
-        googleSignup = findViewById(R.id.google_signup);
-        facebookSignup = findViewById(R.id.facebook_signup);
-        twitterSignup = findViewById(R.id.twitter_signup);
         drawerIcon = findViewById(R.id.drawer);
         closeDrawer = findViewById(R.id.close_drawer);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -104,9 +101,6 @@ public class SignupActivity extends AppCompatActivity {
             startActivity(new Intent(SignupActivity.this, LoginActivity.class));
         });
 
-        googleSignup.setOnClickListener(v -> showToast("Google "));
-        facebookSignup.setOnClickListener(v -> showToast("Facebook "));
-        twitterSignup.setOnClickListener(v -> showToast("Twitter "));
     }
 //////
 

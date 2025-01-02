@@ -56,9 +56,6 @@ public class LoginActivity extends AppCompatActivity {
 
         tvForgotPassword = findViewById(R.id.tv_forgot_password);
         tvSignup = findViewById(R.id.tv_signup);
-        googleLogin = findViewById(R.id.google_login);
-        facebookLogin = findViewById(R.id.facebook_login);
-        twitterLogin = findViewById(R.id.twitter_login);
         DrawerIcon = findViewById(R.id.drawer);
         drawerLayout = findViewById(R.id.drawer_layout);
         closeDrawer = findViewById(R.id.close_drawer);
@@ -112,10 +109,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Social Media Logins
-        googleLogin.setOnClickListener(v -> Toast.makeText(this, "Google Login Clicked", Toast.LENGTH_SHORT).show());
-        facebookLogin.setOnClickListener(v -> Toast.makeText(this, "Facebook Login Clicked", Toast.LENGTH_SHORT).show());
-        twitterLogin.setOnClickListener(v -> Toast.makeText(this, "Twitter Login Clicked", Toast.LENGTH_SHORT).show());
+
     }
 
 

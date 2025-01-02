@@ -23,6 +23,7 @@
     <string name="navigation_drawer_close">Close drawer</string>
     <string name="nav_card_balance">Check your card balance</string>
     <string name="nav_about">About</string>
+    <string name="games_search_hint">Type here to discover games</string>
 
 
 </resources>

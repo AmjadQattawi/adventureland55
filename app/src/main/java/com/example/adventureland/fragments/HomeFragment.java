@@ -32,16 +32,35 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     private ImageView gameIcon, cardIcon;
     private TextView seeAll;
-
     private ViewPager2 viewPager2;
+    private RecyclerView recyclerView;
+    private GameAdapter gameAdapter;
+    private List<Game> gameList;
     private Handler slideHandler = new Handler();
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // إعداد الـ RecyclerView
+        recyclerView = view.findViewById(R.id.home_rv_TopGames);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        // إعداد البيانات
+        gameList = new ArrayList<>();
+        gameList.add(new Game("Bumper Cars", 4, 4.0f, R.drawable.bumpercars, "Drive small, electric-powered cars equipped with rubber bumpers and collide safely with other players in a controlled arena. This game is perfect for kids and adults looking for friendly competition and lots of laughs.", 0.650));
+        gameList.add(new Game("Ferris Wheel", 4, 3.5f, R.drawable.ferriswheel, "Enjoy a relaxing ride on a giant wheel with enclosed seats, offering a bird's-eye view of the amusement park and its surroundings. It's ideal for families and anyone seeking a peaceful yet memorable experience.", 0.500));
+        gameList.add(new Game("Swing Ride", 8, 4.5f, R.drawable.swingride, "Feel the breeze as you soar through the air in a circular motion on this exciting swing ride. It’s thrilling yet comfortable, perfect for those seeking a mix of adrenaline and joy.", 0.750));
+        gameList.add(new Game("Roller Coaster", 10, 5.0f, R.drawable.rollercoaster, "Experience the ultimate thrill with high-speed loops, drops, and turns on this exhilarating ride. Perfect for adrenaline lovers looking for a heart-racing adventure.", 0.400));
+
+        // إعداد الـ Adapter مع البيانات
+        gameAdapter = new GameAdapter(getContext(), gameList, GameAdapter.TYPE_SIMPLE); // يمكنك استخدام TYPE_FULL إذا كنت بحاجة لعرض التفاصيل الكاملة
+        recyclerView.setAdapter(gameAdapter);
+
         gameIcon = view.findViewById(R.id.gamesIcon);
         cardIcon = view.findViewById(R.id.cardIcon);
         seeAll = view.findViewById(R.id.seeAll_txt);
+
 
         viewPager2 = view.findViewById(R.id.slider);
         List<SlideItem> sliderItem = new ArrayList<>();

@@ -7,16 +7,15 @@ public class Game {
     private int image;
     private String description;
     private double price;
-    private boolean isFavorite;
 
-    public Game(String title, int age, float rating, int image, String description, double price, boolean isFavorite) {
+    public Game(String title, int age, float rating, int image, String description, double price) {
         this.title = title;
         this.age = age;
         this.rating = rating;
         this.image = image;
         this.description = description;
         this.price = price;
-        this.isFavorite = isFavorite;
+
     }
 
     public String getTitle() {
@@ -43,12 +42,5 @@ public class Game {
         return price;
     }
 
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
-    }
 
 }

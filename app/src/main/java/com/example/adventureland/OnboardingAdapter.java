@@ -14,9 +14,9 @@ import java.util.List;
 public class OnboardingAdapter extends RecyclerView.Adapter<OnboardingAdapter.ViewHolder> {
     private final Context context;
     private final List<OnboardingItem> items = List.of(
-            new OnboardingItem(R.drawable.top_up, "Track & Top Up Your Game Card!", "Discover special offers, discounts, and promotions right inside the app!"),
             new OnboardingItem(R.drawable.gift, "Games & Rewards", "Collect points and unlock rewards as you play and explore the park!"),
-            new OnboardingItem(R.drawable.games_copy, "Exclusive Offers!", "Discover special offers, discounts, and promotions right inside the app!")
+            new OnboardingItem(R.drawable.games_copy, "Exclusive Offers!", "Discover special offers, discounts, and promotions right inside the app!"),
+            new OnboardingItem(R.drawable.top_up, "Track & Top Up Your Game Card!", "Discover special offers, discounts, and promotions right inside the app!")
     );
 
     public OnboardingAdapter(Context context, List<OnboardingItem> onboardingItems) {

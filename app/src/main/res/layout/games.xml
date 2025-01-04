@@ -27,8 +27,8 @@
 
             <ImageView
                 android:id="@+id/back_games"
-                android:layout_width="30dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp"
@@ -37,7 +37,7 @@
 
             <TextView
                 android:id="@+id/card_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="Games"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textColor="@color/white"
                 android:textAlignment="center" />
 
@@ -86,8 +86,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:scrollbars="vertical"
-        android:layout_below="@+id/games_sv_searchGames"
-        android:scrollbarThumbVertical="@color/purple"/>
+        android:scrollbars="none"
+        android:layout_below="@+id/games_sv_searchGames" />
 
 </RelativeLayout>

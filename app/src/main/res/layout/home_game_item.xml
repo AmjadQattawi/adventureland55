@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:gravity="center">
+
+
+    <ImageView
+        android:id="@+id/gameImage"
+        android:layout_width="100dp"
+        android:layout_height="130dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bumpercars"
+        android:background="@drawable/home_game_shape"
+        android:clipToOutline="true"/>
+
+    <TextView
+        android:id="@+id/gameName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bumper Cars"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="14sp"
+        android:textColor="@color/dark_gray"
+        android:gravity="center"
+        android:layout_marginTop="10dp"/>
+</LinearLayout>

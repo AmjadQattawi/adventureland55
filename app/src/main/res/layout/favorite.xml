@@ -24,26 +24,26 @@
 
             <ImageView
                 android:id="@+id/back_Fav"
-                android:layout_width="30dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/leftarrows" />
+                android:src="@drawable/left_arrow" />
 
             <TextView
                 android:id="@+id/Fav_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="Favorite"
-                android:textSize="25sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="22sp"
                 android:textColor="@color/white"
-                android:textStyle="bold"
                 android:textAlignment="center"
 
                 />

@@ -24,27 +24,27 @@
 
             <ImageView
                 android:id="@+id/back_card"
-                android:layout_width="30dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:src="@drawable/leftarrows"
+                android:src="@drawable/left_arrow"
                 android:contentDescription="Notification Icon" />
 
             <TextView
                 android:id="@+id/card_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="Card"
-                android:textSize="25sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="22sp"
                 android:textColor="@color/white"
-                android:textStyle="bold"
                 android:textAlignment="center"
 
                 />
@@ -79,7 +79,8 @@
         app:layout_constraintStart_toStartOf="@id/background1"
         app:layout_constraintEnd_toEndOf="@id/background1"
         android:text="Add Card"
-        android:textSize="18sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
 
@@ -89,12 +90,14 @@
         android:id="@+id/background2"
         android:layout_width="150dp"
         android:layout_height="140dp"
-        app:layout_constraintStart_toEndOf="@id/background1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cartView"
         android:layout_margin="25dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/rounded_box"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.813"
+        app:layout_constraintStart_toEndOf="@id/background1"
+        app:layout_constraintTop_toBottomOf="@id/cartView" />
+
     <ImageView
         android:id="@+id/rechargeIcon"
         android:layout_width="60dp"
@@ -112,7 +115,8 @@
         app:layout_constraintStart_toStartOf="@id/background2"
         app:layout_constraintEnd_toEndOf="@id/background2"
         android:text="Recharge"
-        android:textSize="18sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
 
@@ -144,7 +148,8 @@
         app:layout_constraintStart_toStartOf="@id/background3"
         app:layout_constraintEnd_toEndOf="@id/background3"
         android:text="Check Balance"
-        android:textSize="18sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
 

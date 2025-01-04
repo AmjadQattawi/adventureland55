@@ -15,45 +15,46 @@
             android:id="@+id/cartView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="0dp"
             app:cardElevation="0dp"
             app:cardPreventCornerOverlap="false"
             app:cardUseCompatPadding="false"
-            app:cardCornerRadius="0dp"
-            app:cardBackgroundColor="@android:color/transparent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:background="@drawable/rounded_card">
 
                 <ImageView
                     android:id="@+id/back_card"
-                    android:layout_width="30dp"
-                    android:layout_height="25dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:src="@drawable/leftarrows"
-                    android:contentDescription="Notification Icon" />
+                    android:contentDescription="Notification Icon"
+                    android:src="@drawable/left_arrow"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/card_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:gravity="center"
+                    android:text="check your card balance"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:text="check your card balance"
-                    android:textSize="23sp"
-                    android:textColor="@color/white"
-
-                    android:textAlignment="center"
-
-                    />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
@@ -85,17 +86,18 @@
             android:textSize="20sp" />
 
         <!-- Check Button -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/checkButton"
             android:layout_width="120dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="24dp"
             android:text="Check"
+            android:fontFamily="@font/poppins_medium"
             android:textColor="@color/white"
             android:background="@drawable/rounded_button_bg"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:paddingTop="5dp"/>
 
         <!-- Cards Image -->
         <ImageView

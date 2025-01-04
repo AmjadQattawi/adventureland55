@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class GameDetailsActivity extends AppCompatActivity {
 
+    private boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,13 @@ public class GameDetailsActivity extends AppCompatActivity {
         TextView price = findViewById(R.id.price_txt);
         TextView age = findViewById(R.id.age_txt);
         RatingBar ratingBar = findViewById(R.id.ratingBar3);
+        ImageView favoriteIcon = findViewById(R.id.loveIcon);
+        updateFavoriteIcon(favoriteIcon);
+
+        favoriteIcon.setOnClickListener(v -> {
+            isFavorite = !isFavorite;
+            updateFavoriteIcon(favoriteIcon);
+        });
 
         String gameTitle = getIntent().getStringExtra("title");
         int gameImage = getIntent().getIntExtra("image", 0);
@@ -36,5 +44,13 @@ public class GameDetailsActivity extends AppCompatActivity {
         description.setText(gameDescription);
         price.setText(String.format(gamePrice + " JD"));
         ratingBar.setRating(gameRating);
+    }
+
+    private void updateFavoriteIcon(ImageView favoriteIcon) {
+        if (isFavorite) {
+            favoriteIcon.setImageResource(R.drawable.circular_heart_fill);
+        } else {
+            favoriteIcon.setImageResource(R.drawable.circular_heart_empty);
+        }
     }
 }

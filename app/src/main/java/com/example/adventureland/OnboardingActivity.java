@@ -32,18 +32,20 @@ public class OnboardingActivity extends AppCompatActivity {
         // Create onboarding items
         List<OnboardingItem> onboardingItems = new ArrayList<>();
         onboardingItems.add(new OnboardingItem(
-                R.drawable.top_up,
-                "Track & Top Up Your Game Card!",
+
+                R.drawable.onboarding,
+                "Exclusive Offers!",
                 "Discover special offers, discounts, and promotions right inside the app!"
+
         ));
         onboardingItems.add(new OnboardingItem(
-                R.drawable.gift,
+                R.drawable.onboarding2,
                 "Games & Rewards",
                 "Collect points and unlock rewards as you play and explore the park!"
         ));
         onboardingItems.add(new OnboardingItem(
-                R.drawable.games_copy,
-                "Exclusive Offers!",
+                R.drawable.onboarding3,
+                "Track & Top Up Your Game Card!",
                 "Discover special offers, discounts, and promotions right inside the app!"
         ));
 

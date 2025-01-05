@@ -192,6 +192,18 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- إضافة TextView للتقييم المتوسط -->
+    <TextView
+        android:id="@+id/average_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average Rating: 4.5"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ratingBar3"
+        android:textColor="@color/gray"/>
+
     <RatingBar
         android:id="@+id/ratingBar3"
         android:layout_width="wrap_content"
@@ -204,7 +216,10 @@
         android:transformPivotY="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
-        android:progressTint="@color/purple"
-        android:progressBackgroundTint="@color/purple"/>
+        android:progressTint="@color/gray"
+    />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

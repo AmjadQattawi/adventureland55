@@ -1,9 +1,11 @@
 package com.example.adventureland;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView closeDrawer;
     private LinearLayout checkBalanceSection, aboutSection;
 
+    private CheckBox cbRememberMe;
+
     private FirebaseAuth firebaseAuth;
     private DatabaseReference usersRef;
 
@@ -53,6 +57,9 @@ public class LoginActivity extends AppCompatActivity {
         etPhoneNumber = findViewById(R.id.et_phone_number);
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
+
+        cbRememberMe = findViewById(R.id.cb_remember_me);
+
 
         tvForgotPassword = findViewById(R.id.tv_forgot_password);
         tvSignup = findViewById(R.id.tv_signup);
@@ -75,8 +82,24 @@ public class LoginActivity extends AppCompatActivity {
         // Set Forgot Password Action
         tvForgotPassword.setOnClickListener(v -> openForgotPasswordDialog());
 
+        // Check if the user chose "Remember Me"
+        checkRememberMe();
 
     }
+
+    private void checkRememberMe() {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        boolean rememberMe = sharedPreferences.getBoolean("remember_me", false);
+
+        if (rememberMe) {
+            String phone = sharedPreferences.getString("phone", "");
+            String password = sharedPreferences.getString("password", "");
+            etPhoneNumber.setText(phone);
+            etPassword.setText(password);
+            cbRememberMe.setChecked(true);
+        }
+    }
+
 
     private void setupDrawerActions() {
         // Open the drawer when DrawerIcon is clicked
@@ -141,7 +164,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (dbPassword != null && dbPassword.equals(password)) {
                             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 ////
-
+                            // If "Remember Me" is checked, store the data
+                            if (cbRememberMe.isChecked()) {
+                                saveLoginData(phone, password);
+                            }
 
                             Intent i=new Intent(LoginActivity.this,MainActivity.class);
                             startActivity(i);
@@ -156,6 +182,19 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "User not found", Toast.LENGTH_SHORT).show();
                 }
             }
+
+
+            private void saveLoginData(String phone, String password) {
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("phone", phone);
+                editor.putString("password", password);
+                editor.putBoolean("remember_me", true);
+                editor.apply();
+            }
+
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

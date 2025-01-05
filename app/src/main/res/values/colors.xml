@@ -12,6 +12,11 @@
     <color name="primaryTextColor">#333333</color>
     <color name="secondaryTextColor">#777777</color>
 
+    <color name="navy_blue">#000080</color> <!-- كحلي -->
+    <color name="orange">#FFA500</color> <!-- برتقالي -->
+    <color name="red">#FF0000</color> <!-- أحمر -->
+
+
     <color name="gray">#EAEAEA</color>
     <color name="lightPurple">#7678ED</color>
     <color name="colorTextOfNeedLogin">#606060</color>

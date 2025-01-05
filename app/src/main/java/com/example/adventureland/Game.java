@@ -1,5 +1,4 @@
 package com.example.adventureland;
-
 public class Game {
     private String title;
     private int age;
@@ -8,6 +7,11 @@ public class Game {
     private String description;
     private double price;
 
+    // منشئ بدون معلمات مطلوب لـ Firebase
+    public Game() {
+    }
+
+    // المنشئ الحالي
     public Game(String title, int age, float rating, int image, String description, double price) {
         this.title = title;
         this.age = age;
@@ -15,9 +19,9 @@ public class Game {
         this.image = image;
         this.description = description;
         this.price = price;
-
     }
 
+    // Getters
     public String getTitle() {
         return title;
     }
@@ -42,5 +46,28 @@ public class Game {
         return price;
     }
 
+    // Setters (مطلوبة أحيانًا عند العمل مع Firebase)
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.adventureland;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -31,6 +32,16 @@ public class GameDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.game_design);
 
         mAuth = FirebaseAuth.getInstance();
+
+        // ✅ التحقق من تسجيل الدخول
+        if (mAuth.getCurrentUser() == null) {
+            Toast.makeText(this, " please log in first", Toast.LENGTH_SHORT).show();
+            // توجه المستخدم إلى شاشة تسجيل الدخول
+            startActivity(new Intent(this, LoginActivity.class));
+            finish(); // اغلق الشاشة الحالية
+            return;
+        }
+
         String userId = mAuth.getCurrentUser().getUid();
         databaseFavorites = FirebaseDatabase.getInstance().getReference("Favorites").child(userId);
         databaseRatings = FirebaseDatabase.getInstance().getReference("Ratings").child(getIntent().getStringExtra("title"));
@@ -61,15 +72,13 @@ public class GameDetailsActivity extends AppCompatActivity {
         price.setText(String.format(gamePrice + " JD"));
         ratingBar.setRating(gameRating);
 
-        // تعيين اللون الرمادي قبل التقييم
         ratingBar.setProgressTintList(getResources().getColorStateList(R.color.gray));
 
-        // التحقق من حالة اللعبة عند فتح الشاشة
         databaseFavorites.orderByChild("title").equalTo(gameTitle).addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    isFavorite = true; // اللعبة موجودة في المفضلة
+                    isFavorite = true;
                     updateFavoriteIcon(favoriteIcon);
                 }
             }
@@ -82,35 +91,30 @@ public class GameDetailsActivity extends AppCompatActivity {
 
         favoriteIcon.setOnClickListener(v -> {
             if (isFavorite) {
-                // إزالة اللعبة من المفضلة
                 removeFromFavorites(gameTitle);
                 isFavorite = false;
             } else {
-                // إضافة اللعبة إلى المفضلة
                 addToFavorites(gameTitle, gameImage, gameDescription, gamePrice, gameRating, gameAge);
                 isFavorite = true;
             }
             updateFavoriteIcon(favoriteIcon);
         });
 
-        // تحميل التقييم عند العودة للنشاط
         loadAverageRating();
 
-        // حفظ التقييم عند تغييره
         ratingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-            if (fromUser && !hasRated) { // إذا لم يتم التقييم بعد
-                // تغيير اللون إلى الكحلي عند التقييم
+            if (fromUser && !hasRated) {
                 ratingBar.setProgressTintList(getResources().getColorStateList(R.color.navy_blue));
-                averageRatingText.setTextColor(getResources().getColor(R.color.navy_blue)); // تغيير لون النص إلى الكحلي
-                saveRating(rating); // حفظ التقييم
-                hasRated = true; // تعيين أن المستخدم قد قيم اللعبة
-                ratingBar.setIsIndicator(true); // تعطيل التقييم بعد التقييم الأول
+                averageRatingText.setTextColor(getResources().getColor(R.color.navy_blue));
+                saveRating(rating);
+                hasRated = true;
+                ratingBar.setIsIndicator(true);
             }
         });
 
-        // التحقق من حالة التقييم عند العودة للنشاط
         checkIfRated();
     }
+
 
     private void checkIfRated() {
         String userId = mAuth.getCurrentUser().getUid();

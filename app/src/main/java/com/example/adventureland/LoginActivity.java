@@ -153,7 +153,6 @@ public class LoginActivity extends AppCompatActivity {
 
         String fullPhoneNumber = "+962" + phone;
 
-        // Check user data in Realtime Database
         usersRef.orderByChild("phone").equalTo(fullPhoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -162,18 +161,41 @@ public class LoginActivity extends AppCompatActivity {
                         String dbPassword = userSnapshot.child("password").getValue(String.class);
 
                         if (dbPassword != null && dbPassword.equals(password)) {
-                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-////
-                            // If "Remember Me" is checked, store the data
-                            if (cbRememberMe.isChecked()) {
-                                saveLoginData(phone, password);
-                            }
+                            // ✅ تسجيل الدخول فعلي في FirebaseAuth باستخدام "إيميل وهمي"
+                            String email = fullPhoneNumber + "@example.com";
 
-                            Intent i=new Intent(LoginActivity.this,MainActivity.class);
-                            startActivity(i);
+                            firebaseAuth.signInWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
+                                            if (cbRememberMe.isChecked()) {
+                                                saveLoginData(phone, password);
+                                            }
 
-////
+                                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(i);
+                                            finish();
+                                        } else {
+                                            // لو الحساب غير موجود في FirebaseAuth، أنشئه الآن
+                                            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                                                    .addOnCompleteListener(signUpTask -> {
+                                                        if (signUpTask.isSuccessful()) {
+                                                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+                                                            if (cbRememberMe.isChecked()) {
+                                                                saveLoginData(phone, password);
+                                                            }
+
+                                                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                                            startActivity(i);
+                                                            finish();
+                                                        } else {
+                                                            Toast.makeText(LoginActivity.this, "Authentication failed: " + signUpTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                        }
+                                    });
                             return;
                         }
                     }
@@ -182,7 +204,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "User not found", Toast.LENGTH_SHORT).show();
                 }
             }
-
 
             private void saveLoginData(String phone, String password) {
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
@@ -193,15 +214,13 @@ public class LoginActivity extends AppCompatActivity {
                 editor.apply();
             }
 
-
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(LoginActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private void openForgotPasswordDialog() {
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);

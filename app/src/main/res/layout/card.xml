@@ -1,160 +1,365 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/white">
 
+    <!-- Top App Bar with rounded corners -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/cartView"
+        android:id="@+id/toolbar_card"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:cardElevation="0dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="false"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="0dp"
-        app:cardBackgroundColor="@android:color/transparent">
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="?attr/actionBarSize"
             android:background="@drawable/rounded_card">
 
-            <ImageView
-                android:id="@+id/back_card"
+            <ImageButton
+                android:id="@+id/back_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/left_arrows"
+                android:contentDescription="Back"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/left_arrow"
-                android:contentDescription="Notification Icon" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:tint="@color/white" />
 
             <TextView
-                android:id="@+id/card_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="Card"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="22sp"
+                android:text="Card Manager"
                 android:textColor="@color/white"
-                android:textAlignment="center"
-
-                />
-
-
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <View
-        android:id="@+id/background1"
-        android:layout_width="150dp"
-        android:layout_height="140dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cartView"
-        android:layout_margin="25dp"
-        android:background="@drawable/rounded_box"
-        />
-    <ImageView
-        android:id="@+id/addCardIcon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/addcard"
-        app:layout_constraintStart_toStartOf="@id/background1"
-        app:layout_constraintEnd_toEndOf="@id/background1"
-        app:layout_constraintTop_toTopOf="@id/background1"
-        android:layout_marginTop="20dp"
-        />
+    <!-- Add Card Section -->
     <TextView
+        android:id="@+id/add_card_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/addCardIcon"
-        app:layout_constraintStart_toStartOf="@id/background1"
-        app:layout_constraintEnd_toEndOf="@id/background1"
-        android:text="Add Card"
-        android:fontFamily="@font/poppins_medium"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-
-        />
-
-    <View
-        android:id="@+id/background2"
-        android:layout_width="150dp"
-        android:layout_height="140dp"
-        android:layout_margin="25dp"
+        android:text="Add a new card or check a card balance"
+        android:textColor="#616161"
+        android:textSize="16sp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/rounded_box"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.813"
-        app:layout_constraintStart_toEndOf="@id/background1"
-        app:layout_constraintTop_toBottomOf="@id/cartView" />
-
-    <ImageView
-        android:id="@+id/rechargeIcon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/recharge"
-        app:layout_constraintStart_toStartOf="@id/background2"
-        app:layout_constraintEnd_toEndOf="@id/background2"
-        app:layout_constraintTop_toTopOf="@id/background2"
-        android:layout_marginTop="20dp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/rechargeIcon"
-        app:layout_constraintStart_toStartOf="@id/background2"
-        app:layout_constraintEnd_toEndOf="@id/background2"
-        android:text="Recharge"
-        android:fontFamily="@font/poppins_medium"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-
-        />
-
-    <View
-        android:id="@+id/background3"
-        android:layout_width="150dp"
-        android:layout_height="140dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_card"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/background1"
-        android:layout_margin="25dp"
-        android:background="@drawable/rounded_box"
-        />
-    <ImageView
-        android:id="@+id/checkBalancrIcon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/checkbalance"
-        app:layout_constraintStart_toStartOf="@id/background3"
-        app:layout_constraintEnd_toEndOf="@id/background3"
-        app:layout_constraintTop_toTopOf="@id/background3"
-        android:layout_marginTop="20dp"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Card Number Input -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_input_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toBottomOf="@id/add_card_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/border"
+            android:gravity="center_vertical"
+            android:padding="12dp">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="24dp"
+                android:src="@drawable/credit_card_1"
+                android:layout_marginEnd="8dp"
+                app:tint="#3F3A8A" />
+
+            <EditText
+                android:id="@+id/card_number_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="X X X X X X X X"
+                android:inputType="number"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Check Button -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/check_button"
+        android:layout_width="120dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="24dp"
+        app:cardBackgroundColor="#3F3A8A"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toBottomOf="@id/card_input_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_gravity="center" />
+    </androidx.cardview.widget.CardView>
+
     <TextView
+        android:id="@+id/linked_cards_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/checkBalancrIcon"
-        app:layout_constraintStart_toStartOf="@id/background3"
-        app:layout_constraintEnd_toEndOf="@id/background3"
-        android:text="Check Balance"
-        android:fontFamily="@font/poppins_medium"
+        android:text="Linked cards will appear below."
+        android:textColor="#9E9E9E"
         android:textSize="14sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/check_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Your Cards Section -->
+    <TextView
+        android:id="@+id/your_cards_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Cards"
+        android:textColor="#616161"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/linked_cards_text"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Card Items -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="0dp"
+        app:layout_constraintTop_toBottomOf="@id/your_cards_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp">
 
+            <!-- Adventure Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/adventure_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#F2F2F2">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/adventure_card_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Adventure Card"
+                        android:textColor="#616161"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/adventure_card_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Balance : 19.350 JOD"
+                        android:textColor="#616161"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/adventure_card_title" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/adventure_view_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        app:cardBackgroundColor="#3F3A8A"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/adventure_card_balance"
+                        app:layout_constraintEnd_toStartOf="@id/adventure_recharge_card"
+                        app:layout_constraintTop_toTopOf="@id/adventure_card_balance">
+
+                        <TextView
+                            android:id="@+id/adventure_card_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="8dp"
+                            android:text="View"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/adventure_recharge_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="#4CAF50"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/adventure_card_balance"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/adventure_card_balance">
+
+                        <TextView
+                            android:id="@+id/adventure_card_recharge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="8dp"
+                            android:text="Recharge"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white" />
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Kids Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/kids_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="#F2F2F2">
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card Image with fixed height but taller image -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:clipChildren="true">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/kids_card_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kids Card"
+                        android:textColor="#616161"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/kids_card_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Balance : 20.000 JOD"
+                        android:textColor="#616161"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/kids_card_title" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/kids_view_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        app:cardBackgroundColor="#3F3A8A"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/kids_card_balance"
+                        app:layout_constraintEnd_toStartOf="@id/kids_recharge_card"
+                        app:layout_constraintTop_toTopOf="@id/kids_card_balance">
+
+                        <TextView
+                            android:id="@+id/kids_card_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="8dp"
+                            android:text="View"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white" />
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/kids_recharge_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="#4CAF50"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/kids_card_balance"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/kids_card_balance">
+
+                        <TextView
+                            android:id="@+id/kids_card_recharge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="16dp"
+                            android:paddingTop="8dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="8dp"
+                            android:text="Recharge"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white" />
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:src="@drawable/cards" />
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

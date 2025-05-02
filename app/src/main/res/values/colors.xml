@@ -19,5 +19,5 @@
 
     <color name="gray">#EAEAEA</color>
     <color name="lightPurple">#7678ED</color>
-    <color name="colorTextOfNeedLogin">#606060</color>
+    <color name="Default">#606060</color>
 </resources>

@@ -21,7 +21,7 @@ public class CardFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         backIcon=view.findViewById(R.id.back_card);
-        checkBalanceIcon=view.findViewById(R.id.checkbalanceicon);
+        checkBalanceIcon=view.findViewById(R.id.checkButton);
 
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override

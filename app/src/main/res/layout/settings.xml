@@ -76,7 +76,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/User"
+                android:src="@drawable/user"
                 app:tint="@color/black" />
 
             <TextView
@@ -106,7 +106,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/Bell"
+                android:src="@drawable/bell"
                 android:layout_marginEnd="16dp"
                 app:tint="@color/black" />
 
@@ -140,7 +140,7 @@
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/Globe"
+                android:src="@drawable/globe"
                 android:layout_marginEnd="16dp"
                 app:tint="@color/black" />
 
@@ -172,7 +172,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/FAQ"
+                android:src="@drawable/faq"
                 app:tint="@color/black" />
 
             <TextView
@@ -203,7 +203,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/Logout"
+                android:src="@drawable/logout"
                 app:tint="@color/black" />
 
             <TextView

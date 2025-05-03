@@ -79,7 +79,7 @@
                 android:layout_width="40dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/Visa" />
+                android:src="@drawable/visa" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
-                android:text="Visa"
+                android:text="visa"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -114,7 +114,7 @@
                 android:layout_width="40dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/MasterCard" />
+                android:src="@drawable/mastercard" />
 
         </LinearLayout>
 

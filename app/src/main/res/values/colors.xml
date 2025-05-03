@@ -16,6 +16,8 @@
     <color name="orange">#FFA500</color> <!-- برتقالي -->
     <color name="red">#FF0000</color> <!-- أحمر -->
 
+    <color name="colorTextOfNeedLogin">#FF0000</color>
+
 
     <color name="gray">#EAEAEA</color>
     <color name="lightPurple">#7678ED</color>

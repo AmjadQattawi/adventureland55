@@ -54,7 +54,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-         FirebaseApp.initializeApp(this);
+        // Initialize Firebase FIRST - before using any Firebase services
+        try {
+            FirebaseApp.initializeApp(this);
+        } catch (Exception e) {
+            Toast.makeText(this, "Firebase initialization failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
         // Initialize Views
         etPhoneNumber = findViewById(R.id.et_phone_number);
@@ -62,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login);
 
         cbRememberMe = findViewById(R.id.cb_remember_me);
-
 
         tvForgotPassword = findViewById(R.id.tv_forgot_password);
         tvSignup = findViewById(R.id.tv_signup);
@@ -73,8 +77,12 @@ public class LoginActivity extends AppCompatActivity {
         aboutSection = findViewById(R.id.about_section);
 
         // Initialize Firebase
-        firebaseAuth = FirebaseAuth.getInstance();
-        usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        try {
+            firebaseAuth = FirebaseAuth.getInstance();
+            usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        } catch (Exception e) {
+            Toast.makeText(this, "Firebase service initialization failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
         // Set Drawer Actions
         setupDrawerActions();
@@ -87,9 +95,9 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check if the user chose "Remember Me"
         checkRememberMe();
-
     }
 
+    // Rest of your methods remain the same...
     private void checkRememberMe() {
         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         boolean rememberMe = sharedPreferences.getBoolean("remember_me", false);
@@ -134,13 +142,16 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
             startActivity(intent);
         });
-
-
     }
 
 
-
     private void handleLogin() {
+        // Check if Firebase is initialized
+        if (firebaseAuth == null) {
+            Toast.makeText(this, "Firebase Auth is not initialized. Please restart the app.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         String phone = etPhoneNumber.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
@@ -164,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
                         String dbPassword = userSnapshot.child("password").getValue(String.class);
 
                         if (dbPassword != null && dbPassword.equals(password)) {
-                            // ✅ تسجيل الدخول فعلي في FirebaseAuth باستخدام "إيميل وهمي"
+                            // ✅ Login with Firebase Auth using "dummy email"
                             String email = fullPhoneNumber + "@example.com";
 
                             firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -180,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
                                             startActivity(i);
                                             finish();
                                         } else {
-                                            // لو الحساب غير موجود في FirebaseAuth، أنشئه الآن
+                                            // If account doesn't exist in FirebaseAuth, create it now
                                             firebaseAuth.createUserWithEmailAndPassword(email, password)
                                                     .addOnCompleteListener(signUpTask -> {
                                                         if (signUpTask.isSuccessful()) {
@@ -355,9 +366,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
 }

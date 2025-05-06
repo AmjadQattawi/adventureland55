@@ -1,8 +1,5 @@
 package com.example.adventureland;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-public class Game  {
+public class Game {
     private String title;
     private int age;
     private float rating;

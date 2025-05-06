@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Top App Bar with purple background -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -44,7 +42,6 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Current Balance Section -->
     <TextView
         android:id="@+id/current_balance_label"
         android:layout_width="wrap_content"
@@ -72,7 +69,6 @@
         app:layout_constraintStart_toEndOf="@+id/current_balance_label"
         app:layout_constraintTop_toTopOf="@+id/current_balance_label" />
 
-    <!-- Charge Amount Section -->
     <TextView
         android:id="@+id/choose_amount_text"
         android:layout_width="wrap_content"

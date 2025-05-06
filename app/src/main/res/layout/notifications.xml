@@ -94,7 +94,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/bell"
+                            android:src="@drawable/bell2"
                             android:layout_gravity="center"
                             app:tint="@color/white" />
                     </androidx.cardview.widget.CardView>
@@ -170,7 +170,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/bell"
+                            android:src="@drawable/bell2"
                             android:layout_gravity="center"
                             app:tint="@color/white" />
                     </androidx.cardview.widget.CardView>
@@ -246,7 +246,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/bell"
+                            android:src="@drawable/bell2"
                             android:layout_gravity="center"
                             app:tint="@color/white" />
                     </androidx.cardview.widget.CardView>

@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-
+    <!-- Header Card with Title -->
     <androidx.cardview.widget.CardView
         android:id="@+id/header_card"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:background="@drawable/rounded_card">
 
             <TextView
@@ -29,26 +29,27 @@
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Card Type Label -->
     <TextView
         android:id="@+id/card_type_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
         android:text="Card Type*"
         android:textColor="#333333"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_card" />
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/header_card"
+        app:layout_constraintStart_toStartOf="parent" />
 
-
+    <!-- Card Type Options -->
     <RadioGroup
         android:id="@+id/card_type_group"
         android:layout_width="0dp"
@@ -57,9 +58,9 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_type_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_type_label">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <RadioButton
             android:id="@+id/visa_radio"
@@ -95,13 +96,11 @@
             android:layout_width="24dp"
             android:layout_height="wrap_content" />
 
-
         <RadioButton
             android:id="@+id/mastercard_radio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="#CCCCCC"
-            android:checked="false"
             android:text="" />
 
         <LinearLayout
@@ -115,7 +114,6 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/mastercard" />
-
         </LinearLayout>
 
         <TextView
@@ -128,86 +126,69 @@
             android:textSize="16sp" />
     </RadioGroup>
 
+    <!-- Card Number -->
     <TextView
         android:id="@+id/card_number_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:text="Card Number*"
         android:textColor="#333333"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-
-        app:layout_constraintTop_toBottomOf="@+id/card_type_group" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/card_type_group"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/card_number_input"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
-
-        android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="38dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/rounded_edittext_background"
         android:hint="Enter card number"
         android:inputType="number"
         android:maxLength="16"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/expiration_month_label"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card_number_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/card_number_label" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Expiration Date -->
     <TextView
         android:id="@+id/expiration_month_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="72dp"
         android:text="Expiration Month*"
         android:textColor="#333333"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_number_label" />
-
-    <TextView
-        android:id="@+id/expiration_year_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="Expiration Year*"
-        android:textColor="#333333"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/expiration_year_container"
-        app:layout_constraintStart_toStartOf="@+id/expiration_year_container" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/card_number_input"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Expiration Month Container -->
     <RelativeLayout
         android:id="@+id/expiration_month_container"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="94dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="93dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rounded_edittext_background"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/cvv_input"
-        app:layout_constraintEnd_toStartOf="@+id/expiration_year_container"
+        app:layout_constraintTop_toBottomOf="@id/expiration_month_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/card_number_input"
+        app:layout_constraintEnd_toStartOf="@id/expiration_year_container"
         app:layout_constraintWidth_percent="0.45">
 
         <TextView
             android:id="@+id/expiration_month_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
+            android:layout_centerVertical="true"
             android:text="Select Month"
             android:textColor="#333333"
             android:textSize="16sp" />
@@ -228,26 +209,25 @@
             android:spinnerMode="dropdown" />
     </RelativeLayout>
 
+    <!-- Expiration Year Container -->
     <RelativeLayout
         android:id="@+id/expiration_year_container"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="12dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_edittext_background"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/expiration_month_container"
+        app:layout_constraintTop_toTopOf="@id/expiration_month_container"
+        app:layout_constraintBottom_toBottomOf="@id/expiration_month_container"
+        app:layout_constraintStart_toEndOf="@id/expiration_month_container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/expiration_month_container"
-        app:layout_constraintTop_toTopOf="@+id/expiration_month_container"
         app:layout_constraintWidth_percent="0.45">
 
         <TextView
             android:id="@+id/expiration_year_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
+            android:layout_centerVertical="true"
             android:text="Select Year"
             android:textColor="#333333"
             android:textSize="16sp" />
@@ -268,76 +248,61 @@
             android:spinnerMode="dropdown" />
     </RelativeLayout>
 
+    <!-- CVV -->
     <TextView
         android:id="@+id/cvv_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="72dp"
         android:text="CVV*"
         android:textColor="#333333"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expiration_month_label" />
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/expiration_month_container"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/cvv_input"
         android:layout_width="120dp"
         android:layout_height="48dp"
-        android:layout_marginTop="29dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/rounded_edittext_background"
         android:hint="CVV"
         android:inputType="numberPassword"
         android:maxLength="4"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/divider"
-        app:layout_constraintStart_toStartOf="@+id/cvv_label"
-        app:layout_constraintTop_toTopOf="@+id/cvv_label" />
+        app:layout_constraintTop_toBottomOf="@id/cvv_label"
+        app:layout_constraintStart_toStartOf="@id/cvv_label" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="109dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="112dp"
-        android:background="#DDDDDD"
-        app:layout_constraintBottom_toBottomOf="@+id/total_amount_card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/cvv_label" />
-
+    <!-- Order Section -->
     <TextView
         android:id="@+id/order_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginBottom="104dp"
         android:text="Your Order"
         android:textColor="#666666"
         android:textSize="18sp"
         android:fontFamily="@font/poppins_medium"
-        app:layout_constraintBottom_toTopOf="@+id/button_row"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvv_label" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/cvv_input"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Total Amount Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/total_amount_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:cardBackgroundColor="#4D27CC51"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/order_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_title">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -366,22 +331,22 @@
                 android:fontFamily="@font/poppins_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Buttons -->
     <LinearLayout
         android:id="@+id/button_row"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="59dp"
+        android:layout_marginBottom="24dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancel_button"

@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:text="19.350 JOD"
         android:textColor="@color/Default"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/current_balance_label"
         app:layout_constraintEnd_toEndOf="parent"

@@ -202,6 +202,15 @@
         app:layout_constraintTop_toTopOf="@+id/card_number_label"
         app:layout_constraintWidth_percent="0.45">
 
+
+
+        <EditText
+            android:id="@+id/cardholder_name_input"
+            android:hint="Cardholder Name"
+            android:inputType="textPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/expiration_month_text"
             android:layout_width="wrap_content"
@@ -289,7 +298,7 @@
         android:background="@drawable/rounded_edittext_background"
         android:hint="CVV"
         android:inputType="numberPassword"
-        android:maxLength="4"
+        android:maxLength="3"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/divider"

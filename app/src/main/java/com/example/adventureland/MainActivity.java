@@ -45,7 +45,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        bottomNavigation.setSelectedItemId(R.id.homeFragment); // put it as default screen
+        String navigateTo = getIntent().getStringExtra("navigateTo");
+
+        if ("card".equals(navigateTo)) {
+            bottomNavigation.setSelectedItemId(R.id.cartFragment); // يفتح تبويب Card
+        } else {
+            bottomNavigation.setSelectedItemId(R.id.homeFragment); // يفتح التبويب الافتراضي
+        }
+
+
+        //bottomNavigation.setSelectedItemId(R.id.homeFragment); // put it as default screen
     }
 
 

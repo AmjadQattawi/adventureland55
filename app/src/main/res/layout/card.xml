@@ -97,8 +97,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="X X X X X X X X"
+                android:fontFamily="sans-serif-medium"
+                android:hint="X X X X - X X X X - X X X X - X X X X"
                 android:inputType="number"
+                android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -121,6 +123,7 @@
             android:layout_height="wrap_content"
             android:text="Check"
             android:textColor="@color/white"
+            android:fontFamily="@font/poppins_medium"
             android:textSize="16sp"
             android:layout_gravity="center" />
     </androidx.cardview.widget.CardView>

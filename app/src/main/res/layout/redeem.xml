@@ -38,14 +38,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
                 android:text="Redeem"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
@@ -53,24 +53,37 @@
         android:id="@+id/balance_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your Balance"
-        android:textColor="#616161"
-        android:textSize="18sp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="41dp"
         android:fontFamily="@font/poppins_medium"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_card"
+        android:text="Your Balance"
+        android:textColor="#606060"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_card" />
 
-    <!-- REPLACED: Points Circle with TextViews -->
+    <!-- Points Circle -->
+    <ImageView
+        android:id="@+id/points_circle_containerr"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:contentDescription="Points Circle"
+        android:src="@drawable/circle_with_border"
+        app:layout_constraintBottom_toTopOf="@+id/redeem_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/balance_title" />
+
+    <!-- Points Circle Container -->
     <androidx.cardview.widget.CardView
         android:id="@+id/points_circle_container"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_marginTop="16dp"
         app:cardCornerRadius="70dp"
-        app:cardElevation="2dp"
-        app:cardBackgroundColor="#E8E7F5"
+        app:cardElevation="0dp"
         app:layout_constraintTop_toBottomOf="@id/balance_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -79,450 +92,69 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/ellipse"
-            android:padding="16dp">
+            android:padding="2dp">
 
-            <!-- Points Value TextView -->
             <TextView
                 android:id="@+id/points_value"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/poppins_extrabold"
                 android:text="100"
                 android:textColor="#3F3A8A"
-                android:textSize="48sp"
+                android:textSize="40sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/points_label"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
-            <!-- Points Label TextView -->
             <TextView
                 android:id="@+id/points_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
                 android:text="Points"
                 android:textColor="#3F3A8A"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/points_value" />
-
+                app:layout_constraintTop_toBottomOf="@+id/points_value" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Reward Cards Grid -->
-    <GridLayout
-        android:id="@+id/redemption_grid"
+    <!-- Redeem Button -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/redeem_button"
+        android:layout_width="140dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="-24dp"
+        app:cardBackgroundColor="#3D348B"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="@id/points_circle_container"
+        app:layout_constraintStart_toStartOf="@id/points_circle_container"
+        app:layout_constraintTop_toBottomOf="@id/points_circle_container">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Redeem"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewOffers"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="41dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:columnCount="2"
-        android:rowCount="2"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/points_circle_container"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/redeem_button" />
 
-        <!-- 5 JOD Play Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="#F2F2F2">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_icon_1"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    app:cardCornerRadius="32dp"
-                    app:cardBackgroundColor="#E8E7F5"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ellipse"/>
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/giftcard"
-                        android:layout_gravity="center"
-                        app:tint="#3F3A8A" />
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/card_title_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="5 JOD Play card"
-                    android:textColor="#616161"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@id/card_icon_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <!-- Modified: Changed constraints and removed end constraint -->
-                <TextView
-                    android:id="@+id/card_points_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="100"
-                    android:textColor="#3F3A8A"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginTop="4dp"
-                    app:layout_constraintTop_toBottomOf="@id/card_title_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/card_points_label_1"
-                    app:layout_constraintHorizontal_chainStyle="packed" />
-
-                <!-- Modified: Changed start constraint and removed horizontal bias -->
-                <TextView
-                    android:id="@+id/card_points_label_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Points"
-                    android:textColor="#3F3A8A"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/poppins_medium"
-                    app:layout_constraintTop_toTopOf="@id/card_points_1"
-                    app:layout_constraintBottom_toBottomOf="@id/card_points_1"
-                    app:layout_constraintStart_toEndOf="@id/card_points_1"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="8dp"
-                    app:cardCornerRadius="20dp"
-                    app:cardBackgroundColor="#3F3A8A"
-                    app:layout_constraintTop_toBottomOf="@id/card_points_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Redeem"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:layout_gravity="center" />
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- 10 JOD Play Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="#F2F2F2">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_icon_2"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    app:cardCornerRadius="32dp"
-                    app:cardBackgroundColor="#E8E7F5"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ellipse"/>
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/giftcard"
-                        android:layout_gravity="center"
-                        app:tint="#3F3A8A" />
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/card_title_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10 JOD Play card"
-                    android:textColor="#616161"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@id/card_icon_2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <!-- Modified: Added horizontal chain style -->
-                <TextView
-                    android:id="@+id/card_points_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="200"
-                    android:textColor="#3F3A8A"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginTop="4dp"
-                    app:layout_constraintTop_toBottomOf="@id/card_title_2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/card_points_label_2"
-                    app:layout_constraintHorizontal_chainStyle="packed" />
-
-                <TextView
-                    android:id="@+id/card_points_label_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Points"
-                    android:textColor="#3F3A8A"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/poppins_medium"
-                    app:layout_constraintTop_toTopOf="@id/card_points_2"
-                    app:layout_constraintBottom_toBottomOf="@id/card_points_2"
-                    app:layout_constraintStart_toEndOf="@id/card_points_2"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="8dp"
-                    app:cardCornerRadius="20dp"
-                    app:cardBackgroundColor="#3F3A8A"
-                    app:layout_constraintTop_toBottomOf="@id/card_points_2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Redeem"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:layout_gravity="center" />
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- 25 JOD Play Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="#F2F2F2">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_icon_3"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    app:cardCornerRadius="32dp"
-                    app:cardBackgroundColor="#E8E7F5"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ellipse"/>
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/giftcard"
-                        android:layout_gravity="center"
-                        app:tint="#3F3A8A" />
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/card_title_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="25 JOD Play card"
-                    android:textColor="#616161"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@id/card_icon_3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <!-- Modified: Added horizontal chain style -->
-                <TextView
-                    android:id="@+id/card_points_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="400"
-                    android:textColor="#3F3A8A"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginTop="4dp"
-                    app:layout_constraintTop_toBottomOf="@id/card_title_3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/card_points_label_3"
-                    app:layout_constraintHorizontal_chainStyle="packed" />
-
-                <TextView
-                    android:id="@+id/card_points_label_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Points"
-                    android:textColor="#3F3A8A"
-                    android:textSize="16sp"
-                    app:layout_constraintTop_toTopOf="@id/card_points_3"
-                    app:layout_constraintBottom_toBottomOf="@id/card_points_3"
-                    app:layout_constraintStart_toEndOf="@id/card_points_3"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="8dp"
-                    app:cardCornerRadius="20dp"
-                    app:cardBackgroundColor="#3F3A8A"
-                    app:layout_constraintTop_toBottomOf="@id/card_points_3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Redeem"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:layout_gravity="center" />
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- 50 JOD Play Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="#F2F2F2">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_icon_4"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    app:cardCornerRadius="32dp"
-                    app:cardBackgroundColor="#E8E7F5"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ellipse"/>
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/giftcard"
-                        android:layout_gravity="center"
-                        app:tint="#3F3A8A" />
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/card_title_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="50 JOD Play card"
-                    android:textColor="#616161"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@id/card_icon_4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <TextView
-                    android:id="@+id/card_points_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="700"
-                    android:textColor="#3F3A8A"
-                    android:textSize="24sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:layout_marginTop="4dp"
-                    app:layout_constraintTop_toBottomOf="@id/card_title_4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/card_points_label_4"
-                    app:layout_constraintHorizontal_chainStyle="packed" />
-
-                <TextView
-                    android:id="@+id/card_points_label_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Points"
-                    android:textColor="#3F3A8A"
-                    android:textSize="16sp"
-                    app:layout_constraintTop_toTopOf="@id/card_points_4"
-                    app:layout_constraintBottom_toBottomOf="@id/card_points_4"
-                    app:layout_constraintStart_toEndOf="@id/card_points_4"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="8dp"
-                    app:cardCornerRadius="20dp"
-                    app:cardBackgroundColor="#3F3A8A"
-                    app:layout_constraintTop_toBottomOf="@id/card_points_4"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Redeem"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:layout_gravity="center" />
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-    </GridLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="170dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginBottom="24dp"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@drawable/redeem_item_rounded">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:cardCornerRadius="32dp"
+        app:cardBackgroundColor="#E8E7F5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ellipse" />
+
+        <ImageView
+            android:id="@+id/card_icon_1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/giftcard"
+            android:layout_gravity="center"
+            app:tint="#3F3A8A" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/card_title_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5 JOD Play card"
+        android:textColor="#616161"
+        android:textSize="13sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/card_icon_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/card_points_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-2dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="100"
+            android:textColor="#3F3A8A"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/card_points_label_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Points"
+            android:textColor="@color/Default"
+            android:textSize="13sp"
+            android:fontFamily="@font/poppins_light"
+            android:layout_marginStart="4dp"/>
+
+    </LinearLayout>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/redeem_button"
+        android:layout_width="96dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="-2dp"
+        app:cardBackgroundColor="#3D348B"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Redeem"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

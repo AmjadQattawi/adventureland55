@@ -44,7 +44,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="Games"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:textColor="@color/white"
                 android:textAlignment="center" />
 

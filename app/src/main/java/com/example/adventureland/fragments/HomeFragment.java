@@ -23,6 +23,7 @@ import com.example.adventureland.GamesActivity;
 import com.example.adventureland.Game;
 import com.example.adventureland.GameAdapter;
 import com.example.adventureland.R;
+import com.example.adventureland.RewardsActivity;
 import com.example.adventureland.SlideAdapter;
 import com.example.adventureland.SlideItem;
 
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private ImageView gameIcon, cardIcon;
+    private ImageView gameIcon, cardIcon, rewardsIcon;
     private TextView seeAll;
     private ViewPager2 viewPager2;
     private RecyclerView recyclerView;
@@ -59,6 +60,7 @@ public class HomeFragment extends Fragment {
 
         gameIcon = view.findViewById(R.id.gamesIcon);
         cardIcon = view.findViewById(R.id.cardIcon);
+        rewardsIcon = view.findViewById(R.id.rewardIcon);
         seeAll = view.findViewById(R.id.seeAll_txt);
 
 
@@ -101,10 +103,17 @@ public class HomeFragment extends Fragment {
             startActivity(i);
         });
 
+        rewardsIcon.setOnClickListener(v -> {
+            Intent i = new Intent(getContext(), RewardsActivity.class);
+            startActivity(i);
+        });
+
         cardIcon.setOnClickListener(v -> requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameLayoutContainer, new CardFragment())
                 .addToBackStack(null)
                 .commit());
+
+
 
         seeAll.setOnClickListener(v -> {
             Intent i = new Intent(getContext(), GamesActivity.class);

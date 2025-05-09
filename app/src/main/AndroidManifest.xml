@@ -23,6 +23,8 @@
         <activity android:name=".FAQactivity" />
         <activity android:name=".GameDetailsActivity" android:exported="false" />
         <activity android:name=".GamesActivity" android:exported="false" />
+        <activity android:name=".RewardsActivity" android:exported="false"/>
+        <activity android:name=".RedeemActivity" android:exported="false"/>
         <activity android:name=".AboutActivity" android:exported="false" />
         <activity android:name=".CheckBalanceActivity" android:exported="false" />
         <activity android:name=".BalanceActivity" android:exported="false" />

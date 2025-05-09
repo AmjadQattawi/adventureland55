@@ -8,16 +8,19 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
 public class RedeemAdapter extends RecyclerView.Adapter<RedeemAdapter.RedeemViewHolder> {
 
     private Context context;
     private ArrayList<RedeemItem> redeemItemList;
+    private RedeemActivity redeemActivity; // إشارة إلى النشاط ليتمكن من فتح الـ Dialog
 
     public RedeemAdapter(Context context, ArrayList<RedeemItem> redeemItemList) {
         this.context = context;
         this.redeemItemList = redeemItemList;
+        this.redeemActivity = (RedeemActivity) context; // الحصول على النشاط الحالي
     }
 
     @Override
@@ -33,6 +36,11 @@ public class RedeemAdapter extends RecyclerView.Adapter<RedeemAdapter.RedeemView
         holder.cardTitle.setText(currentItem.getTitle());
         holder.cardPoints.setText(currentItem.getPoints());
         holder.cardImage.setImageResource(currentItem.getImageResource());
+
+        long rewardCost = Long.parseLong(currentItem.getPoints());
+
+
+        holder.redeemButton.setOnClickListener(v -> redeemActivity.showCardSelectionDialog(currentItem.getTitle(), rewardCost));
     }
 
     @Override
@@ -55,6 +63,3 @@ public class RedeemAdapter extends RecyclerView.Adapter<RedeemAdapter.RedeemView
         }
     }
 }
-
-
-

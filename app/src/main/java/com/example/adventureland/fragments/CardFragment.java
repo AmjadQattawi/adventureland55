@@ -101,8 +101,14 @@ public class CardFragment extends Fragment {
                     DataSnapshot cardSnapshot = userSnapshot.child("cards").child(cardNumber);
                     if (cardSnapshot.exists()) {
                         String balance = String.valueOf(cardSnapshot.child("balance").getValue());
-                        String lastUsage = String.valueOf(cardSnapshot.child("lastUsage").getValue());
-                        String lastCharge = String.valueOf(cardSnapshot.child("lastCharge").getValue());
+                        String lastUsage = cardSnapshot.child("lastUsage").exists()
+                                ? cardSnapshot.child("lastUsage").getValue().toString()
+                                : "0000/00/00 00:00";
+
+                        String lastCharge = cardSnapshot.child("lastCharge").exists()
+                                ? cardSnapshot.child("lastCharge").getValue().toString()
+                                : "0000/00/00 00:00";
+
 
                         Intent intent = new Intent(getContext(), CheckBalanceActivity.class);
                         intent.putExtra("balance", balance != null ? balance : "0.000");
@@ -138,8 +144,11 @@ public class CardFragment extends Fragment {
 
         addButton.setOnClickListener(v -> {
             userCardsRef.child(cardNumber).child("balance").setValue("0.000");
-            userCardsRef.child(cardNumber).child("lastUsage").setValue("0000/00/00 00:00");
-            userCardsRef.child(cardNumber).child("lastCharge").setValue("0000/00/00 00:00");
+            String currentTime = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
+
+            userCardsRef.child(cardNumber).child("lastUsage").setValue(currentTime);
+            userCardsRef.child(cardNumber).child("lastCharge").setValue(currentTime);
+
             Toast.makeText(getContext(), "Card added successfully!", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
             loadUserCards();
@@ -156,8 +165,14 @@ public class CardFragment extends Fragment {
                 for (DataSnapshot cardSnapshot : snapshot.getChildren()) {
                     String cardId = cardSnapshot.getKey();
                     String balance = String.valueOf(cardSnapshot.child("balance").getValue());
-                    String lastUsage = String.valueOf(cardSnapshot.child("lastUsage").getValue());
-                    String lastCharge = String.valueOf(cardSnapshot.child("lastCharge").getValue());
+                    String lastUsage = cardSnapshot.child("lastUsage").exists()
+                            ? cardSnapshot.child("lastUsage").getValue().toString()
+                            : "0000/00/00 00:00";
+
+                    String lastCharge = cardSnapshot.child("lastCharge").exists()
+                            ? cardSnapshot.child("lastCharge").getValue().toString()
+                            : "0000/00/00 00:00";
+
 
                     View cardView = LayoutInflater.from(getContext()).inflate(R.layout.item_card, yourCardsContainer, false);
                     TextView cardNameText = cardView.findViewById(R.id.card_name);

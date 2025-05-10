@@ -72,12 +72,13 @@ public class RechargeCardActivity extends AppCompatActivity {
         databaseReference.child(cardId).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                String balance = String.valueOf(snapshot.getValue());
-                if (balance != null) {
-                    balanceTextView.setText(balance + " JOD");
+                Object value = snapshot.getValue();
+                if (value != null) {
+                    balanceTextView.setText(value.toString() + " JOD");
                 } else {
                     balanceTextView.setText("0.000 JOD");
                 }
+
             }
 
             @Override

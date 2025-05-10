@@ -176,8 +176,10 @@ public class PaymentDetailActivity extends AppCompatActivity {
 
             double updatedBalance = currentBalance + addedBalance;
             cardRef.child("balance").setValue(updatedBalance);
-            cardRef.child("lastCharge").setValue("2025/05/07 00:00");
-            cardRef.child("lastUsage").setValue("2025/05/07 00:00");
+            String currentTime = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
+            cardRef.child("lastCharge").setValue(currentTime);
+            cardRef.child("lastUsage").setValue(currentTime);
+
 
             final long[] rewardPoints = {0};
             if (originalAmount == 50) rewardPoints[0] = 100;

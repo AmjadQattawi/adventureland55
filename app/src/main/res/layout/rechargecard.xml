@@ -136,27 +136,6 @@
             android:textColor="@color/Default"
             android:textSize="16sp" />
 
-        <RadioButton
-            android:id="@+id/wallet_option"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="8dp"
-            android:buttonTint="#3F3A8A"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Wallet"
-            android:textColor="@color/Default"
-            android:textSize="16sp" />
-
-        <RadioButton
-            android:id="@+id/points_option"
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginTop="8dp"
-            android:buttonTint="#3F3A8A"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Points"
-            android:textColor="@color/Default"
-            android:textSize="16sp" />
     </RadioGroup>
 
     <!-- Recharge Now Button -->

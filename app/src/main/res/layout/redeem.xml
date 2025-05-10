@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Top App Bar with rounded corners -->
     <androidx.cardview.widget.CardView
         android:id="@+id/toolbar_card"
         android:layout_width="match_parent"
@@ -62,7 +61,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_card" />
 
-    <!-- Points Circle -->
     <ImageView
         android:id="@+id/points_circle_containerr"
         android:layout_width="150dp"
@@ -71,12 +69,10 @@
         android:layout_marginTop="11dp"
         android:contentDescription="Points Circle"
         android:src="@drawable/circle_with_border"
-        app:layout_constraintBottom_toTopOf="@+id/redeem_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/balance_title" />
 
-    <!-- Points Circle Container -->
     <androidx.cardview.widget.CardView
         android:id="@+id/points_circle_container"
         android:layout_width="140dp"
@@ -92,7 +88,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/ellipse"
-            android:padding="2dp">
+            android:padding="2dp"
+            android:layout_gravity="center">
 
             <TextView
                 android:id="@+id/points_value"

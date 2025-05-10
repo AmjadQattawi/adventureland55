@@ -31,11 +31,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         // تغيير النص حسب نوع العملية
         if ("earned".equals(transaction.getType())) {
             holder.transactionAction.setText("you have earned");
-            holder.transactionPoints.setText("+" + transaction.getPoints() + " Points");
+            holder.transactionPoints.setText("+" + transaction.getPoints());
             holder.transactionIndicator.setBackgroundColor(Color.parseColor("#2ECC71")); // أخضر
         } else {
             holder.transactionAction.setText("you have redeemed");
-            holder.transactionPoints.setText("-" + transaction.getPoints() + " Points");
+            holder.transactionPoints.setText("-" + transaction.getPoints());
             holder.transactionIndicator.setBackgroundColor(Color.parseColor("#E74C3C")); // أحمر
         }
 

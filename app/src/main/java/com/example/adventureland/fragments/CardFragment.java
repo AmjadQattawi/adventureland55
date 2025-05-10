@@ -2,27 +2,41 @@ package com.example.adventureland.fragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.adventureland.CheckBalanceActivity;
 import com.example.adventureland.R;
 import com.example.adventureland.RechargeCardActivity;
+import com.example.adventureland.CardAdapter;
+import com.example.adventureland.CardAdapter.CardItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,14 +44,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CardFragment extends Fragment {
 
     private ImageView backIcon;
     private CardView checkBalanceIcon;
     private EditText cardNumberInput;
-    private LinearLayout yourCardsContainer;
+    private RecyclerView recyclerView;
+
+    private CardAdapter cardAdapter;
+    private final List<CardItem> cardList = new ArrayList<>();
+
     private DatabaseReference userCardsRef;
     private String userId;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.card, container, false);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -49,7 +75,15 @@ public class CardFragment extends Fragment {
         backIcon = view.findViewById(R.id.back_button);
         checkBalanceIcon = view.findViewById(R.id.check_button);
         cardNumberInput = view.findViewById(R.id.card_number_input);
-        yourCardsContainer = view.findViewById(R.id.your_cards_container);
+        recyclerView = view.findViewById(R.id.cards_recycler_view);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        cardAdapter = new CardAdapter(getContext(), cardList);
+        recyclerView.setAdapter(cardAdapter);
+
+        setupCardNumberFormatter();
+        setupSwipeToDelete();
+        loadUserCards();
 
         backIcon.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
 
@@ -61,27 +95,29 @@ public class CardFragment extends Fragment {
             }
             checkCardInFirebase(cardNumber);
         });
-
-        setupCardNumberFormatter();
-        loadUserCards();
     }
 
     private void setupCardNumberFormatter() {
         cardNumberInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(19)});
         cardNumberInput.addTextChangedListener(new TextWatcher() {
             boolean isFormatting;
+
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
             public void afterTextChanged(Editable s) {
                 if (isFormatting) return;
                 isFormatting = true;
+
                 String digitsOnly = s.toString().replaceAll("-", "");
                 if (digitsOnly.length() > 16) digitsOnly = digitsOnly.substring(0, 16);
+
                 StringBuilder formatted = new StringBuilder();
                 for (int i = 0; i < digitsOnly.length(); i++) {
                     if (i > 0 && i % 4 == 0) formatted.append("-");
                     formatted.append(digitsOnly.charAt(i));
                 }
+
                 cardNumberInput.setText(formatted.toString());
                 cardNumberInput.setSelection(formatted.length());
                 isFormatting = false;
@@ -114,7 +150,7 @@ public class CardFragment extends Fragment {
                         intent.putExtra("balance", balance != null ? balance : "0.000");
                         intent.putExtra("lastUsage", lastUsage != null ? lastUsage : "0000/00/00 00:00");
                         intent.putExtra("lastCharge", lastCharge != null ? lastCharge : "0000/00/00 00:00");
-                        intent.putExtra("cardId", cardNumber);  // تمرير رقم البطاقة
+                        intent.putExtra("cardId", cardNumber);
                         startActivity(intent);
                         found = true;
                         break;
@@ -139,10 +175,7 @@ public class CardFragment extends Fragment {
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
 
-        Button addButton = dialogView.findViewById(R.id.button_add);
-        Button cancelButton = dialogView.findViewById(R.id.button_cancel);
-
-        addButton.setOnClickListener(v -> {
+        dialogView.findViewById(R.id.button_add).setOnClickListener(v -> {
             userCardsRef.child(cardNumber).child("balance").setValue("0.000");
             String currentTime = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
 
@@ -154,12 +187,14 @@ public class CardFragment extends Fragment {
             loadUserCards();
         });
 
-        cancelButton.setOnClickListener(v -> dialog.dismiss());
+        dialogView.findViewById(R.id.button_cancel).setOnClickListener(v -> dialog.dismiss());
+
         dialog.show();
+        dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));
     }
 
     private void loadUserCards() {
-        yourCardsContainer.removeAllViews();
+        cardList.clear();
         userCardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot cardSnapshot : snapshot.getChildren()) {
@@ -174,32 +209,9 @@ public class CardFragment extends Fragment {
                             : "0000/00/00 00:00";
 
 
-                    View cardView = LayoutInflater.from(getContext()).inflate(R.layout.item_card, yourCardsContainer, false);
-                    TextView cardNameText = cardView.findViewById(R.id.card_name);
-                    TextView balanceText = cardView.findViewById(R.id.card_balance);
-                    Button viewButton = cardView.findViewById(R.id.button_view);
-                    Button rechargeButton = cardView.findViewById(R.id.button_recharge);
-
-                    cardNameText.setText("Card: " + cardId);
-                    balanceText.setText("Balance: " + balance + " JOD");
-
-                    viewButton.setOnClickListener(v -> {
-                        Intent intent = new Intent(getContext(), CheckBalanceActivity.class);
-                        intent.putExtra("balance", balance);
-                        intent.putExtra("cardId", cardId);
-                        intent.putExtra("lastUsage", lastUsage != null ? lastUsage : "0000/00/00 00:00");
-                        intent.putExtra("lastCharge", lastCharge != null ? lastCharge : "0000/00/00 00:00");
-                        startActivity(intent);
-                    });
-
-                    rechargeButton.setOnClickListener(v -> {
-                        Intent intent = new Intent(getContext(), RechargeCardActivity.class);
-                        intent.putExtra("cardId", cardId);
-                        startActivity(intent);
-                    });
-
-                    yourCardsContainer.addView(cardView);
+                    cardList.add(new CardItem(cardId, balance, lastUsage, lastCharge));
                 }
+                cardAdapter.notifyDataSetChanged();
             }
 
             @Override public void onCancelled(DatabaseError error) {
@@ -208,8 +220,106 @@ public class CardFragment extends Fragment {
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.card, container, false);
+    private void setupSwipeToDelete() {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                String cardId = cardAdapter.getCardIdAt(position);
+
+                View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.alert_dialog_deletecard, null);
+                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                        .setView(dialogView)
+                        .setCancelable(false)
+                        .create();
+
+                Window window = dialog.getWindow();
+                if (window != null) {
+                    window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    window.setGravity(Gravity.CENTER);
+                    window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                }
+
+
+                if (dialog.getWindow() != null) {
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                }
+
+                Button deleteButton = dialogView.findViewById(R.id.button_add);
+                if (deleteButton != null) {
+                    deleteButton.setOnClickListener(v -> {
+                        cardAdapter.removeAt(position);
+                        Toast.makeText(getContext(), "Card deleted", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    });
+                }
+
+                Button cancelButton = dialogView.findViewById(R.id.button_cancel);
+                if (cancelButton != null) {
+                    cancelButton.setOnClickListener(v -> {
+                        cardAdapter.notifyItemChanged(position);
+                        dialog.dismiss();
+                    });
+                }
+
+                dialog.show();
+            }
+
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c,
+                                    @NonNull RecyclerView recyclerView,
+                                    @NonNull RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY,
+                                    int actionState, boolean isCurrentlyActive) {
+
+                View itemView = viewHolder.itemView;
+                Paint paint = new Paint();
+                paint.setColor(Color.parseColor("#EAEAEA"));
+
+                c.drawRect(itemView.getRight() + dX, itemView.getTop(),
+                        itemView.getRight(), itemView.getBottom(), paint);
+
+                Drawable deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.trash);
+                if (deleteIcon != null) {
+                    int iconMargin = (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 3;
+                    int iconTop = itemView.getTop() + iconMargin;
+                    int iconBottom = iconTop + deleteIcon.getIntrinsicHeight();
+                    int iconRight = itemView.getRight() - iconMargin;
+                    int iconLeft = iconRight - deleteIcon.getIntrinsicWidth();
+
+                    deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                    deleteIcon.draw(c);
+
+                    Paint textPaint = new Paint();
+                    textPaint.setColor(Color.parseColor("#EC221F"));
+                    textPaint.setTextSize(32f);
+                    textPaint.setTextAlign(Paint.Align.CENTER);
+
+                    Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.poppins_medium);
+                    if (typeface != null) {
+                        textPaint.setTypeface(typeface);
+                    }
+
+                    float textX = iconLeft + deleteIcon.getIntrinsicWidth() / 2f;
+                    float textY = iconBottom + 60;
+                    c.drawText("Delete", textX, textY, textPaint);
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+        };
+
+        new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
     }
+
 }

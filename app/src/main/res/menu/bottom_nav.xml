@@ -8,7 +8,7 @@
     <item
         android:id="@+id/cartFragment"
         android:icon="@drawable/ic_card_nav"
-        android:title="Cart" />
+        android:title="Card" />
 
 
     <item

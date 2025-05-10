@@ -7,20 +7,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.AlertDialog;
 import android.widget.Button;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.*;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
+
+import android.graphics.drawable.ColorDrawable;
 
 public class RedeemActivity extends AppCompatActivity {
 
@@ -54,7 +53,14 @@ public class RedeemActivity extends AppCompatActivity {
         loadUserPoints();
 
         findViewById(R.id.back_button).setOnClickListener(v -> finish());
+
+
     }
+
+    public long getUserPoints() {
+        return userPoints;
+    }
+
 
     private void loadRewards() {
         redeemItemList.add(new RedeemItem("5 JOD Play card", "100", R.drawable.giftcard));
@@ -70,7 +76,7 @@ public class RedeemActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long points = dataSnapshot.getValue(Long.class);
                 userPoints = (points != null) ? points : 0;
-                pointsBalanceText.setText(String.valueOf(userPoints));  // عرض النقاط هنا
+                pointsBalanceText.setText(String.valueOf(userPoints));
             }
 
             @Override
@@ -79,8 +85,6 @@ public class RedeemActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     public void loadUserCardNames(String selectedReward, long rewardCost) {
         cardNames = new ArrayList<>();
@@ -106,7 +110,7 @@ public class RedeemActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseReference cardsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("cards");
+        DatabaseReference cardsRef = userCardsRef;
         cardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -163,12 +167,16 @@ public class RedeemActivity extends AppCompatActivity {
                     else if (selectedReward.contains("25 JOD")) amountToAdd = 25;
                     else if (selectedReward.contains("50 JOD")) amountToAdd = 50;
 
-                    addRewardToCard(selectedCard, selectedReward, rewardCost, amountToAdd);
                     dialog.dismiss();
+                    showConfirmRedeemDialog(selectedCard, selectedReward, rewardCost, amountToAdd);
                 });
 
                 cancelButton.setOnClickListener(v -> dialog.dismiss());
+
                 dialog.show();
+                if (dialog.getWindow() != null) {
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                }
             }
 
             @Override
@@ -178,13 +186,43 @@ public class RedeemActivity extends AppCompatActivity {
         });
     }
 
+    private void showConfirmRedeemDialog(String selectedCard, String selectedReward, long rewardCost, double amountToAdd) {
+        View view = LayoutInflater.from(this).inflate(R.layout.confirmredeem, null);
+        AlertDialog dialog = new AlertDialog.Builder(this).setView(view).create();
 
-    private String getCurrentTimestamp() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
-        return sdf.format(new Date());
+        TextView message = view.findViewById(R.id.tv_confirm_redeem);
+        message.setText("Are you sure you want to redeem " + rewardCost + " points for " + selectedReward + "?");
+
+        Button okButton = view.findViewById(R.id.button_add);
+        Button cancelButton = view.findViewById(R.id.button_cancel);
+
+        okButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            applyRewardToCard(selectedCard, selectedReward, rewardCost, amountToAdd);
+        });
+
+        cancelButton.setOnClickListener(v -> dialog.dismiss());
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+        dialog.show();
     }
 
-    private void addRewardToCard(String selectedCard, String selectedReward, long rewardCost, double amountToAdd) {
+    private void showSuccessDialog(String selectedReward, long rewardCost) {
+        View view = LayoutInflater.from(this).inflate(R.layout.sucessredeem, null);
+        AlertDialog dialog = new AlertDialog.Builder(this).setView(view).create();
+
+        TextView message = view.findViewById(R.id.tv_success_redeem);
+        message.setText("You’ve successfully redeemed " + rewardCost + " points for " + selectedReward + ".");
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+        dialog.show();
+    }
+
+    private void applyRewardToCard(String selectedCard, String selectedReward, long rewardCost, double amountToAdd) {
         userCardsRef.child(selectedCard).child("balance").get().addOnSuccessListener(snapshot -> {
             double balance = snapshot.exists() ? Double.parseDouble(snapshot.getValue().toString()) : 0;
             double newBalance = balance + amountToAdd;
@@ -195,7 +233,12 @@ public class RedeemActivity extends AppCompatActivity {
             Transaction transaction = new Transaction("spent", selectedReward, (int) rewardCost, getCurrentTimestamp());
             transactionRef.push().setValue(transaction);
 
-            Toast.makeText(RedeemActivity.this, selectedReward + " added to " + selectedCard, Toast.LENGTH_SHORT).show();
+            showSuccessDialog(selectedReward, rewardCost);
         });
+    }
+
+    private String getCurrentTimestamp() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        return sdf.format(new Date());
     }
 }

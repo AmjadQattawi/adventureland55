@@ -1,15 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    android:layout_gravity="center">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
+        android:id="@+id/cardView2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="32dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,38 +24,36 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="410dp"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="20dp">
 
             <ImageView
-                android:id="@+id/warning_icon"
-                android:layout_width="151dp"
-                android:layout_height="144dp"
+                android:id="@+id/AccountIcon"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
                 android:layout_marginBottom="16dp"
-                android:contentDescription="Warning Icon"
-                android:src="@drawable/group_81" />
+                android:contentDescription="Account Delete"
+                android:src="@drawable/removecardic" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Card not linked"
+                android:text="Delete Account"
                 android:textColor="@color/Default"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Would you like to add this card
-to your account? "
-                android:textColor="@color/Default"
-                android:textSize="14sp" />
+                android:text="Are you sure to delete account?"
+                android:textColor="#666666"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,33 +64,33 @@ to your account? "
                 <Button
                     android:id="@+id/button_add"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="40dp"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#443C8B"
+                    android:backgroundTint="#EC221F"
                     android:fontFamily="@font/poppins_medium"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
-                    android:text="Add"
+                    android:text="Ok"
                     android:textAllCaps="false"
-                    app:cornerRadius="20dp" />
+                    app:cornerRadius="24dp" />
 
                 <Button
                     android:id="@+id/button_cancel"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#FFFFFF"
+                    android:backgroundTint="@color/purple"
                     android:fontFamily="@font/poppins_medium"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:text="Cancel"
                     android:textAllCaps="false"
-                    android:textColor="#443C8B"
-                    app:cornerRadius="20dp"
-                    app:strokeColor="#443C8B" />
+                    android:textColor="@color/white"
+                    app:cornerRadius="24dp"
+                    app:strokeColor="@color/purple" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -5,9 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/white">
+    android:background="@drawable/redeem_item_rounded">
 
-    <!-- عنوان الـ Dialog -->
     <TextView
         android:id="@+id/alert_title"
         android:layout_width="wrap_content"
@@ -19,7 +18,6 @@
         android:fontFamily="@font/poppins_medium"
         android:layout_gravity="center"/>
 
-    <!-- وصف أو تعليمات -->
     <TextView
         android:id="@+id/alert_message"
         android:layout_width="wrap_content"
@@ -38,7 +36,7 @@
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:layout_margin="10dp"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start" />
 
 
     <!-- LinearLayout يحتوي على الأزرار -->
@@ -53,13 +51,13 @@
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#443C8B"
+            android:backgroundTint="@color/purple"
             android:fontFamily="@font/poppins_medium"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="Select"
             android:textAllCaps="false"
-            app:cornerRadius="20dp" />
+            app:cornerRadius="24dp" />
 
         <Button
             android:id="@+id/button_negative"
@@ -74,9 +72,9 @@
             android:insetBottom="0dp"
             android:text="Cancel"
             android:textAllCaps="false"
-            android:textColor="#443C8B"
-            app:cornerRadius="20dp"
-            app:strokeColor="#443C8B" />
+            android:textColor="@color/purple"
+            app:cornerRadius="24dp"
+            app:strokeColor="@color/purple" />
     </LinearLayout>
 
 </LinearLayout>

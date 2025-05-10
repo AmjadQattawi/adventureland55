@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="@android:color/transparent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"
@@ -41,14 +41,15 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_confirm_redeem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
                 android:text="Are you sure you want to redeem
 100 points for 5 JOD Play card?"
                 android:textColor="@color/Default"
-                android:fontFamily="@font/poppins_medium"
                 android:textSize="14sp" />
 
             <LinearLayout
@@ -63,7 +64,7 @@
                     android:layout_height="40dp"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#443C8B"
+                    android:backgroundTint="@color/purple"
                     android:fontFamily="@font/poppins_medium"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
@@ -84,9 +85,9 @@
                     android:insetBottom="0dp"
                     android:text="Cancel"
                     android:textAllCaps="false"
-                    android:textColor="#443C8B"
+                    android:textColor="@color/purple"
                     app:cornerRadius="20dp"
-                    app:strokeColor="#443C8B" />
+                    app:strokeColor="@color/purple" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

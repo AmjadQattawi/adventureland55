@@ -1,6 +1,7 @@
 package com.example.adventureland;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,18 @@ public class RedeemAdapter extends RecyclerView.Adapter<RedeemAdapter.RedeemView
         long rewardCost = Long.parseLong(currentItem.getPoints());
 
 
-        holder.redeemButton.setOnClickListener(v -> redeemActivity.loadUserCardNames(currentItem.getTitle(), rewardCost));
+
+        if (redeemActivity.getUserPoints() >= rewardCost) {
+            // النقاط كافية
+            holder.redeemButton.setCardBackgroundColor(context.getResources().getColor(R.color.purple)); // اللون الأصلي
+            holder.redeemButton.setEnabled(true);
+            holder.redeemButton.setOnClickListener(v ->
+                    redeemActivity.loadUserCardNames(currentItem.getTitle(), rewardCost));
+        } else {
+            // النقاط غير كافية
+            holder.redeemButton.setCardBackgroundColor(Color.parseColor("#7678ED")); // البنفسجي الفاتح
+            holder.redeemButton.setEnabled(false);
+        }
     }
 
     @Override

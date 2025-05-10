@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="@android:color/transparent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"
@@ -41,14 +41,15 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_success_redeem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
                 android:text="You’ve successfully redeemed
 100 points for 5 JOD Play card."
                 android:textColor="@color/Default"
-                android:fontFamily="@font/poppins_medium"
                 android:textSize="14sp" />
 
             <LinearLayout

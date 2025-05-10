@@ -7,7 +7,8 @@
     android:layout_marginBottom="24dp"
     android:padding="24dp"
     android:gravity="center"
-    android:background="@drawable/redeem_item_rounded">
+    android:background="@drawable/redeem_item_rounded"
+    android:layout_marginStart="8dp">
 
 
     <androidx.cardview.widget.CardView
@@ -82,7 +83,7 @@
         android:layout_width="96dp"
         android:layout_height="34dp"
         android:layout_marginTop="-2dp"
-        app:cardBackgroundColor="#3D348B"
+        app:cardBackgroundColor="@color/purple"
         app:cardCornerRadius="24dp"
         app:cardElevation="0dp">
 

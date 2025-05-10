@@ -27,6 +27,7 @@
         <activity android:name=".RedeemActivity" android:exported="false"/>
         <activity android:name=".AboutActivity" android:exported="false" />
         <activity android:name=".CheckBalanceActivity" android:exported="false" />
+        <activity android:name=".CardStatementActivity" android:exported="false"/>
         <activity android:name=".BalanceActivity" android:exported="false" />
         <activity android:name=".SplashActivity" android:exported="true">
             <intent-filter>

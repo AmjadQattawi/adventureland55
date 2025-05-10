@@ -32,16 +32,16 @@
             android:layout_gravity="center">
 
             <TextView
-                android:id="@+id/transaction_action"
+                android:id="@+id/cardTransaction_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="you have earned"
+                android:text="Card charge"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:fontFamily="@font/poppins_medium"/>
 
             <TextView
-                android:id="@+id/transaction_date"
+                android:id="@+id/cardTransaction_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="21 Mar 2025"
@@ -52,19 +52,19 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/transaction_points"
+            android:id="@+id/transaction_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+33"
+            android:text="5"
             android:textColor="@color/purple"
             android:textSize="24sp"
             android:fontFamily="@font/poppins_bold" />
 
         <TextView
-            android:id="@+id/transaction_points_label"
+            android:id="@+id/transaction_JOD_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Points"
+            android:text="JOD"
             android:textColor="@color/purple"
             android:textSize="13sp"
             android:fontFamily="@font/poppins_light"

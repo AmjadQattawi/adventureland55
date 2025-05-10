@@ -2,6 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.AdventureLand" parent="Theme.Material3.DayNight.NoActionBar">
 
+        <item name="android:statusBarColor">@color/gray</item>
+
     </style>
 
     <style name="Theme.AdventureLand" parent="Base.Theme.AdventureLand" />
@@ -10,6 +12,5 @@
         <item name="colorControlNormal">@color/purple</item>
         <item name="colorControlActivated">@color/purple</item>
     </style>
-
 
 </resources>

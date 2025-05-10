@@ -36,5 +36,15 @@ public class CheckBalanceActivity extends AppCompatActivity {
             intent.putExtra("cardId", cardId);
             startActivity(intent);
         });
+
+        CardView cardStatementButton = findViewById(R.id.card_statement_button);
+        cardStatementButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CheckBalanceActivity.this, CardStatementActivity.class);
+            intent.putExtra("cardId", cardId);
+            intent.putExtra("balance", balance);
+            intent.putExtra("lastUsage", lastUsage);
+            intent.putExtra("lastCharge", lastCharge);
+            startActivity(intent);
+        });
     }
 }

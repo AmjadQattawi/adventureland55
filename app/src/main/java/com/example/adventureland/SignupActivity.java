@@ -224,6 +224,12 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    private String getCurrentTimestamp() {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault());
+        return sdf.format(new java.util.Date());
+    }
+
+
     private void saveUserToDatabase(String name, String phone, String password) {
         String email = phone + "@gmail.com";
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -235,10 +241,19 @@ public class SignupActivity extends AppCompatActivity {
                 Toast.makeText(this, "Signup Successful", Toast.LENGTH_SHORT).show();
 
                 loadHomeFragment(); // استدعاء الدالة لتحميل HomeFragment
+                // إضافة 50 نقطة عند إنشاء الحساب
+                DatabaseReference pointsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("points");
+                pointsRef.setValue(50);
+
+// تسجيل المعاملة
+                DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("transactions").push();
+                transactionRef.setValue(new Transaction("earned", "Signup Bonus", 50, getCurrentTimestamp()));
             } else {
                 Toast.makeText(this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private void loadHomeFragment() {

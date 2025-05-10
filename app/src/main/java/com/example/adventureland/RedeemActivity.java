@@ -3,65 +3,64 @@ package com.example.adventureland;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class RedeemActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RedeemAdapter redeemAdapter;
     private ArrayList<RedeemItem> redeemItemList;
-    private DatabaseReference userCardsRef, userPointsRef;
+    private DatabaseReference userCardsRef, userPointsRef, transactionRef;
     private String userId;
     private ArrayList<String> cardNames;
-    private Long userPoints;
+    private long userPoints;
+    private TextView pointsBalanceText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.redeem);
 
-        // إعداد Firebase
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         userCardsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("cards");
-        userPointsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("points_balance");
+        userPointsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("points");
+        transactionRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("transactions");
 
-        // تهيئة قائمة المكافآت
+        pointsBalanceText = findViewById(R.id.points_value);
         redeemItemList = new ArrayList<>();
-
-        // تهيئة الـ RecyclerView و الـ Adapter
         recyclerView = findViewById(R.id.recyclerViewOffers);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
         redeemAdapter = new RedeemAdapter(this, redeemItemList);
         recyclerView.setAdapter(redeemAdapter);
 
-        // تحميل المكافآت من Firebase
-        loadRewardsFromFirebase();
+        loadRewards();
         loadUserPoints();
 
         findViewById(R.id.back_button).setOnClickListener(v -> finish());
     }
 
-    private void loadRewardsFromFirebase() {
+    private void loadRewards() {
         redeemItemList.add(new RedeemItem("5 JOD Play card", "100", R.drawable.giftcard));
         redeemItemList.add(new RedeemItem("10 JOD Play card", "200", R.drawable.giftcard));
         redeemItemList.add(new RedeemItem("25 JOD Play card", "400", R.drawable.giftcard));
         redeemItemList.add(new RedeemItem("50 JOD Play card", "700", R.drawable.giftcard));
-
         redeemAdapter.notifyDataSetChanged();
     }
 
@@ -69,13 +68,9 @@ public class RedeemActivity extends AppCompatActivity {
         userPointsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                userPoints = dataSnapshot.getValue(Long.class);
-                if (userPoints == null) {
-                    userPoints = 0L;
-                }
-                if (userPoints == 0) {
-                    Toast.makeText(RedeemActivity.this, "You have no points.", Toast.LENGTH_SHORT).show();
-                }
+                Long points = dataSnapshot.getValue(Long.class);
+                userPoints = (points != null) ? points : 0;
+                pointsBalanceText.setText(String.valueOf(userPoints));  // عرض النقاط هنا
             }
 
             @Override
@@ -85,78 +80,122 @@ public class RedeemActivity extends AppCompatActivity {
         });
     }
 
-    public void showCardSelectionDialog(String selectedReward, long rewardCost) {
-        if (userPoints < rewardCost) {
-            Toast.makeText(RedeemActivity.this, "Not enough points for this reward", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        if (cardNames == null || cardNames.isEmpty()) {
-            Toast.makeText(RedeemActivity.this, "No cards available", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        String[] cardOptions = cardNames.toArray(new String[0]);
+    public void loadUserCardNames(String selectedReward, long rewardCost) {
+        cardNames = new ArrayList<>();
+        userCardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot cardSnap : snapshot.getChildren()) {
+                    cardNames.add(cardSnap.getKey());
+                }
+                showCardSelectionDialog(selectedReward, rewardCost);
+            }
 
-        // استخدام التصميم المخصص لـ AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.alert_dialog_choose_card, null);
-        builder.setView(dialogView);
-
-        // إعداد RecyclerView لعرض البطاقات
-        RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewCards);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // إعداد بيانات البطاقات
-        ArrayList<String> cardList = new ArrayList<>();
-        cardList.add("Card 1: 100 Points");
-        cardList.add("Card 2: 200 Points");
-
-        CardListAdapter adapter = new CardListAdapter(this, cardList);
-        recyclerView.setAdapter(adapter);
-
-        Button selectButton = dialogView.findViewById(R.id.button_positive);
-        Button cancelButton = dialogView.findViewById(R.id.button_negative);
-
-        selectButton.setOnClickListener(v -> {
-            String selectedCard = cardOptions[0];
-            addRewardToCard(selectedCard, selectedReward, rewardCost);
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(RedeemActivity.this, "Error loading cards", Toast.LENGTH_SHORT).show();
+            }
         });
-
-        cancelButton.setOnClickListener(v -> {
-            AlertDialog dialog = builder.create();
-            dialog.dismiss();
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
-    private void addRewardToCard(String selectedCard, String selectedReward, long rewardCost) {
-        userCardsRef.child(selectedCard.toLowerCase().replace(" ", "_") + "_card").child("balance")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Long balance = dataSnapshot.getValue(Long.class);
-                        if (balance == null) {
-                            balance = 0L;
-                        }
+    public void showCardSelectionDialog(String selectedReward, long rewardCost) {
+        if (userPoints < rewardCost) {
+            Toast.makeText(this, "Not enough points", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                        balance += rewardCost;
+        DatabaseReference cardsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("cards");
+        cardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                ArrayList<String> cardList = new ArrayList<>();
 
-                        userCardsRef.child(selectedCard.toLowerCase().replace(" ", "_") + "_card").child("balance")
-                                .setValue(balance);
+                for (DataSnapshot cardSnap : snapshot.getChildren()) {
+                    cardList.add(cardSnap.getKey());
+                }
 
-                        userPoints -= rewardCost;
-                        userPointsRef.setValue(userPoints);
+                if (cardList.isEmpty()) {
+                    Toast.makeText(RedeemActivity.this, "No cards available", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                        Toast.makeText(RedeemActivity.this, "تم إضافة " + selectedReward + " إلى " + selectedCard, Toast.LENGTH_SHORT).show();
+                View dialogView = LayoutInflater.from(RedeemActivity.this).inflate(R.layout.alert_dialog_choose_card, null);
+                RecyclerView cardsRecycler = dialogView.findViewById(R.id.recyclerViewCards);
+                cardsRecycler.setLayoutManager(new LinearLayoutManager(RedeemActivity.this));
+                CardListAdapter adapter = new CardListAdapter(RedeemActivity.this, cardList);
+                cardsRecycler.setAdapter(adapter);
+
+                final int[] selectedIndex = {-1};
+
+                cardsRecycler.addOnItemTouchListener(new RecyclerItemClickListener(RedeemActivity.this, cardsRecycler,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                selectedIndex[0] = position;
+                                Toast.makeText(RedeemActivity.this, "Selected card: " + cardList.get(position), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {}
+                        }));
+
+                Button selectButton = dialogView.findViewById(R.id.button_positive);
+                Button cancelButton = dialogView.findViewById(R.id.button_negative);
+
+                AlertDialog dialog = new AlertDialog.Builder(RedeemActivity.this)
+                        .setView(dialogView)
+                        .setCancelable(false)
+                        .create();
+
+                selectButton.setOnClickListener(v -> {
+                    if (selectedIndex[0] == -1) {
+                        Toast.makeText(RedeemActivity.this, "Please select a card", Toast.LENGTH_SHORT).show();
+                        return;
                     }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(RedeemActivity.this, "Error updating card balance", Toast.LENGTH_SHORT).show();
-                    }
+                    String selectedCard = cardList.get(selectedIndex[0]);
+
+                    double amountToAdd = 0;
+                    if (selectedReward.contains("5 JOD")) amountToAdd = 5;
+                    else if (selectedReward.contains("10 JOD")) amountToAdd = 10;
+                    else if (selectedReward.contains("25 JOD")) amountToAdd = 25;
+                    else if (selectedReward.contains("50 JOD")) amountToAdd = 50;
+
+                    addRewardToCard(selectedCard, selectedReward, rewardCost, amountToAdd);
+                    dialog.dismiss();
                 });
+
+                cancelButton.setOnClickListener(v -> dialog.dismiss());
+                dialog.show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(RedeemActivity.this, "Failed to load cards", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private String getCurrentTimestamp() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        return sdf.format(new Date());
+    }
+
+    private void addRewardToCard(String selectedCard, String selectedReward, long rewardCost, double amountToAdd) {
+        userCardsRef.child(selectedCard).child("balance").get().addOnSuccessListener(snapshot -> {
+            double balance = snapshot.exists() ? Double.parseDouble(snapshot.getValue().toString()) : 0;
+            double newBalance = balance + amountToAdd;
+
+            userCardsRef.child(selectedCard).child("balance").setValue(newBalance);
+            userPointsRef.setValue(userPoints - rewardCost);
+
+            Transaction transaction = new Transaction("spent", selectedReward, (int) rewardCost, getCurrentTimestamp());
+            transactionRef.push().setValue(transaction);
+
+            Toast.makeText(RedeemActivity.this, selectedReward + " added to " + selectedCard, Toast.LENGTH_SHORT).show();
+        });
     }
 }

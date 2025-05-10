@@ -12,22 +12,37 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
 
     private Context context;
     private ArrayList<String> cardList;
+    private OnItemClickListener onItemClickListener;
 
     public CardListAdapter(Context context, ArrayList<String> cardList) {
         this.context = context;
         this.cardList = cardList;
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(String cardName);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.alert_dialog_choose_card, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.card_item_dialog, parent, false);
         return new CardViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
         String card = cardList.get(position);
-        holder.cardName.setText(card); // افتراض أن كل بطاقة تحتوي على اسم
+        holder.cardName.setText(card);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(card);
+            }
+        });
     }
 
     @Override
@@ -36,12 +51,11 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     }
 
     public static class CardViewHolder extends RecyclerView.ViewHolder {
-
         TextView cardName;
 
         public CardViewHolder(View itemView) {
             super(itemView);
-            cardName = itemView.findViewById(R.id.card_name); // افتراض أنك تستخدم TextView لعرض اسم البطاقة
+            cardName = itemView.findViewById(R.id.card_name);
         }
     }
 }

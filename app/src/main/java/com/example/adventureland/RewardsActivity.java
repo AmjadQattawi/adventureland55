@@ -6,17 +6,14 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,7 @@ public class RewardsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TransactionAdapter adapter;
     private List<Transaction> transactionList;
-    private DatabaseReference databaseReference;
+    private DatabaseReference transactionsRef, pointsRef;
     private CardView allTabCard, earnedTabCard, spentTabCard, redeemButton;
 
     @Override
@@ -42,7 +39,7 @@ public class RewardsActivity extends AppCompatActivity {
         allTabCard = findViewById(R.id.all_tab);
         earnedTabCard = findViewById(R.id.earned_tab);
         spentTabCard = findViewById(R.id.spent_tab);
-        redeemButton = findViewById(R.id.redeem_button);  // تعيين الـ Button الخاص بـ Redeem
+        redeemButton = findViewById(R.id.redeem_button);
 
         allTab = findViewById(R.id.all_tab_text);
         earnedTab = findViewById(R.id.tv_earned_tab);
@@ -58,11 +55,13 @@ public class RewardsActivity extends AppCompatActivity {
         });
 
         transactionList = new ArrayList<>();
-
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId).child("transactions");
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        transactionsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("transactions");
+        pointsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("points");
+
+        // تحميل المعاملات
+        transactionsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
@@ -81,12 +80,6 @@ public class RewardsActivity extends AppCompatActivity {
                         adapter.updateList(transactionList);
                     }
 
-                    Integer points = dataSnapshot.child("points").getValue(Integer.class);
-                    if (points != null) {
-                        pointsTextView.setText(String.valueOf(points));
-                    } else {
-                        pointsTextView.setText("0");
-                    }
                 } catch (Exception e) {
                     Log.e("FirebaseError", "Error reading data", e);
                     Toast.makeText(RewardsActivity.this, "Error loading data", Toast.LENGTH_SHORT).show();
@@ -97,6 +90,24 @@ public class RewardsActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("FirebaseError", "Error loading data", databaseError.toException());
                 Toast.makeText(RewardsActivity.this, "Failed to load transactions", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // تحميل النقاط من المسار الصحيح
+        pointsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Long points = snapshot.getValue(Long.class);
+                if (points != null) {
+                    pointsTextView.setText(String.valueOf(points));
+                } else {
+                    pointsTextView.setText("0");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(RewardsActivity.this, "Failed to load points", Toast.LENGTH_SHORT).show();
             }
         });
 

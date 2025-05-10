@@ -191,9 +191,24 @@ public class GameDetailsActivity extends AppCompatActivity {
             }
         });
     }
+    private String getCurrentTimestamp() {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault());
+        return sdf.format(new java.util.Date());
+    }
 
     private void saveRating(float rating) {
         String userId = mAuth.getCurrentUser().getUid();
+
+        DatabaseReference pointsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("points");
+        pointsRef.get().addOnSuccessListener(snapshot -> {
+            long currentPoints = snapshot.exists() ? snapshot.getValue(Long.class) : 0;
+            pointsRef.setValue(currentPoints + 50);
+
+            DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("transactions").push();
+            transactionRef.setValue(new Transaction("earned", "Game Rating Bonus", 30, getCurrentTimestamp()));
+        });
+
+
 
         databaseRatings.child(userId).setValue(rating).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

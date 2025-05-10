@@ -40,7 +40,7 @@ public class RedeemAdapter extends RecyclerView.Adapter<RedeemAdapter.RedeemView
         long rewardCost = Long.parseLong(currentItem.getPoints());
 
 
-        holder.redeemButton.setOnClickListener(v -> redeemActivity.showCardSelectionDialog(currentItem.getTitle(), rewardCost));
+        holder.redeemButton.setOnClickListener(v -> redeemActivity.loadUserCardNames(currentItem.getTitle(), rewardCost));
     }
 
     @Override

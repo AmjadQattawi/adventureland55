@@ -26,9 +26,16 @@ import com.example.adventureland.R;
 import com.example.adventureland.RewardsActivity;
 import com.example.adventureland.SlideAdapter;
 import com.example.adventureland.SlideItem;
+import com.example.adventureland.Transaction;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeFragment extends Fragment {
     private ImageView gameIcon, cardIcon, rewardsIcon;
@@ -39,10 +46,33 @@ public class HomeFragment extends Fragment {
     private List<Game> gameList;
     private Handler slideHandler = new Handler();
 
+    private String getCurrentTimestamp() {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault());
+        return sdf.format(new java.util.Date());
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+
+        String today = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(new Date());
+        DatabaseReference dailyVisitRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("lastVisit");
+        dailyVisitRef.get().addOnSuccessListener(snapshot -> {
+            if (!today.equals(snapshot.getValue(String.class))) {
+                dailyVisitRef.setValue(today);
+
+                DatabaseReference pointsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("points");
+                pointsRef.get().addOnSuccessListener(snap -> {
+                    long currentPoints = snap.exists() ? snap.getValue(Long.class) : 0;
+                    pointsRef.setValue(currentPoints + 5);
+
+                    DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("transactions").push();
+                    transactionRef.setValue(new Transaction("earned", "Daily Visit", 5, getCurrentTimestamp()));
+                });
+            }
+        });
 
         // إعداد الـ RecyclerView
         recyclerView = view.findViewById(R.id.home_rv_TopGames);

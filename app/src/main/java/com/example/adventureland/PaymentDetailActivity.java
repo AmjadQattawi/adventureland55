@@ -179,10 +179,32 @@ public class PaymentDetailActivity extends AppCompatActivity {
             cardRef.child("lastCharge").setValue("2025/05/07 00:00");
             cardRef.child("lastUsage").setValue("2025/05/07 00:00");
 
+            final long[] rewardPoints = {0};
+            if (originalAmount == 50) rewardPoints[0] = 100;
+            else if (originalAmount == 75) rewardPoints[0] = 150;
+            else if (originalAmount == 100) rewardPoints[0] = 220;
+            else if (originalAmount == 20 || originalAmount == 30) rewardPoints[0] = 30;
+
+            if (rewardPoints[0] > 0) {
+                DatabaseReference pointsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("points");
+                pointsRef.get().addOnSuccessListener(snap -> {
+                    long currentPoints = snap.exists() ? snap.getValue(Long.class) : 0;
+                    pointsRef.setValue(currentPoints + rewardPoints[0]);
+
+                    DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("transactions").push();
+                    transactionRef.setValue(new Transaction("earned", "Recharge Reward", (int) rewardPoints[0], getCurrentTimestamp()));
+                });
+            }
+
+
             showSuccessDialog();
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Failed to retrieve current balance.", Toast.LENGTH_SHORT).show();
         });
+    }
+    private String getCurrentTimestamp() {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault());
+        return sdf.format(new java.util.Date());
     }
 
     private void showSuccessDialog() {

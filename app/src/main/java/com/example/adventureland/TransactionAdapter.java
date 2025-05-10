@@ -28,15 +28,18 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
         Transaction transaction = transactionList.get(position);
 
-        holder.transactionAction.setText(transaction.getType());
-        holder.transactionPoints.setText(String.valueOf(transaction.getPoints()));
-        holder.transactionDate.setText(transaction.getDate());
-
+        // تغيير النص حسب نوع العملية
         if ("earned".equals(transaction.getType())) {
-            holder.transactionIndicator.setBackgroundColor(Color.GREEN);
-        } else if ("redeemed".equals(transaction.getType())) {
-            holder.transactionIndicator.setBackgroundColor(Color.RED);
+            holder.transactionAction.setText("you have earned");
+            holder.transactionPoints.setText("+" + transaction.getPoints() + " Points");
+            holder.transactionIndicator.setBackgroundColor(Color.parseColor("#2ECC71")); // أخضر
+        } else {
+            holder.transactionAction.setText("you have redeemed");
+            holder.transactionPoints.setText("-" + transaction.getPoints() + " Points");
+            holder.transactionIndicator.setBackgroundColor(Color.parseColor("#E74C3C")); // أحمر
         }
+
+        holder.transactionDate.setText(transaction.getDate());
     }
 
     @Override

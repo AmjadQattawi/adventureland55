@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:clipChildren="false"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:layout_gravity="center">
 
     <!-- Toolbar -->
     <androidx.cardview.widget.CardView

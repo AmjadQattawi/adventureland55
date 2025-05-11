@@ -24,6 +24,9 @@
         <activity android:name=".GameDetailsActivity" android:exported="false" />
         <activity android:name=".GamesActivity" android:exported="false" />
         <activity android:name=".Offers" android:exported="false"/>
+        <activity android:name=".IndividualOffersActivity" android:exported="false"/>
+        <activity android:name=".SchoolOffersActivity" android:exported="false"/>
+        <activity android:name=".BirthdayOffersActivity" android:exported="false"/>
         <activity android:name=".RewardsActivity" android:exported="false"/>
         <activity android:name=".RedeemActivity" android:exported="false"/>
         <activity android:name=".AboutActivity" android:exported="false" />

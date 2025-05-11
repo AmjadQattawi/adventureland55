@@ -1,7 +1,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="purple">#3D348B</color>
+    <color name="purple">#3d348b</color>
     <color name="green">#2BC840</color>
     <color name="yellow">#F7B801</color>
     <color name="light_gray">#EAEAEA</color>
@@ -12,7 +12,7 @@
     <color name="secondaryTextColor">#777777</color>
 
     <color name="navy_blue">#000080</color> <!-- كحلي -->
-    <color name="orange">#FFA500</color> <!-- برتقالي -->
+    <color name="orange">#f35b04</color> <!-- برتقالي -->
     <color name="red">#FF0000</color> <!-- أحمر -->
 
 

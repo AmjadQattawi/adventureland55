@@ -22,6 +22,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.adventureland.GamesActivity;
 import com.example.adventureland.Game;
 import com.example.adventureland.GameAdapter;
+import com.example.adventureland.Offers;
 import com.example.adventureland.R;
 import com.example.adventureland.RewardsActivity;
 import com.example.adventureland.SlideAdapter;
@@ -38,7 +39,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class HomeFragment extends Fragment {
-    private ImageView gameIcon, cardIcon, rewardsIcon;
+    private ImageView gameIcon, cardIcon, rewardsIcon, offersIcon;
     private TextView seeAll;
     private ViewPager2 viewPager2;
     private RecyclerView recyclerView;
@@ -91,6 +92,7 @@ public class HomeFragment extends Fragment {
         gameIcon = view.findViewById(R.id.gamesIcon);
         cardIcon = view.findViewById(R.id.cardIcon);
         rewardsIcon = view.findViewById(R.id.rewardIcon);
+        offersIcon = view.findViewById(R.id.offerIcon);
         seeAll = view.findViewById(R.id.seeAll_txt);
 
 
@@ -133,6 +135,11 @@ public class HomeFragment extends Fragment {
             startActivity(i);
         });
 
+        offersIcon.setOnClickListener(v -> {
+            Intent i = new Intent(getContext(), Offers.class);
+            startActivity(i);
+        });
+
         rewardsIcon.setOnClickListener(v -> {
             Intent i = new Intent(getContext(), RewardsActivity.class);
             startActivity(i);
@@ -142,8 +149,6 @@ public class HomeFragment extends Fragment {
                 .replace(R.id.frameLayoutContainer, new CardFragment())
                 .addToBackStack(null)
                 .commit());
-
-
 
         seeAll.setOnClickListener(v -> {
             Intent i = new Intent(getContext(), GamesActivity.class);

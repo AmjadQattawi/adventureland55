@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <!-- Toolbar -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/toolbar_rewards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/rounded_card">
+
+            <ImageButton
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back"
+                android:src="@drawable/left_arrows"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Offers"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Individual Offer Block -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/individualOfferBlock"
+        android:layout_width="152dp"
+        android:layout_height="178dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="42dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_rewards">
+
+        <LinearLayout
+            android:id="@+id/card_individual"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/offers_bg"
+            android:backgroundTint="#A57678ED"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="60dp"
+                android:text="Individual\nOffers"
+                android:textColor="@color/purple"
+                android:textSize="24sp"
+                android:fontFamily="@font/poppins_bold"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/icon_individual"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="52dp"
+            android:contentDescription="Individual Offer Icon"
+            android:src="@drawable/individualoffers"
+            android:translationY="-11dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- School Offer Block -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/schoolOfferBlock"
+        android:layout_width="152dp"
+        android:layout_height="178dp"
+        android:layout_marginTop="164dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_rewards">
+
+        <LinearLayout
+            android:id="@+id/card_school"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/offers_bg"
+            android:backgroundTint="#A6F35B04"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:paddingTop="60dp"
+                android:paddingEnd="40dp"
+                android:text="School\nOffers"
+                android:textColor="#FAD15A"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/icon_school"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="42dp"
+            android:contentDescription="School Offer Icon"
+            android:src="@drawable/schoolsoffers"
+            android:translationY="-10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Birthday Offer Block -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/birthdayOfferBlock"
+        android:layout_width="152dp"
+        android:layout_height="141dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/individualOfferBlock">
+
+        <LinearLayout
+            android:id="@+id/card_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/offers_bg"
+            android:backgroundTint="#A5F7B801"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="55dp"
+                android:text="Birthday"
+                android:textColor="@color/orange"
+                android:textSize="24sp"
+                android:fontFamily="@font/poppins_bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/icon_birthday"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="70dp"
+            android:contentDescription="Birthday Offer Icon"
+            android:src="@drawable/birthdaysoffers"
+            android:translationY="-12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="102dp"
+            android:fontFamily="@font/poppins_bold"
+            android:rotation="270"
+            android:text="Offers"
+            android:textColor="@color/orange"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

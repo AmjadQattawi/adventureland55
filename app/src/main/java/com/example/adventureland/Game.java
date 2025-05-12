@@ -1,4 +1,5 @@
 package com.example.adventureland;
+
 public class Game {
     private String title;
     private int age;
@@ -11,7 +12,7 @@ public class Game {
     public Game() {
     }
 
-    // المنشئ الحالي
+    // منشئ بكامل المعطيات
     public Game(String title, int age, float rating, int image, String description, double price) {
         this.title = title;
         this.age = age;
@@ -46,7 +47,7 @@ public class Game {
         return price;
     }
 
-    // Setters (مطلوبة أحيانًا عند العمل مع Firebase)
+    // Setters
     public void setTitle(String title) {
         this.title = title;
     }
@@ -69,5 +70,10 @@ public class Game {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    // ✅ لتسهيل الفلترة على أساس العمر (بديل getMinAge)
+    public int getMinAge() {
+        return age;
     }
 }

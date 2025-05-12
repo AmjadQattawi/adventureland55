@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/rounded_top_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:text="Filter Games"
+        android:textSize="18sp"
+        android:textColor="@color/purple"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_semibold"/>
+
+    <RadioGroup
+        android:id="@+id/filterOptionsGroup"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/filterAlphabet"
+            android:text="Alphabetically (A - Z)"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/Default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@drawable/purple_radio_selector"/>
+
+        <RadioButton
+            android:id="@+id/filterAge"
+            android:text="By Age (Ascending)"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/Default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@drawable/purple_radio_selector"/>
+
+        <RadioButton
+            android:id="@+id/filterRating"
+            android:text="By Rating (Descending)"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/Default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@drawable/purple_radio_selector"/>
+
+        <RadioButton
+            android:id="@+id/filterPrice"
+            android:text="By Price (Low - High)"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/Default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@drawable/purple_radio_selector"/>
+    </RadioGroup>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnApplyFilter"
+        android:text="Apply Filter"
+        android:background="@drawable/bg_btn"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

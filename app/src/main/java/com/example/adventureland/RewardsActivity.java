@@ -115,7 +115,6 @@ public class RewardsActivity extends AppCompatActivity {
 
         changeTab("all");
     }
-
     private void changeTab(String tab) {
         allTabCard.setCardBackgroundColor(getResources().getColor(R.color.very_light_purple));
         earnedTabCard.setCardBackgroundColor(getResources().getColor(R.color.very_light_purple));
@@ -143,6 +142,7 @@ public class RewardsActivity extends AppCompatActivity {
                 break;
         }
     }
+
 
     private void filterTransactions(String tab) {
         List<Transaction> filteredList = new ArrayList<>();

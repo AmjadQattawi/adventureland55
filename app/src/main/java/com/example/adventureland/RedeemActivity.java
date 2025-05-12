@@ -221,7 +221,6 @@ public class RedeemActivity extends AppCompatActivity {
         }
         dialog.show();
     }
-
     private void applyRewardToCard(String selectedCard, String selectedReward, long rewardCost, double amountToAdd) {
         userCardsRef.child(selectedCard).child("balance").get().addOnSuccessListener(snapshot -> {
             double balance = snapshot.exists() ? Double.parseDouble(snapshot.getValue().toString()) : 0;
@@ -230,12 +229,23 @@ public class RedeemActivity extends AppCompatActivity {
             userCardsRef.child(selectedCard).child("balance").setValue(newBalance);
             userPointsRef.setValue(userPoints - rewardCost);
 
+            // سجل معاملة النقاط (spent)
             Transaction transaction = new Transaction("spent", selectedReward, (int) rewardCost, getCurrentTimestamp());
             transactionRef.push().setValue(transaction);
+
+            // سجل معاملة في سجل البطاقة (charge)
+            DatabaseReference cardTransactionRef = FirebaseDatabase.getInstance()
+                    .getReference("users").child(userId)
+                    .child("cards").child(selectedCard)
+                    .child("transactions");
+
+            CardTransaction cardTx = new CardTransaction("charge", "Reward: " + selectedReward, (int) amountToAdd, getCurrentTimestamp());
+            cardTransactionRef.push().setValue(cardTx);
 
             showSuccessDialog(selectedReward, rewardCost);
         });
     }
+
 
     private String getCurrentTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());

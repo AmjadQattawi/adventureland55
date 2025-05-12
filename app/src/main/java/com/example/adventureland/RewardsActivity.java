@@ -93,7 +93,6 @@ public class RewardsActivity extends AppCompatActivity {
             }
         });
 
-        // تحميل النقاط من المسار الصحيح
         pointsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {

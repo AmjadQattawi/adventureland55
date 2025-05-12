@@ -55,17 +55,28 @@ public class RechargeCardActivity extends AppCompatActivity {
                 return;
             }
 
-            double amount = Double.parseDouble(amountStr);
-            if (!(amount < 20 || amount == 20 || amount == 30 || amount == 50 || amount == 75 || amount == 100)) {
-                Toast.makeText(this, "Invalid amount. Please select a valid offer.", Toast.LENGTH_SHORT).show();
+            double amount;
+            try {
+                amount = Double.parseDouble(amountStr);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Invalid number format", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            if (amount < 1) {
+                Toast.makeText(this, "Amount must be at least 1 JOD", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // ✅ لا تعرض رسالة خطأ – نسمح بأي رقم سواء من العروض أو غيره
+            // ونرسل المبلغ كما هو إلى PaymentDetailActivity
 
             Intent intent = new Intent(RechargeCardActivity.this, PaymentDetailActivity.class);
             intent.putExtra("cardId", cardId);
             intent.putExtra("amount", String.valueOf(amount));
             startActivity(intent);
         });
+
     }
 
     private void loadCurrentBalance(String cardId) {

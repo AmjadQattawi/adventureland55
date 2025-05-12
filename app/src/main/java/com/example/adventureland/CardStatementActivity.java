@@ -20,7 +20,7 @@ public class CardStatementActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CardTransactionAdapter adapter;
     private List<CardTransaction> fullList = new ArrayList<>();
-    private DatabaseReference transactionsRef;
+    private DatabaseReference cardTransactionsRef, generalTransactionsRef;
 
     private CardView allTab, chargesTab, usageTab;
     private TextView tvAll, tvCharges, tvUsages;
@@ -42,7 +42,6 @@ public class CardStatementActivity extends AppCompatActivity {
         lastUsageText.setText(lastUsage);
         lastChargeText.setText(lastCharge);
 
-
         recyclerView = findViewById(R.id.recyclerViewCardTransactions);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CardTransactionAdapter(this, new ArrayList<>());
@@ -58,7 +57,7 @@ public class CardStatementActivity extends AppCompatActivity {
 
         allTab.setOnClickListener(v -> changeTab("all"));
         chargesTab.setOnClickListener(v -> changeTab("charge"));
-        usageTab.setOnClickListener(v -> changeTab("reward"));
+        usageTab.setOnClickListener(v -> changeTab("usage"));
 
         ImageView backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
@@ -66,29 +65,48 @@ public class CardStatementActivity extends AppCompatActivity {
         String cardId = getIntent().getStringExtra("cardId");
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        transactionsRef = FirebaseDatabase.getInstance()
-                .getReference("users")
-                .child(userId)
-                .child("cards")
-                .child(cardId)
-                .child("transactions");
+        cardTransactionsRef = FirebaseDatabase.getInstance()
+                .getReference("users").child(userId).child("cards").child(cardId).child("transactions");
 
-        loadTransactions();
+        generalTransactionsRef = FirebaseDatabase.getInstance()
+                .getReference("users").child(userId).child("transactions");
+
+        loadAllTransactions();
         changeTab("all");
     }
 
-    private void loadTransactions() {
-        transactionsRef.addValueEventListener(new ValueEventListener() {
+    private void loadAllTransactions() {
+        fullList.clear();
+
+        // حمل من معاملات البطاقة
+        cardTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                fullList.clear();
                 for (DataSnapshot snap : snapshot.getChildren()) {
                     CardTransaction transaction = snap.getValue(CardTransaction.class);
                     if (transaction != null) {
                         fullList.add(transaction);
                     }
                 }
-                changeTab("all");
+
+                // ثم من المعاملات العامة (مثل: redeem)
+                generalTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        for (DataSnapshot snap : snapshot.getChildren()) {
+                            CardTransaction transaction = snap.getValue(CardTransaction.class);
+                            if (transaction != null && "charge".equalsIgnoreCase(transaction.getType())) {
+                                fullList.add(transaction);
+                            }
+                        }
+                        changeTab("all");
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        Toast.makeText(CardStatementActivity.this, "Failed to load extra charges", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
@@ -118,12 +136,14 @@ public class CardStatementActivity extends AppCompatActivity {
                 tvAll.setTextColor(white);
                 adapter.updateList(fullList);
                 break;
+
             case "charge":
                 chargesTab.setCardBackgroundColor(selectedColor);
                 tvCharges.setTextColor(white);
                 filterListByType("charge");
                 break;
-            case "reward":
+
+            case "usage":
                 usageTab.setCardBackgroundColor(selectedColor);
                 tvUsages.setTextColor(white);
                 filterListByType("usage");

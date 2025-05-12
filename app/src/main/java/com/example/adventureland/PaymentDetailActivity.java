@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -152,61 +153,81 @@ public class PaymentDetailActivity extends AppCompatActivity {
 
     private void processPayment() {
         double addedBalance;
-        if (originalAmount < 20) addedBalance = originalAmount;
-        else if (originalAmount == 20) addedBalance = 60;
+        if (originalAmount == 20) addedBalance = 60;
         else if (originalAmount == 30) addedBalance = 130;
         else if (originalAmount == 50) addedBalance = 250;
         else if (originalAmount == 75) addedBalance = 400;
         else if (originalAmount == 100) addedBalance = 600;
-        else {
-            Toast.makeText(this, "Invalid offer amount", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        else addedBalance = originalAmount; // 👈 للشحن العادي بدون عرض
 
-        DatabaseReference cardRef = FirebaseDatabase.getInstance().getReference("users")
-                .child(userId).child("cards").child(cardId);
+        final long[] rewardPoints = {0};
+        if (originalAmount == 50) rewardPoints[0] = 100;
+        else if (originalAmount == 75) rewardPoints[0] = 150;
+        else if (originalAmount == 100) rewardPoints[0] = 220;
+        else if (originalAmount == 20 || originalAmount == 30) rewardPoints[0] = 30;
 
-        cardRef.child("balance").get().addOnSuccessListener(snapshot -> {
-            double currentBalance = 0;
-            if (snapshot.exists()) {
-                try {
-                    currentBalance = Double.parseDouble(snapshot.getValue().toString());
-                } catch (Exception ignored) {}
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+
+        usersRef.get().addOnSuccessListener(snapshot -> {
+            String currentTime = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
+
+            for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                String uid = userSnapshot.getKey();
+                DataSnapshot cardSnapshot = userSnapshot.child("cards").child(cardId);
+
+                if (cardSnapshot.exists()) {
+                    double currentBalance = 0;
+                    if (cardSnapshot.child("balance").exists()) {
+                        try {
+                            currentBalance = Double.parseDouble(cardSnapshot.child("balance").getValue().toString());
+                        } catch (Exception ignored) {}
+                    }
+
+                    double updatedBalance = currentBalance + addedBalance;
+
+                    DatabaseReference cardRef = usersRef.child(uid).child("cards").child(cardId);
+                    cardRef.child("balance").setValue(updatedBalance);
+                    cardRef.child("lastCharge").setValue(currentTime);
+                    cardRef.child("lastUsage").setValue(currentTime);
+
+                    // ✅ سجل معاملة الشحن داخل البطاقة
+                    DatabaseReference cardTxRef = cardRef.child("transactions");
+                    CardTransaction cardTx = new CardTransaction(
+                            "charge",
+                            "Recharge (" + (int) addedBalance + " JOD)",
+                            (int) addedBalance,
+                            getCurrentTimestamp()
+                    );
+                    cardTxRef.push().setValue(cardTx);
+                }
             }
 
-            double updatedBalance = currentBalance + addedBalance;
-            cardRef.child("balance").setValue(updatedBalance);
-            String currentTime = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
-            cardRef.child("lastCharge").setValue(currentTime);
-            cardRef.child("lastUsage").setValue(currentTime);
-
-
-            final long[] rewardPoints = {0};
-            if (originalAmount == 50) rewardPoints[0] = 100;
-            else if (originalAmount == 75) rewardPoints[0] = 150;
-            else if (originalAmount == 100) rewardPoints[0] = 220;
-            else if (originalAmount == 20 || originalAmount == 30) rewardPoints[0] = 30;
-
+            // ✅ سجل نقاط الشحن إن كانت من عرض للمستخدم الحالي
             if (rewardPoints[0] > 0) {
-                DatabaseReference pointsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("points");
+                DatabaseReference pointsRef = usersRef.child(userId).child("points");
                 pointsRef.get().addOnSuccessListener(snap -> {
                     long currentPoints = snap.exists() ? snap.getValue(Long.class) : 0;
                     pointsRef.setValue(currentPoints + rewardPoints[0]);
 
-                    DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("transactions").push();
-                    transactionRef.setValue(new Transaction("earned", "Recharge Reward", (int) rewardPoints[0], getCurrentTimestamp()));
+                    DatabaseReference transactionRef = usersRef.child(userId).child("transactions").push();
+                    transactionRef.setValue(new Transaction(
+                            "earned",
+                            "Recharge Reward",
+                            (int) rewardPoints[0],
+                            getCurrentTimestamp()
+                    ));
                 });
             }
 
-
             showSuccessDialog();
+
         }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Failed to retrieve current balance.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to update card for all users.", Toast.LENGTH_SHORT).show();
         });
     }
+
     private String getCurrentTimestamp() {
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault());
-        return sdf.format(new java.util.Date());
+        return new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault()).format(new java.util.Date());
     }
 
     private void showSuccessDialog() {
@@ -223,4 +244,6 @@ public class PaymentDetailActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
+
 }

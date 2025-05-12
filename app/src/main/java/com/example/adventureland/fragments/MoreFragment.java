@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.adventureland.FAQactivity;
 import com.example.adventureland.LoginActivity;
 import com.example.adventureland.R;
 
@@ -19,10 +20,11 @@ public class MoreFragment extends Fragment {
 
     private ImageView backIcon;
     private View logoutButton;
+    private View faqOption;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.settings, container, false);
+        return inflater.inflate(R.layout.settings, container, false); // تأكد أن settings.xml هو ملف واجهة صفحة "More"
     }
 
     @Override
@@ -31,9 +33,20 @@ public class MoreFragment extends Fragment {
 
         backIcon = view.findViewById(R.id.back_More);
         logoutButton = view.findViewById(R.id.logout_option);
+        faqOption = view.findViewById(R.id.faq_option); // تأكد من وجود هذا العنصر في settings.xml
 
-        backIcon.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
+        // الرجوع إلى الخلف
+        backIcon.setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager().popBackStack()
+        );
 
+        // فتح شاشة FAQ
+        faqOption.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), FAQactivity.class);
+            startActivity(intent);
+        });
+
+        // تسجيل الخروج
         logoutButton.setOnClickListener(v -> showLogoutDialog());
     }
 

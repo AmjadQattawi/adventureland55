@@ -51,7 +51,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Option List -->
     <LinearLayout
         android:id="@+id/more_options_container"
         android:layout_width="0dp"
@@ -62,164 +61,202 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/MoreView">
 
-        <!-- Account Option -->
         <LinearLayout
-            android:id="@+id/account_option"
+            android:id="@+id/acc_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/user"
-                app:tint="@color/black" />
-
-            <TextView
-                style="@style/MoreOptionStyle"
+                android:id="@+id/acc_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
-                android:text="@string/Account"
-                android:textColor="@color/Default" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="205dp"
-                android:src="@drawable/arrow_right"
-                app:tint="@color/Default" />
-        </LinearLayout>
-
-        <!-- Notifications Option with Switch -->
-        <LinearLayout
-            android:id="@+id/notifications_option"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="16dp">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/bell2"
-                android:layout_marginEnd="16dp"
-                app:tint="@color/black" />
+                android:src="@drawable/account_more"
+                android:layout_marginEnd="12dp" />
 
             <TextView
-                style="@style/MoreOptionStyle"
+                android:id="@+id/acc_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="@string/Account"
                 android:fontFamily="@font/poppins_medium"
-                android:gravity="center_vertical"
-                android:textColor="@color/Default"
-                android:paddingEnd="8dp"
-                android:text="@string/Notifications" />
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:id="@+id/acc_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_more"
+                android:layout_marginStart="12dp" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:paddingBottom="20dp"/>
+
+        <LinearLayout
+            android:id="@+id/notif_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:id="@+id/notif_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bell_more"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/notif_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Notifications"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="16sp"/>
 
             <Switch
                 android:id="@+id/notifications_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
+                tools:ignore="UseSwitchCompatOrMaterialXml"/>
         </LinearLayout>
 
-        <!-- Language Option -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:paddingBottom="20dp"/>
+
         <LinearLayout
             android:id="@+id/language_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:layout_marginBottom="8dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/globe"
-                android:layout_marginEnd="16dp"
-                app:tint="@color/black" />
-
-            <TextView
+                android:id="@+id/language_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/MoreOptionStyle"
-                android:textColor="@color/Default"
-                android:text="@string/Language" />
+                android:src="@drawable/language_more"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/language_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Language"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="16sp"/>
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="190dp"
-                android:src="@drawable/arrow_right"
-                app:tint="@color/Default" />
+                android:id="@+id/language_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_more"
+                android:layout_marginStart="12dp" />
         </LinearLayout>
 
-        <!-- FAQ Option -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:paddingBottom="20dp"/>
+
         <LinearLayout
             android:id="@+id/faq_option"
             android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/faq"
-                app:tint="@color/black" />
-
-            <TextView
-                style="@style/MoreOptionStyle"
+                android:id="@+id/faq_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/FAQ"
-                android:textColor="@color/Default" />
+                android:src="@drawable/faq_more"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/faq_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="FAQ"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="16sp"/>
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="245dp"
-                android:src="@drawable/arrow_right"
-                app:tint="@color/Default" />
+                android:id="@+id/faq_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_more"
+                android:layout_marginStart="12dp" />
         </LinearLayout>
 
-        <!-- Logout Option -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:paddingBottom="20dp"/>
+
         <LinearLayout
             android:id="@+id/logout_option"
             android:layout_width="match_parent"
-            android:layout_height="92dp"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/logout"
-                app:tint="@color/black" />
-
-            <TextView
-                style="@style/MoreOptionStyle"
+                android:id="@+id/logout_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/Default"
-                android:text="@string/Logout" />
+                android:src="@drawable/logout_more"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/logout_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/Logout"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="16sp"/>
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/arrow_right"
-                android:layout_marginStart="220dp"
-                app:tint="@color/Default" />
+                android:id="@+id/logout_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_more"
+                android:layout_marginStart="12dp" />
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:paddingBottom="20dp"/>
+
 
     </LinearLayout>
 

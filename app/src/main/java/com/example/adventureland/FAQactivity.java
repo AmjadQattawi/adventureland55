@@ -1,77 +1,59 @@
 package com.example.adventureland;
 
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class FAQactivity extends AppCompatActivity {
 
-    private ConstraintLayout[] faqItems;
-    private TextView[] answers;
-    private ImageView[] arrows;
-
-    private boolean[] isExpanded;
+    private ExpandableListView expandableListView;
+    private FaqExpandableListAdapter adapter;
+    private List<String> questionList;
+    private HashMap<String, List<String>> answerMap;
+    private ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.faq);
+        setContentView(R.layout.activity_faq);
 
-        faqItems = new ConstraintLayout[5];
-        answers = new TextView[5];
-        arrows = new ImageView[5];
-        isExpanded = new boolean[5];
+        expandableListView = findViewById(R.id.expandableListView);
+        backButton = findViewById(R.id.back_button);
 
-        ImageButton backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(v -> finish());
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
-        setupFAQItem(0, R.id.faq_item_1, R.id.answer_1, R.id.arrow_1);
-        setupFAQItem(1, R.id.faq_item_2, R.id.answer_2, R.id.arrow_2);
-        setupFAQItem(2, R.id.faq_item_3, R.id.answer_3, R.id.arrow_3);
-        setupFAQItem(3, R.id.faq_item_4, R.id.answer_4, R.id.arrow_4);
-        setupFAQItem(4, R.id.faq_item_5, R.id.answer_5, R.id.arrow_5);
+        setupFaqData();
+
+        adapter = new FaqExpandableListAdapter(this, questionList, answerMap);
+        expandableListView.setAdapter(adapter);
     }
 
+    private void setupFaqData() {
+        questionList = new ArrayList<>();
+        answerMap = new HashMap<>();
 
-    private void setupFAQItem(final int index, int faqItemId, int answerId, int arrowId) {
-        faqItems[index] = findViewById(faqItemId);
-        answers[index] = findViewById(answerId);
-        arrows[index] = findViewById(arrowId);
-        isExpanded[index] = false;
+        questionList.add("What is the play card?");
+        questionList.add("How can I recharge my play card?");
+        questionList.add("What offers are available for individual users?");
+        questionList.add("Can the card be used for multiple children?");
 
-        faqItems[index].setOnClickListener(v -> toggleFAQ(index));
+        answerMap.put(questionList.get(0), Collections.singletonList("The play card is a prepaid card that gives you access to games and services within the park."));
+        answerMap.put(questionList.get(1), Collections.singletonList("You can recharge your play card through the app or at the park counters."));
+        answerMap.put(questionList.get(2), Collections.singletonList("Seasonal and weekend offers are available for individual users."));
+        answerMap.put(questionList.get(3), Collections.singletonList("The card is intended for a single child and cannot be shared."));
     }
 
-    private void toggleFAQ(int index) {
-        if (isExpanded[index]) {
-
-            answers[index].setVisibility(View.GONE);
-            rotateArrow(arrows[index], 180f, 0f);
-        } else {
-            answers[index].setVisibility(View.VISIBLE);
-            rotateArrow(arrows[index], 0f, 180f);
-        }
-
-        isExpanded[index] = !isExpanded[index];
-    }
-
-
-    private void rotateArrow(ImageView arrow, float fromDegrees, float toDegrees) {
-        RotateAnimation rotateAnimation = new RotateAnimation(
-                fromDegrees, toDegrees,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f
-        );
-        rotateAnimation.setDuration(300);
-        rotateAnimation.setFillAfter(true);
-        arrow.startAnimation(rotateAnimation);
-    }
 }

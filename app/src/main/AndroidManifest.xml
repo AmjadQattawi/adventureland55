@@ -20,7 +20,7 @@
         <activity android:name=".PaymentDetailActivity" android:exported="false" />
         <activity android:name=".RechargeCardActivity" android:exported="false" />
         <activity android:name=".MainActivity" android:exported="false" />
-        <activity android:name=".FAQactivity" />
+        <activity android:name=".FAQactivity" android:exported="false"/>
         <activity android:name=".GameDetailsActivity" android:exported="false" />
         <activity android:name=".GamesActivity" android:exported="false" />
         <activity android:name=".Offers" android:exported="false"/>

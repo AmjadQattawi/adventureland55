@@ -34,10 +34,10 @@ public class CardTransactionAdapter extends RecyclerView.Adapter<CardTransaction
 
         // تحديد الشكل حسب نوع العملية
         if ("reward".equalsIgnoreCase(tx.getType())) {
-            holder.amount.setText("+" + tx.getAmount() + " JOD");
+            holder.amount.setText("+" + tx.getAmount());
             holder.amount.setTextColor(Color.parseColor("#2ECC71")); // أخضر
         } else if ("charge".equalsIgnoreCase(tx.getType())) {
-            holder.amount.setText("+" + tx.getAmount() + " JOD");
+            holder.amount.setText("+" + tx.getAmount());
             holder.amount.setTextColor(Color.parseColor("#3F3A8A")); // بنفسجي غامق
         } else {
             holder.amount.setText(tx.getAmount() + " JOD");

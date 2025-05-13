@@ -126,9 +126,11 @@ public class LoginActivity extends AppCompatActivity {
         // Navigate to BalanceActivity when "Check your card balance" is clicked
         checkBalanceSection.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, BalanceActivity.class);
+            intent.putExtra("fromGuest", true);  // ✅ تحديد أن المستخدم ضيف (غير مسجل دخول)
             startActivity(intent);
-            drawerLayout.closeDrawer(GravityCompat.START); // Close drawer after navigation
+            drawerLayout.closeDrawer(GravityCompat.START);
         });
+
 
         // Navigate to AboutActivity when "About" is clicked
         aboutSection.setOnClickListener(v -> {

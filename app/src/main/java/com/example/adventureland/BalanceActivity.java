@@ -31,7 +31,7 @@ public class BalanceActivity extends AppCompatActivity {
         ImageView backArrow = findViewById(R.id.back_card);
         backArrow.setOnClickListener(v -> finish());
 
-        cardInput = findViewById(R.id.checkButton); // تأكد أن الـ EditText موجود في XML بنفس الـ id
+        cardInput = findViewById(R.id.cardNumberInput); // تأكد أن الـ EditText موجود في XML بنفس الـ id
         setupCardNumberFormatter();
 
         Button checkButton = findViewById(R.id.checkButton);
@@ -85,7 +85,7 @@ public class BalanceActivity extends AppCompatActivity {
                         String lastUsage = cardSnap.child("lastUsage").exists() ? cardSnap.child("lastUsage").getValue().toString() : "N/A";
                         String lastCharge = cardSnap.child("lastCharge").exists() ? cardSnap.child("lastCharge").getValue().toString() : "N/A";
 
-                        Intent intent = new Intent(BalanceActivity.this, CheckBalanceActivity.class);
+                        Intent intent = new Intent(BalanceActivity.this, CardDetailsForNotLoginOrSignup.class);
                         intent.putExtra("balance", balance);
                         intent.putExtra("lastUsage", lastUsage);
                         intent.putExtra("lastCharge", lastCharge);
@@ -95,7 +95,7 @@ public class BalanceActivity extends AppCompatActivity {
                     }
                 }
 
-                Toast.makeText(BalanceActivity.this, "This serial number does not exist", Toast.LENGTH_LONG).show();
+                Toast.makeText(BalanceActivity.this, "This card does not exist", Toast.LENGTH_LONG).show();
             }
 
             @Override

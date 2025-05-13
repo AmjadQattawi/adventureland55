@@ -198,18 +198,25 @@ public class GameDetailsActivity extends AppCompatActivity {
 
     private void saveRating(float rating) {
         String userId = mAuth.getCurrentUser().getUid();
+        int rewardPoints = 20;
 
-        DatabaseReference pointsRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("points");
+        DatabaseReference pointsRef = FirebaseDatabase.getInstance()
+                .getReference("users").child(userId).child("points");
+
         pointsRef.get().addOnSuccessListener(snapshot -> {
             long currentPoints = snapshot.exists() ? snapshot.getValue(Long.class) : 0;
-            pointsRef.setValue(currentPoints + 50);
 
-            DatabaseReference transactionRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("transactions").push();
-            transactionRef.setValue(new Transaction("earned", "Game Rating Bonus", 30, getCurrentTimestamp()));
+            // أول نحدث النقاط
+            pointsRef.setValue(currentPoints + rewardPoints).addOnSuccessListener(unused -> {
+                // بعد نجاح التحديث، نسجل المعاملة
+                DatabaseReference transactionRef = FirebaseDatabase.getInstance()
+                        .getReference("users").child(userId).child("transactions").push();
+
+                transactionRef.setValue(new Transaction("earned", "Game Rating Bonus", rewardPoints, getCurrentTimestamp()));
+            });
         });
 
-
-
+        // حفظ التقييم بعد كل شيء
         databaseRatings.child(userId).setValue(rating).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "Rating saved successfully!", Toast.LENGTH_SHORT).show();
@@ -218,4 +225,5 @@ public class GameDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
 }

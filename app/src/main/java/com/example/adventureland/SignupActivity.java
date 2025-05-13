@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.adventureland.fragments.HomeFragment;
@@ -84,9 +85,12 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         checkBalanceSection.setOnClickListener(v -> {
-            startActivity(new Intent(SignupActivity.this, BalanceActivity.class));
+            Intent intent = new Intent(SignupActivity.this, BalanceActivity.class);
+            intent.putExtra("fromGuest", true);  // ✅ تحديد أن المستخدم ضيف (غير مسجل دخول)
+            startActivity(intent);
             drawerLayout.closeDrawer(Gravity.START);
         });
+
 
         aboutSection.setOnClickListener(v -> {
             startActivity(new Intent(SignupActivity.this, AboutActivity.class));

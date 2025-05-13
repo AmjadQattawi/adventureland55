@@ -139,59 +139,49 @@ public class CardFragment extends Fragment {
         return new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
     }
 
+    // ✅ الكود المعدل لدالة checkCardInFirebase لإضافة فحص داخل cards/ بعد إلغاء الإضافة
     private void checkCardInFirebase(String cardNumber) {
-        // 🔍 تحقق أولًا إذا كانت البطاقة موجودة عند المستخدم الحالي
         userCardsRef.child(cardNumber).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    // البطاقة موجودة عند المستخدم → افتح صفحة التفاصيل مباشرة
                     String balance = String.valueOf(snapshot.child("balance").getValue());
-                    String lastUsage = snapshot.child("lastUsage").exists()
-                            ? snapshot.child("lastUsage").getValue().toString()
-                            : "0000/00/00 00:00";
-                    String lastCharge = snapshot.child("lastCharge").exists()
-                            ? snapshot.child("lastCharge").getValue().toString()
-                            : "0000/00/00 00:00";
-
+                    String lastUsage = snapshot.child("lastUsage").exists() ? snapshot.child("lastUsage").getValue().toString() : "0000/00/00 00:00";
+                    String lastCharge = snapshot.child("lastCharge").exists() ? snapshot.child("lastCharge").getValue().toString() : "0000/00/00 00:00";
                     openCardDetails(cardNumber, balance, lastUsage, lastCharge);
                 } else {
-                    // ⚠️ إذا غير موجودة عنده → تابع بفتح نافذة Add / Cancel كالمعتاد
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.cardnotfound, null);
                     builder.setView(dialogView);
                     AlertDialog dialog = builder.create();
 
                     dialogView.findViewById(R.id.button_add).setOnClickListener(v -> {
-                        DatabaseReference demoCardRef = FirebaseDatabase.getInstance()
-                                .getReference("users").child("demo_user").child("cards").child(cardNumber);
-
-                        demoCardRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        DatabaseReference globalCardRef = FirebaseDatabase.getInstance().getReference("cards").child(cardNumber);
+                        globalCardRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snapshot) {
                                 String balance, lastUsage, lastCharge;
 
                                 if (snapshot.exists()) {
-                                    // انسخ البيانات من demo_user
-                                    balance = String.valueOf(snapshot.child("balance").getValue());
-                                    lastUsage = snapshot.child("lastUsage").exists()
-                                            ? snapshot.child("lastUsage").getValue().toString()
-                                            : getCurrentTime();
+                                     balance = String.valueOf(snapshot.child("balance").getValue());
+                                     lastUsage = snapshot.child("lastUsage").exists() ? String.valueOf(snapshot.child("lastUsage").getValue()) : getCurrentTime();
+                                     lastCharge = snapshot.child("lastCharge").exists() ? String.valueOf(snapshot.child("lastCharge").getValue()) : getCurrentTime();
 
-                                    lastCharge = snapshot.child("lastCharge").exists()
-                                            ? snapshot.child("lastCharge").getValue().toString()
-                                            : getCurrentTime();
                                 } else {
-                                    // بيانات جديدة فارغة
+                                    String currentTime = getCurrentTime();
                                     balance = "0.000";
-                                    lastUsage = getCurrentTime();
-                                    lastCharge = getCurrentTime();
+                                    lastUsage = currentTime;
+                                    lastCharge = currentTime;
                                 }
 
-                                // أضف البطاقة للمستخدم الحالي
                                 userCardsRef.child(cardNumber).child("balance").setValue(balance);
                                 userCardsRef.child(cardNumber).child("lastUsage").setValue(lastUsage);
                                 userCardsRef.child(cardNumber).child("lastCharge").setValue(lastCharge);
+
+                                // تأكد من حفظها كمان مرة في المسار العام
+                                globalCardRef.child("balance").setValue(balance);
+                                globalCardRef.child("lastUsage").setValue(lastUsage);
+                                globalCardRef.child("lastCharge").setValue(lastCharge);
 
                                 Toast.makeText(getContext(), "Card added successfully!", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
@@ -205,53 +195,35 @@ public class CardFragment extends Fragment {
                         });
                     });
 
-                    // زر Cancel → يبحث في جميع المستخدمين ثم في demo_user
-                    dialogView.findViewById(R.id.button_cancel).setOnClickListener(v -> {
+                        dialogView.findViewById(R.id.button_cancel).setOnClickListener(v -> {
                         dialog.dismiss();
                         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-
                         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot usersSnapshot) {
                                 boolean found = false;
-
                                 for (DataSnapshot userSnapshot : usersSnapshot.getChildren()) {
                                     if (userSnapshot.getKey().equals("demo_user")) continue;
-
                                     DataSnapshot cardSnapshot = userSnapshot.child("cards").child(cardNumber);
                                     if (cardSnapshot.exists()) {
                                         found = true;
-
                                         String balance = String.valueOf(cardSnapshot.child("balance").getValue());
-                                        String lastUsage = cardSnapshot.child("lastUsage").exists()
-                                                ? cardSnapshot.child("lastUsage").getValue().toString()
-                                                : "0000/00/00 00:00";
-
-                                        String lastCharge = cardSnapshot.child("lastCharge").exists()
-                                                ? cardSnapshot.child("lastCharge").getValue().toString()
-                                                : "0000/00/00 00:00";
-
+                                        String lastUsage = cardSnapshot.child("lastUsage").exists() ? cardSnapshot.child("lastUsage").getValue().toString() : "0000/00/00 00:00";
+                                        String lastCharge = cardSnapshot.child("lastCharge").exists() ? cardSnapshot.child("lastCharge").getValue().toString() : "0000/00/00 00:00";
                                         openCardDetails(cardNumber, balance, lastUsage, lastCharge);
                                         return;
                                     }
                                 }
 
-                                // إذا لم توجد، افحص داخل demo_user
                                 if (!found) {
-                                    DatabaseReference demoCardRef = usersRef.child("demo_user").child("cards").child(cardNumber);
-                                    demoCardRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    DatabaseReference cardRef = FirebaseDatabase.getInstance().getReference("cards").child(cardNumber);
+                                    cardRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
-                                        public void onDataChange(DataSnapshot demoSnapshot) {
-                                            if (demoSnapshot.exists()) {
-                                                String balance = String.valueOf(demoSnapshot.child("balance").getValue());
-                                                String lastUsage = demoSnapshot.child("lastUsage").exists()
-                                                        ? demoSnapshot.child("lastUsage").getValue().toString()
-                                                        : "0000/00/00 00:00";
-
-                                                String lastCharge = demoSnapshot.child("lastCharge").exists()
-                                                        ? demoSnapshot.child("lastCharge").getValue().toString()
-                                                        : "0000/00/00 00:00";
-
+                                        public void onDataChange(DataSnapshot cardSnapshot) {
+                                            if (cardSnapshot.exists()) {
+                                                String balance = String.valueOf(cardSnapshot.child("balance").getValue());
+                                                String lastUsage = cardSnapshot.child("lastUsage").exists() ? cardSnapshot.child("lastUsage").getValue().toString() : "0000/00/00 00:00";
+                                                String lastCharge = cardSnapshot.child("lastCharge").exists() ? cardSnapshot.child("lastCharge").getValue().toString() : "0000/00/00 00:00";
                                                 openCardDetails(cardNumber, balance, lastUsage, lastCharge);
                                             } else {
                                                 Toast.makeText(getContext(), "This card does not exist", Toast.LENGTH_LONG).show();
@@ -289,6 +261,7 @@ public class CardFragment extends Fragment {
 
 
 
+
     private void showFoundCardDialog(String cardNumber, String balance, String lastUsage, String lastCharge) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.cardnotfound, null);
@@ -300,10 +273,18 @@ public class CardFragment extends Fragment {
             userCardsRef.child(cardNumber).child("lastUsage").setValue(lastUsage);
             userCardsRef.child(cardNumber).child("lastCharge").setValue(lastCharge);
 
+            // ➕ أضف البطاقة للمكان العام (cards)
+            DatabaseReference globalCardRef = FirebaseDatabase.getInstance()
+                    .getReference("cards").child(cardNumber);
+            globalCardRef.child("balance").setValue(balance);
+            globalCardRef.child("lastUsage").setValue(lastUsage);
+            globalCardRef.child("lastCharge").setValue(lastCharge);
+
             Toast.makeText(getContext(), "Card added successfully!", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
             loadUserCards();
         });
+
 
         dialogView.findViewById(R.id.button_cancel).setOnClickListener(v -> {
             dialog.dismiss();
@@ -328,16 +309,24 @@ public class CardFragment extends Fragment {
         AlertDialog dialog = builder.create();
 
         dialogView.findViewById(R.id.button_add).setOnClickListener(v -> {
-            userCardsRef.child(cardNumber).child("balance").setValue("0.000");
             String currentTime = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
 
+            userCardsRef.child(cardNumber).child("balance").setValue("0.000");
             userCardsRef.child(cardNumber).child("lastUsage").setValue(currentTime);
             userCardsRef.child(cardNumber).child("lastCharge").setValue(currentTime);
+
+            // ➕ أضف البطاقة للمكان العام (cards)
+            DatabaseReference globalCardRef = FirebaseDatabase.getInstance()
+                    .getReference("cards").child(cardNumber);
+            globalCardRef.child("balance").setValue("0.000");
+            globalCardRef.child("lastUsage").setValue(currentTime);
+            globalCardRef.child("lastCharge").setValue(currentTime);
 
             Toast.makeText(getContext(), "Card added successfully!", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
             loadUserCards();
         });
+
 
         dialogView.findViewById(R.id.button_cancel).setOnClickListener(v -> dialog.dismiss());
 

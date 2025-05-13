@@ -226,25 +226,36 @@ public class RedeemActivity extends AppCompatActivity {
             double balance = snapshot.exists() ? Double.parseDouble(snapshot.getValue().toString()) : 0;
             double newBalance = balance + amountToAdd;
 
+            String currentTime = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()).format(new Date());
+
+            // ✅ تحديث بيانات البطاقة عند المستخدم
             userCardsRef.child(selectedCard).child("balance").setValue(newBalance);
+            userCardsRef.child(selectedCard).child("lastCharge").setValue(currentTime);
+            userCardsRef.child(selectedCard).child("lastUsage").setValue(currentTime);
+
+            // ✅ تحديث بيانات البطاقة في المسار العام cards/
+            DatabaseReference globalCardRef = FirebaseDatabase.getInstance()
+                    .getReference("cards").child(selectedCard);
+            globalCardRef.child("balance").setValue(newBalance);
+            globalCardRef.child("lastCharge").setValue(currentTime);
+            globalCardRef.child("lastUsage").setValue(currentTime);
+
+            // ✅ خصم النقاط
             userPointsRef.setValue(userPoints - rewardCost);
 
-            // سجل معاملة النقاط (spent)
+            // ✅ سجل معاملة النقاط (spent)
             Transaction transaction = new Transaction("spent", selectedReward, (int) rewardCost, getCurrentTimestamp());
             transactionRef.push().setValue(transaction);
 
-            // سجل معاملة في سجل البطاقة (charge)
-            DatabaseReference cardTransactionRef = FirebaseDatabase.getInstance()
-                    .getReference("users").child(userId)
-                    .child("cards").child(selectedCard)
-                    .child("transactions");
-
+            // ✅ سجل معاملة البطاقة
+            DatabaseReference cardTransactionRef = userCardsRef.child(selectedCard).child("transactions");
             CardTransaction cardTx = new CardTransaction("charge", "Reward: " + selectedReward, (int) amountToAdd, getCurrentTimestamp());
             cardTransactionRef.push().setValue(cardTx);
 
             showSuccessDialog(selectedReward, rewardCost);
         });
     }
+
 
 
     private String getCurrentTimestamp() {

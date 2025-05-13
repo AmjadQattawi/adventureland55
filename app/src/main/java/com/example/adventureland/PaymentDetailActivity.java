@@ -164,7 +164,10 @@ public class PaymentDetailActivity extends AppCompatActivity {
         if (originalAmount == 50) rewardPoints[0] = 100;
         else if (originalAmount == 75) rewardPoints[0] = 150;
         else if (originalAmount == 100) rewardPoints[0] = 220;
-        else if (originalAmount == 20 || originalAmount == 30) rewardPoints[0] = 30;
+        else if (originalAmount == 20) rewardPoints[0] = 30;
+        else if (originalAmount == 30) rewardPoints[0] = 50;
+        else rewardPoints[0] = 0;
+
 
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
@@ -189,6 +192,12 @@ public class PaymentDetailActivity extends AppCompatActivity {
                     cardRef.child("balance").setValue(updatedBalance);
                     cardRef.child("lastCharge").setValue(currentTime);
                     cardRef.child("lastUsage").setValue(currentTime);
+// ✅ تحديث البطاقة في المسار العام cards/{cardId}
+                    DatabaseReference globalCardRef = FirebaseDatabase.getInstance()
+                            .getReference("cards").child(cardId);
+                    globalCardRef.child("balance").setValue(updatedBalance);
+                    globalCardRef.child("lastCharge").setValue(currentTime);
+                    globalCardRef.child("lastUsage").setValue(currentTime);
 
                     // ✅ سجل معاملة الشحن داخل البطاقة
                     DatabaseReference cardTxRef = cardRef.child("transactions");

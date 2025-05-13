@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
 public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardViewHolder> {
@@ -13,6 +16,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     private Context context;
     private ArrayList<String> cardList;
     private OnItemClickListener onItemClickListener;
+    private int selectedPosition = RecyclerView.NO_POSITION;
 
     public CardListAdapter(Context context, ArrayList<String> cardList) {
         this.context = context;
@@ -38,9 +42,28 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
         String card = cardList.get(position);
         holder.cardName.setText(card);
 
-        holder.itemView.setOnClickListener(v -> {
+        boolean isSelected = (position == selectedPosition);
+
+        holder.cardContainer.setBackgroundResource(isSelected
+                ? R.drawable.card_item_selected
+                : R.drawable.card_item);
+
+        holder.cardName.setTextColor(context.getResources().getColor(
+                isSelected ? android.R.color.white : android.R.color.black
+        ));
+
+        holder.cardContainer.setOnClickListener(v -> {
+            int currentPosition = holder.getAdapterPosition();
+            if (currentPosition == RecyclerView.NO_POSITION) return;
+
+            int previousPosition = selectedPosition;
+            selectedPosition = currentPosition;
+
+            notifyItemChanged(previousPosition);
+            notifyItemChanged(selectedPosition);
+
             if (onItemClickListener != null) {
-                onItemClickListener.onItemClick(card);
+                onItemClickListener.onItemClick(cardList.get(currentPosition));
             }
         });
     }
@@ -52,10 +75,12 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
 
     public static class CardViewHolder extends RecyclerView.ViewHolder {
         TextView cardName;
+        ConstraintLayout cardContainer;
 
         public CardViewHolder(View itemView) {
             super(itemView);
             cardName = itemView.findViewById(R.id.card_name);
+            cardContainer = itemView.findViewById(R.id.card_container);
         }
     }
 }

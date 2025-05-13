@@ -50,7 +50,7 @@ public class RedeemAdapter extends RecyclerView.Adapter<RedeemAdapter.RedeemView
                     redeemActivity.loadUserCardNames(currentItem.getTitle(), rewardCost));
         } else {
             // النقاط غير كافية
-            holder.redeemButton.setCardBackgroundColor(Color.parseColor("#7678ED")); // البنفسجي الفاتح
+            holder.redeemButton.setCardBackgroundColor(Color.parseColor("#C3C2C2")); // البنفسجي الفاتح
             holder.redeemButton.setEnabled(false);
         }
     }

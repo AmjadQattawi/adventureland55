@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@drawable/redeem_item_rounded">
+    android:background="@drawable/select_card_rounded">
 
     <TextView
         android:id="@+id/alert_title"

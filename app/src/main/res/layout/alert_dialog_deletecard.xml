@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Delete Account"
+                android:text="Delete Card"
                 android:textColor="@color/Default"
                 android:textSize="18sp" />
 
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:text="Are you sure to delete account?"
+                android:text="Are you sure to delete card?"
                 android:textColor="#666666"
                 android:textSize="18sp" />
 

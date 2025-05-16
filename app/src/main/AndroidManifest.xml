@@ -31,7 +31,9 @@
         <activity android:name=".BirthdayOffersActivity" android:exported="false"/>
         <activity android:name=".RewardsActivity" android:exported="false"/>
         <activity android:name=".RedeemActivity" android:exported="false"/>
-        <activity android:name=".AboutActivity" android:exported="false" />
+        <activity android:name=".AboutActivity" android:exported="false"/>
+        <activity android:name=".AccountActivity" android:exported="false"/>
+        <activity android:name=".ChangePasswordActivity" android:exported="false"/>
         <activity android:name=".CheckBalanceActivity" android:exported="false" />
         <activity android:name=".CardDetailsForNotLoginOrSignup" android:exported="false" />
         <activity android:name=".CardStatementActivity" android:exported="false"/>

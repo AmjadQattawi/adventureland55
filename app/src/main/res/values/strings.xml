@@ -31,6 +31,14 @@
     <string name="Notifications">Notifications</string>
     <string name="More">More</string>
     <string name="Settings">Settings</string>
+    <string name="update">Update</string>
+    <string name="change_password">Change Password</string>
+    <string name="display_name">Display name</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="update_password">Update Password</string>
 
 
 </resources>

@@ -46,6 +46,13 @@ public class MoreFragment extends Fragment {
             startActivity(intent);
         });
 
+        View accOption = view.findViewById(R.id.acc_option);
+
+        accOption.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), com.example.adventureland.AccountActivity.class);
+            startActivity(intent);
+        });
+
         // تسجيل الخروج
         logoutButton.setOnClickListener(v -> showLogoutDialog());
     }

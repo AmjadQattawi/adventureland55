@@ -46,14 +46,22 @@ public class FAQactivity extends AppCompatActivity {
         answerMap = new HashMap<>();
 
         questionList.add("What is the play card?");
-        questionList.add("How can I recharge my play card?");
-        questionList.add("What offers are available for individual users?");
-        questionList.add("Can the card be used for multiple children?");
+        questionList.add("Can I add more than one card to my account?");
+        questionList.add("How do I earn points?");
+        questionList.add("Can I celebrate my birthday at the Adventure Land?");
 
-        answerMap.put(questionList.get(0), Collections.singletonList("The play card is a prepaid card that gives you access to games and services within the park."));
-        answerMap.put(questionList.get(1), Collections.singletonList("You can recharge your play card through the app or at the park counters."));
-        answerMap.put(questionList.get(2), Collections.singletonList("Seasonal and weekend offers are available for individual users."));
-        answerMap.put(questionList.get(3), Collections.singletonList("The card is intended for a single child and cannot be shared."));
+        answerMap.put(questionList.get(0), Collections.singletonList("The play card is a prepaid card that allows you to access and enjoy games and other services within the app."));
+        answerMap.put(questionList.get(1), Collections.singletonList("Yes, you can manage multiple cards in your account. Each card will display its own balance and transaction history."));
+        answerMap.put(questionList.get(2), Collections.singletonList("You can earn points through the following activities:\n" +
+                "\n" +
+                "Daily login to your account\n" +
+                "\n" +
+                "Rating games in the app\n" +
+                "\n" +
+                "Recharging your play card through the app\n" +
+                "\n"));
+        answerMap.put(questionList.get(3), Collections.singletonList("Yes! Adventure Land offers special Birthday Packages that include games, decorations, and exclusive discounts. You can check the “Birthday Offers” section in the app or contact our team to book your party.\n" +
+                "\n"));
     }
 
 }

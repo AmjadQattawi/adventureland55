@@ -93,7 +93,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
         aboutSection.setOnClickListener(v -> {
-            startActivity(new Intent(SignupActivity.this, AboutActivity.class));
+            startActivity(new Intent(SignupActivity.this, FAQactivity.class));
             drawerLayout.closeDrawer(Gravity.START);
         });
     }

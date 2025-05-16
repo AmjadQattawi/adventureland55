@@ -134,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Navigate to AboutActivity when "About" is clicked
         aboutSection.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, AboutActivity.class);
+            Intent intent = new Intent(LoginActivity.this, FAQactivity.class);
             startActivity(intent);
             drawerLayout.closeDrawer(GravityCompat.START); // Close drawer after navigation
         });
@@ -183,7 +183,6 @@ public class LoginActivity extends AppCompatActivity {
                             firebaseAuth.signInWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(task -> {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
                                             if (cbRememberMe.isChecked()) {
                                                 saveLoginData(phone, password);

@@ -53,14 +53,11 @@ public class RedeemActivity extends AppCompatActivity {
         loadUserPoints();
 
         findViewById(R.id.back_button).setOnClickListener(v -> finish());
-
-
     }
 
     public long getUserPoints() {
         return userPoints;
     }
-
 
     private void loadRewards() {
         redeemItemList.add(new RedeemItem("5 JOD Play card", "100", R.drawable.giftcard));
@@ -131,19 +128,12 @@ public class RedeemActivity extends AppCompatActivity {
                 CardListAdapter adapter = new CardListAdapter(RedeemActivity.this, cardList);
                 cardsRecycler.setAdapter(adapter);
 
-                final int[] selectedIndex = {-1};
+                final String[] selectedCard = {null};
 
-                cardsRecycler.addOnItemTouchListener(new RecyclerItemClickListener(RedeemActivity.this, cardsRecycler,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                selectedIndex[0] = position;
-                                Toast.makeText(RedeemActivity.this, "Selected card: " + cardList.get(position), Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onLongItemClick(View view, int position) {}
-                        }));
+                adapter.setOnItemClickListener(cardName -> {
+                    selectedCard[0] = cardName;
+                    Toast.makeText(RedeemActivity.this, "Selected card: " + cardName, Toast.LENGTH_SHORT).show();
+                });
 
                 Button selectButton = dialogView.findViewById(R.id.button_positive);
                 Button cancelButton = dialogView.findViewById(R.id.button_negative);
@@ -154,12 +144,10 @@ public class RedeemActivity extends AppCompatActivity {
                         .create();
 
                 selectButton.setOnClickListener(v -> {
-                    if (selectedIndex[0] == -1) {
+                    if (selectedCard[0] == null) {
                         Toast.makeText(RedeemActivity.this, "Please select a card", Toast.LENGTH_SHORT).show();
                         return;
                     }
-
-                    String selectedCard = cardList.get(selectedIndex[0]);
 
                     double amountToAdd = 0;
                     if (selectedReward.contains("5 JOD")) amountToAdd = 5;
@@ -168,7 +156,7 @@ public class RedeemActivity extends AppCompatActivity {
                     else if (selectedReward.contains("50 JOD")) amountToAdd = 50;
 
                     dialog.dismiss();
-                    showConfirmRedeemDialog(selectedCard, selectedReward, rewardCost, amountToAdd);
+                    showConfirmRedeemDialog(selectedCard[0], selectedReward, rewardCost, amountToAdd);
                 });
 
                 cancelButton.setOnClickListener(v -> dialog.dismiss());
@@ -221,6 +209,7 @@ public class RedeemActivity extends AppCompatActivity {
         }
         dialog.show();
     }
+
     private void applyRewardToCard(String selectedCard, String selectedReward, long rewardCost, double amountToAdd) {
         userCardsRef.child(selectedCard).child("balance").get().addOnSuccessListener(snapshot -> {
             double balance = snapshot.exists() ? Double.parseDouble(snapshot.getValue().toString()) : 0;
@@ -228,26 +217,21 @@ public class RedeemActivity extends AppCompatActivity {
 
             String currentTime = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()).format(new Date());
 
-            // ✅ تحديث بيانات البطاقة عند المستخدم
             userCardsRef.child(selectedCard).child("balance").setValue(newBalance);
             userCardsRef.child(selectedCard).child("lastCharge").setValue(currentTime);
             userCardsRef.child(selectedCard).child("lastUsage").setValue(currentTime);
 
-            // ✅ تحديث بيانات البطاقة في المسار العام cards/
             DatabaseReference globalCardRef = FirebaseDatabase.getInstance()
                     .getReference("cards").child(selectedCard);
             globalCardRef.child("balance").setValue(newBalance);
             globalCardRef.child("lastCharge").setValue(currentTime);
             globalCardRef.child("lastUsage").setValue(currentTime);
 
-            // ✅ خصم النقاط
             userPointsRef.setValue(userPoints - rewardCost);
 
-            // ✅ سجل معاملة النقاط (spent)
             Transaction transaction = new Transaction("spent", selectedReward, (int) rewardCost, getCurrentTimestamp());
             transactionRef.push().setValue(transaction);
 
-            // ✅ سجل معاملة البطاقة
             DatabaseReference cardTransactionRef = userCardsRef.child(selectedCard).child("transactions");
             CardTransaction cardTx = new CardTransaction("charge", "Reward: " + selectedReward, (int) amountToAdd, getCurrentTimestamp());
             cardTransactionRef.push().setValue(cardTx);
@@ -255,8 +239,6 @@ public class RedeemActivity extends AppCompatActivity {
             showSuccessDialog(selectedReward, rewardCost);
         });
     }
-
-
 
     private String getCurrentTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());

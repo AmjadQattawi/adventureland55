@@ -49,7 +49,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
                 : R.drawable.card_item);
 
         holder.cardName.setTextColor(context.getResources().getColor(
-                isSelected ? android.R.color.white : android.R.color.black
+                isSelected ? android.R.color.black : android.R.color.black
         ));
 
         holder.cardContainer.setOnClickListener(v -> {

@@ -28,7 +28,6 @@
         android:fontFamily="@font/poppins_light"
         android:layout_gravity="center"/>
 
-    <!-- ListView أو RecyclerView لعرض البطاقات -->
     <androidx.recyclerview.widget.RecyclerView
         android:nestedScrollingEnabled="true"
         android:id="@+id/recyclerViewCards"
@@ -39,7 +38,6 @@
         android:layout_gravity="start" />
 
 
-    <!-- LinearLayout يحتوي على الأزرار -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -77,44 +77,73 @@ public class CardStatementActivity extends AppCompatActivity {
 
     private void loadAllTransactions() {
         fullList.clear();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String cardId = getIntent().getStringExtra("cardId");
 
-        // حمل من معاملات البطاقة
-        cardTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference userCardTxRef = FirebaseDatabase.getInstance()
+                .getReference("users").child(userId).child("cards").child(cardId).child("transactions");
+
+        userCardTxRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                for (DataSnapshot snap : snapshot.getChildren()) {
-                    CardTransaction transaction = snap.getValue(CardTransaction.class);
-                    if (transaction != null) {
-                        fullList.add(transaction);
+                if (snapshot.exists()) {
+                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        CardTransaction tx = snap.getValue(CardTransaction.class);
+                        if (tx != null) fullList.add(tx);
                     }
-                }
-
-                // ثم من المعاملات العامة (مثل: redeem)
-                generalTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        for (DataSnapshot snap : snapshot.getChildren()) {
-                            CardTransaction transaction = snap.getValue(CardTransaction.class);
-                            if (transaction != null && "charge".equalsIgnoreCase(transaction.getType())) {
-                                fullList.add(transaction);
+                    loadGeneralTransactions();
+                } else {
+                    // إذا لم يكن موجودًا عند المستخدم، حمل من المسار العام
+                    DatabaseReference globalTxRef = FirebaseDatabase.getInstance().getReference("cards").child(cardId).child("transactions");
+                    globalTxRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapGlobal) {
+                            for (DataSnapshot snap : snapGlobal.getChildren()) {
+                                CardTransaction tx = snap.getValue(CardTransaction.class);
+                                if (tx != null) fullList.add(tx);
                             }
+                            loadGeneralTransactions();
                         }
-                        changeTab("all");
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        Toast.makeText(CardStatementActivity.this, "Failed to load extra charges", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            Toast.makeText(CardStatementActivity.this, "Failed to load global transactions", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Toast.makeText(CardStatementActivity.this, "Failed to load transactions", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CardStatementActivity.this, "Failed to load user transactions", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    private void loadGeneralTransactions() {
+        generalTransactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot snap : snapshot.getChildren()) {
+                    CardTransaction tx = snap.getValue(CardTransaction.class);
+                    if (tx != null) {
+                        String type = tx.getType();
+                        if ("charge".equalsIgnoreCase(type) || "redeem".equalsIgnoreCase(type)) {
+                            fullList.add(tx);
+                        }
+                    }
+                }
+                changeTab("all");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(CardStatementActivity.this, "Failed to load general transactions", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
     private void changeTab(String type) {
         int selectedColor = getResources().getColor(R.color.purple);

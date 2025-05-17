@@ -25,18 +25,20 @@ public class CardTransactionAdapter extends RecyclerView.Adapter<CardTransaction
         View view = LayoutInflater.from(context).inflate(R.layout.card_transaction_item, parent, false);
         return new ViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull CardTransactionAdapter.ViewHolder holder, int position) {
         CardTransaction tx = transactions.get(position);
         holder.title.setText(tx.getTitle());
         holder.date.setText(tx.getDate());
 
+
         // تحديد الشكل حسب نوع العملية
-        if ("reward".equalsIgnoreCase(tx.getType())) {
-            holder.amount.setText("+" + tx.getAmount());
-            holder.amount.setTextColor(Color.parseColor("#2ECC71")); // أخضر
-        } else if ("charge".equalsIgnoreCase(tx.getType())) {
+        if ("redeem".equalsIgnoreCase(tx.getType())) {
+            holder.amount.setText("+" + tx.getAmount() );
+            holder.amount.setTextColor(Color.parseColor("#3F3A8A")); // اللون البنفسجي
+
+
+    } else if ("charge".equalsIgnoreCase(tx.getType())) {
             holder.amount.setText("+" + tx.getAmount());
             holder.amount.setTextColor(Color.parseColor("#3F3A8A")); // بنفسجي غامق
         } else {

@@ -107,12 +107,10 @@ public class RedeemActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseReference cardsRef = userCardsRef;
-        cardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        userCardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 ArrayList<String> cardList = new ArrayList<>();
-
                 for (DataSnapshot cardSnap : snapshot.getChildren()) {
                     cardList.add(cardSnap.getKey());
                 }
@@ -130,10 +128,7 @@ public class RedeemActivity extends AppCompatActivity {
 
                 final String[] selectedCard = {null};
 
-                adapter.setOnItemClickListener(cardName -> {
-                    selectedCard[0] = cardName;
-                    Toast.makeText(RedeemActivity.this, "Selected card: " + cardName, Toast.LENGTH_SHORT).show();
-                });
+                adapter.setOnItemClickListener(cardName -> selectedCard[0] = cardName);
 
                 Button selectButton = dialogView.findViewById(R.id.button_positive);
                 Button cancelButton = dialogView.findViewById(R.id.button_negative);
@@ -233,8 +228,12 @@ public class RedeemActivity extends AppCompatActivity {
             transactionRef.push().setValue(transaction);
 
             DatabaseReference cardTransactionRef = userCardsRef.child(selectedCard).child("transactions");
-            CardTransaction cardTx = new CardTransaction("charge", "Reward: " + selectedReward, (int) amountToAdd, getCurrentTimestamp());
+            CardTransaction cardTx = new CardTransaction("redeem", "Reward: " + selectedReward, (int) amountToAdd, getCurrentTimestamp());
             cardTransactionRef.push().setValue(cardTx);
+
+            // ✅ أضف أيضًا إلى transactions في المسار العام
+            DatabaseReference globalTxRef = FirebaseDatabase.getInstance().getReference("cards").child(selectedCard).child("transactions");
+            globalTxRef.push().setValue(cardTx);
 
             showSuccessDialog(selectedReward, rewardCost);
         });

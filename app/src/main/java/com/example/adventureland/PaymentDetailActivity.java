@@ -158,7 +158,7 @@ public class PaymentDetailActivity extends AppCompatActivity {
         else if (originalAmount == 50) addedBalance = 250;
         else if (originalAmount == 75) addedBalance = 400;
         else if (originalAmount == 100) addedBalance = 600;
-        else addedBalance = originalAmount; // 👈 للشحن العادي بدون عرض
+        else addedBalance = originalAmount; // شحن عادي بدون عرض
 
         final long[] rewardPoints = {0};
         if (originalAmount == 50) rewardPoints[0] = 100;
@@ -167,7 +167,6 @@ public class PaymentDetailActivity extends AppCompatActivity {
         else if (originalAmount == 20) rewardPoints[0] = 30;
         else if (originalAmount == 30) rewardPoints[0] = 50;
         else rewardPoints[0] = 0;
-
 
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
 
@@ -192,14 +191,15 @@ public class PaymentDetailActivity extends AppCompatActivity {
                     cardRef.child("balance").setValue(updatedBalance);
                     cardRef.child("lastCharge").setValue(currentTime);
                     cardRef.child("lastUsage").setValue(currentTime);
-// ✅ تحديث البطاقة في المسار العام cards/{cardId}
+
+                    // تحديث بيانات البطاقة في المسار العام
                     DatabaseReference globalCardRef = FirebaseDatabase.getInstance()
                             .getReference("cards").child(cardId);
                     globalCardRef.child("balance").setValue(updatedBalance);
                     globalCardRef.child("lastCharge").setValue(currentTime);
                     globalCardRef.child("lastUsage").setValue(currentTime);
 
-                    // ✅ سجل معاملة الشحن داخل البطاقة
+                    // سجل معاملة الشحن داخل المستخدم
                     DatabaseReference cardTxRef = cardRef.child("transactions");
                     CardTransaction cardTx = new CardTransaction(
                             "charge",
@@ -208,10 +208,14 @@ public class PaymentDetailActivity extends AppCompatActivity {
                             getCurrentTimestamp()
                     );
                     cardTxRef.push().setValue(cardTx);
+
+                    // سجل نفس المعاملة داخل المسار العام
+                    DatabaseReference globalTxRef = globalCardRef.child("transactions");
+                    globalTxRef.push().setValue(cardTx);
                 }
             }
 
-            // ✅ سجل نقاط الشحن إن كانت من عرض للمستخدم الحالي
+            // تسجيل نقاط المكافأة للمستخدم الحالي فقط
             if (rewardPoints[0] > 0) {
                 DatabaseReference pointsRef = usersRef.child(userId).child("points");
                 pointsRef.get().addOnSuccessListener(snap -> {
@@ -234,6 +238,7 @@ public class PaymentDetailActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to update card for all users.", Toast.LENGTH_SHORT).show();
         });
     }
+
 
     private String getCurrentTimestamp() {
         return new java.text.SimpleDateFormat("dd MMM yyyy", java.util.Locale.getDefault()).format(new java.util.Date());

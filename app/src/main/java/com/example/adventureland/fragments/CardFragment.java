@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.adventureland.CardTransaction;
 import com.example.adventureland.CheckBalanceActivity;
 import com.example.adventureland.R;
 import com.example.adventureland.RechargeCardActivity;
@@ -139,34 +140,52 @@ public class CardFragment extends Fragment {
         return new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm", java.util.Locale.getDefault()).format(new java.util.Date());
     }
 
+
+
+
+
+
     // ✅ الكود المعدل لدالة checkCardInFirebase لإضافة فحص داخل cards/ بعد إلغاء الإضافة
     private void checkCardInFirebase(String cardNumber) {
-        userCardsRef.child(cardNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+        userCardsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.exists()) {
+            public void onDataChange(DataSnapshot userCardsSnapshot) {
+                if (userCardsSnapshot.hasChild(cardNumber)) {
+                    // ✅ البطاقة موجودة عند المستخدم الحالي
+                    DataSnapshot snapshot = userCardsSnapshot.child(cardNumber);
                     String balance = String.valueOf(snapshot.child("balance").getValue());
                     String lastUsage = snapshot.child("lastUsage").exists() ? snapshot.child("lastUsage").getValue().toString() : "0000/00/00 00:00";
                     String lastCharge = snapshot.child("lastCharge").exists() ? snapshot.child("lastCharge").getValue().toString() : "0000/00/00 00:00";
                     openCardDetails(cardNumber, balance, lastUsage, lastCharge);
                 } else {
+                    // ✅ البطاقة ليست مضافة للمستخدم، أظهر Add / Cancel
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.cardnotfound, null);
                     builder.setView(dialogView);
                     AlertDialog dialog = builder.create();
 
+                    // ⬅ زر الإضافة
                     dialogView.findViewById(R.id.button_add).setOnClickListener(v -> {
                         DatabaseReference globalCardRef = FirebaseDatabase.getInstance().getReference("cards").child(cardNumber);
                         globalCardRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snapshot) {
                                 String balance, lastUsage, lastCharge;
-
                                 if (snapshot.exists()) {
-                                     balance = String.valueOf(snapshot.child("balance").getValue());
-                                     lastUsage = snapshot.child("lastUsage").exists() ? String.valueOf(snapshot.child("lastUsage").getValue()) : getCurrentTime();
-                                     lastCharge = snapshot.child("lastCharge").exists() ? String.valueOf(snapshot.child("lastCharge").getValue()) : getCurrentTime();
+                                    balance = snapshot.child("balance").exists() ? String.valueOf(snapshot.child("balance").getValue()) : "0.000";
+                                    lastUsage = snapshot.child("lastUsage").exists() ? snapshot.child("lastUsage").getValue().toString() : getCurrentTime();
+                                    lastCharge = snapshot.child("lastCharge").exists() ? snapshot.child("lastCharge").getValue().toString() : getCurrentTime();
 
+                                    // نسخ المعاملات الخاصة بالبطاقة من المسار العام
+                                    if (snapshot.child("transactions").exists()) {
+                                        for (DataSnapshot txSnap : snapshot.child("transactions").getChildren()) {
+                                            CardTransaction tx = txSnap.getValue(CardTransaction.class);
+                                            if (tx != null && tx.getType() != null && tx.getTitle() != null) {
+                                                userCardsRef.child(cardNumber).child("transactions")
+                                                        .child(txSnap.getKey()).setValue(tx);
+                                            }
+                                        }
+                                    }
                                 } else {
                                     String currentTime = getCurrentTime();
                                     balance = "0.000";
@@ -178,7 +197,28 @@ public class CardFragment extends Fragment {
                                 userCardsRef.child(cardNumber).child("lastUsage").setValue(lastUsage);
                                 userCardsRef.child(cardNumber).child("lastCharge").setValue(lastCharge);
 
-                                // تأكد من حفظها كمان مرة في المسار العام
+                                // نسخ حركات redeem من المسار العام
+                                DatabaseReference redeemRef = FirebaseDatabase.getInstance()
+                                        .getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("transactions");
+
+                                redeemRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot snapshot) {
+                                        for (DataSnapshot txSnap : snapshot.getChildren()) {
+                                            CardTransaction tx = txSnap.getValue(CardTransaction.class);
+                                            if (tx != null && "redeem".equalsIgnoreCase(tx.getType()) && cardNumber.equals(tx.getCardNumber())) {
+                                                userCardsRef.child(cardNumber).child("transactions")
+                                                        .child(txSnap.getKey()).setValue(tx);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError error) {
+                                        Toast.makeText(getContext(), "Failed to restore redeem transactions", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
                                 globalCardRef.child("balance").setValue(balance);
                                 globalCardRef.child("lastUsage").setValue(lastUsage);
                                 globalCardRef.child("lastCharge").setValue(lastCharge);
@@ -195,39 +235,33 @@ public class CardFragment extends Fragment {
                         });
                     });
 
-                        dialogView.findViewById(R.id.button_cancel).setOnClickListener(v -> {
+                    // ⬅ زر الإلغاء
+                    dialogView.findViewById(R.id.button_cancel).setOnClickListener(v -> {
                         dialog.dismiss();
-                        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-                        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        DatabaseReference cardRef = FirebaseDatabase.getInstance().getReference("cards").child(cardNumber);
+                        cardRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(DataSnapshot usersSnapshot) {
-                                boolean found = false;
-                                for (DataSnapshot userSnapshot : usersSnapshot.getChildren()) {
-                                    if (userSnapshot.getKey().equals("demo_user")) continue;
-                                    DataSnapshot cardSnapshot = userSnapshot.child("cards").child(cardNumber);
-                                    if (cardSnapshot.exists()) {
-                                        found = true;
-                                        String balance = String.valueOf(cardSnapshot.child("balance").getValue());
-                                        String lastUsage = cardSnapshot.child("lastUsage").exists() ? cardSnapshot.child("lastUsage").getValue().toString() : "0000/00/00 00:00";
-                                        String lastCharge = cardSnapshot.child("lastCharge").exists() ? cardSnapshot.child("lastCharge").getValue().toString() : "0000/00/00 00:00";
-                                        openCardDetails(cardNumber, balance, lastUsage, lastCharge);
-                                        return;
-                                    }
-                                }
+                            public void onDataChange(DataSnapshot cardSnapshot) {
+                                if (cardSnapshot.exists()) {
+                                    String balance = cardSnapshot.child("balance").exists() ? String.valueOf(cardSnapshot.child("balance").getValue()) : "0.000";
+                                    String lastUsage = cardSnapshot.child("lastUsage").exists() ? cardSnapshot.child("lastUsage").getValue().toString() : "0000/00/00 00:00";
+                                    String lastCharge = cardSnapshot.child("lastCharge").exists() ? cardSnapshot.child("lastCharge").getValue().toString() : "0000/00/00 00:00";
 
-                                if (!found) {
-                                    DatabaseReference cardRef = FirebaseDatabase.getInstance().getReference("cards").child(cardNumber);
-                                    cardRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    // استرجاع حركات redeem فقط مؤقتًا لعرضها في Card Statement
+                                    DatabaseReference redeemRef = FirebaseDatabase.getInstance()
+                                            .getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("transactions");
+
+                                    redeemRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
-                                        public void onDataChange(DataSnapshot cardSnapshot) {
-                                            if (cardSnapshot.exists()) {
-                                                String balance = String.valueOf(cardSnapshot.child("balance").getValue());
-                                                String lastUsage = cardSnapshot.child("lastUsage").exists() ? cardSnapshot.child("lastUsage").getValue().toString() : "0000/00/00 00:00";
-                                                String lastCharge = cardSnapshot.child("lastCharge").exists() ? cardSnapshot.child("lastCharge").getValue().toString() : "0000/00/00 00:00";
-                                                openCardDetails(cardNumber, balance, lastUsage, lastCharge);
-                                            } else {
-                                                Toast.makeText(getContext(), "This card does not exist", Toast.LENGTH_LONG).show();
+                                        public void onDataChange(DataSnapshot snapshot) {
+                                            for (DataSnapshot txSnap : snapshot.getChildren()) {
+                                                CardTransaction tx = txSnap.getValue(CardTransaction.class);
+                                                if (tx != null && "redeem".equalsIgnoreCase(tx.getType()) && cardNumber.equals(tx.getCardNumber())) {
+                                                    userCardsRef.child(cardNumber).child("transactions")
+                                                            .child(txSnap.getKey()).setValue(tx);
+                                                }
                                             }
+                                            openCardDetails(cardNumber, balance, lastUsage, lastCharge);
                                         }
 
                                         @Override
@@ -235,6 +269,9 @@ public class CardFragment extends Fragment {
                                             Toast.makeText(getContext(), "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
+
+                                } else {
+                                    Toast.makeText(getContext(), "This card does not exist", Toast.LENGTH_LONG).show();
                                 }
                             }
 
@@ -256,6 +293,9 @@ public class CardFragment extends Fragment {
             }
         });
     }
+
+
+
 
 
 

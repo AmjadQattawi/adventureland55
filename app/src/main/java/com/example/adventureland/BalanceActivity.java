@@ -31,7 +31,7 @@ public class BalanceActivity extends AppCompatActivity {
         ImageView backArrow = findViewById(R.id.back_card);
         backArrow.setOnClickListener(v -> finish());
 
-        cardInput = findViewById(R.id.cardNumberInput); // تأكد أن الـ EditText موجود في XML بنفس الـ id
+        cardInput = findViewById(R.id.cardNumberInput);
         setupCardNumberFormatter();
 
         Button checkButton = findViewById(R.id.checkButton);
@@ -78,24 +78,43 @@ public class BalanceActivity extends AppCompatActivity {
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                boolean found = false;
+
                 for (DataSnapshot userSnap : snapshot.getChildren()) {
                     DataSnapshot cardSnap = userSnap.child("cards").child(enteredCard);
                     if (cardSnap.exists()) {
+                        found = true;
                         String balance = cardSnap.child("balance").exists() ? cardSnap.child("balance").getValue().toString() : "0.000";
                         String lastUsage = cardSnap.child("lastUsage").exists() ? cardSnap.child("lastUsage").getValue().toString() : "N/A";
                         String lastCharge = cardSnap.child("lastCharge").exists() ? cardSnap.child("lastCharge").getValue().toString() : "N/A";
 
-                        Intent intent = new Intent(BalanceActivity.this, CardDetailsForNotLoginOrSignup.class);
-                        intent.putExtra("balance", balance);
-                        intent.putExtra("lastUsage", lastUsage);
-                        intent.putExtra("lastCharge", lastCharge);
-                        intent.putExtra("cardId", enteredCard);
-                        startActivity(intent);
+                        openDetails(enteredCard, balance, lastUsage, lastCharge);
                         return;
                     }
                 }
 
-                Toast.makeText(BalanceActivity.this, "This card does not exist", Toast.LENGTH_LONG).show();
+                if (!found) {
+                    DatabaseReference globalCardRef = FirebaseDatabase.getInstance().getReference("cards").child(enteredCard);
+                    globalCardRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot cardSnap) {
+                            if (cardSnap.exists()) {
+                                String balance = cardSnap.child("balance").exists() ? cardSnap.child("balance").getValue().toString() : "0.000";
+                                String lastUsage = cardSnap.child("lastUsage").exists() ? cardSnap.child("lastUsage").getValue().toString() : "N/A";
+                                String lastCharge = cardSnap.child("lastCharge").exists() ? cardSnap.child("lastCharge").getValue().toString() : "N/A";
+
+                                openDetails(enteredCard, balance, lastUsage, lastCharge);
+                            } else {
+                                Toast.makeText(BalanceActivity.this, "This card does not exist", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            Toast.makeText(BalanceActivity.this, "Database error", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
 
             @Override
@@ -103,5 +122,14 @@ public class BalanceActivity extends AppCompatActivity {
                 Toast.makeText(BalanceActivity.this, "Database error", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void openDetails(String cardId, String balance, String lastUsage, String lastCharge) {
+        Intent intent = new Intent(BalanceActivity.this, CardDetailsForNotLoginOrSignup.class);
+        intent.putExtra("balance", balance);
+        intent.putExtra("lastUsage", lastUsage);
+        intent.putExtra("lastCharge", lastCharge);
+        intent.putExtra("cardId", cardId);
+        startActivity(intent);
     }
 }

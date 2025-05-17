@@ -1,10 +1,11 @@
 package com.example.adventureland;
 
 public class CardTransaction {
-    private String type;    // "reward", "charge"
+    private String type;    // "reward", "charge", "redeem"
     private String title;   // مثل: "Recharge", "Added from Reward"
     private double amount;
     private String date;
+    private String cardNumber; // ⬅️ الجديد
 
     public CardTransaction() {
         // Required empty constructor for Firebase
@@ -15,6 +16,14 @@ public class CardTransaction {
         this.title = title;
         this.amount = amount;
         this.date = date;
+    }
+
+    public CardTransaction(String type, String title, double amount, String date, String cardNumber) {
+        this.type = type;
+        this.title = title;
+        this.amount = amount;
+        this.date = date;
+        this.cardNumber = cardNumber;
     }
 
     public String getType() {
@@ -33,6 +42,10 @@ public class CardTransaction {
         return date;
     }
 
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
     public void setType(String type) {
         this.type = type;
     }
@@ -47,5 +60,9 @@ public class CardTransaction {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 }

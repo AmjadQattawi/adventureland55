@@ -103,85 +103,6 @@
             android:paddingBottom="20dp"/>
 
         <LinearLayout
-            android:id="@+id/notif_option"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="14dp">
-
-            <ImageView
-                android:id="@+id/notif_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/bell_more"
-                android:layout_marginEnd="12dp" />
-
-            <TextView
-                android:id="@+id/notif_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/Notifications"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="16sp"/>
-
-            <Switch
-                android:id="@+id/notifications_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="UseSwitchCompatOrMaterialXml"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray"
-            android:paddingBottom="20dp"/>
-
-        <LinearLayout
-            android:id="@+id/language_option"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="14dp">
-
-            <ImageView
-                android:id="@+id/language_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/language_more"
-                android:layout_marginEnd="12dp" />
-
-            <TextView
-                android:id="@+id/language_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Language"
-                android:fontFamily="@font/poppins_medium"
-                android:textSize="16sp"/>
-
-            <ImageView
-                android:id="@+id/language_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/arrow_more"
-                android:layout_marginStart="12dp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray"
-            android:paddingBottom="20dp"/>
-
-        <LinearLayout
             android:id="@+id/faq_option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -209,6 +130,46 @@
 
             <ImageView
                 android:id="@+id/faq_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_more"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:paddingBottom="20dp"/>
+
+        <LinearLayout
+            android:id="@+id/contact_option"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp">
+
+            <ImageView
+                android:id="@+id/contact_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/contact_us"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/contact_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Contact Us"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:id="@+id/contact_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/arrow_more"

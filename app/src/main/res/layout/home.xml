@@ -23,23 +23,13 @@
             android:layout_height="match_parent"
             android:background="@drawable/rounded_card">
 
-            <ImageView
-                android:id="@+id/notify"
-                android:layout_width="22.29dp"
-                android:layout_height="24.77dp"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="27dp"
-                android:contentDescription="Notification Icon"
-                android:src="@drawable/bell1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/search_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
-                android:layout_marginTop="74dp"
+                android:layout_marginTop="40dp"
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="28dp"
                 android:queryHint="What are you looking for?"

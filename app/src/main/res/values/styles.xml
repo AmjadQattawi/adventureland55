@@ -9,4 +9,10 @@
         <item name="android:paddingBottom">12dp</item>
     </style>
 
+    <style name="CustomRatingBar" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#DADADA</item> <!-- النجمة الفارغة -->
+        <item name="colorControlActivated">@color/yellow</item> <!-- النجمة المملوءة (ذهبي/أصفر) -->
+    </style>
+
+
 </resources>

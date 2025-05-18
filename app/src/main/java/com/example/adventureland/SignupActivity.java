@@ -77,10 +77,10 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void setupDrawerActions() {
-        drawerIcon.setOnClickListener(v -> drawerLayout.openDrawer(Gravity.START));
+        drawerIcon.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
         closeDrawer.setOnClickListener(v -> {
-            if (drawerLayout.isDrawerOpen(Gravity.START)) {
-                drawerLayout.closeDrawer(Gravity.START);
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
 
@@ -88,13 +88,13 @@ public class SignupActivity extends AppCompatActivity {
             Intent intent = new Intent(SignupActivity.this, BalanceActivity.class);
             intent.putExtra("fromGuest", true);  // ✅ تحديد أن المستخدم ضيف (غير مسجل دخول)
             startActivity(intent);
-            drawerLayout.closeDrawer(Gravity.START);
+            drawerLayout.closeDrawer(GravityCompat.START);
         });
 
 
         aboutSection.setOnClickListener(v -> {
             startActivity(new Intent(SignupActivity.this, FAQactivity.class));
-            drawerLayout.closeDrawer(Gravity.START);
+            drawerLayout.closeDrawer(GravityCompat.START);
         });
     }
 

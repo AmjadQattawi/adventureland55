@@ -161,12 +161,17 @@ public class GameDetailsActivity extends AppCompatActivity {
         databaseFavorites.orderByChild("title").equalTo(title).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (task.getResult().exists()) {
-                    task.getResult().getChildren().forEach(snapshot -> snapshot.getRef().removeValue());
+                    for (DataSnapshot snapshot : task.getResult().getChildren()) {
+                        snapshot.getRef().removeValue();
+                    }
                     Toast.makeText(GameDetailsActivity.this, "Game removed from favorites", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(GameDetailsActivity.this, "Failed to remove game from favorites", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private void loadAverageRating() {
         String userId = mAuth.getCurrentUser().getUid();

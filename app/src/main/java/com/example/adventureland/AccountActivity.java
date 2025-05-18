@@ -16,7 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -75,9 +78,84 @@ public class AccountActivity extends AppCompatActivity {
         });
 
         textDeleteAccount.setOnClickListener(view -> {
-            Toast.makeText(AccountActivity.this, "Account deletion requested", Toast.LENGTH_SHORT).show();
+            new AlertDialog.Builder(AccountActivity.this)
+                    .setTitle("Delete Account")
+                    .setMessage("Are you sure you want to delete your account? This action cannot be undone.")
+                    .setPositiveButton("Yes", (dialog, which) -> promptPasswordAndDeleteAccount())
+                    .setNegativeButton("No", null)
+                    .show();
+        });
+
+    }
+
+
+
+    private void promptPasswordAndDeleteAccount() {
+        EditText passwordInput = new EditText(this);
+        passwordInput.setHint("Enter your password");
+
+        new AlertDialog.Builder(AccountActivity.this)
+                .setTitle("Confirm Password")
+                .setView(passwordInput)
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    String password = passwordInput.getText().toString().trim();
+                    if (password.isEmpty()) {
+                        Toast.makeText(AccountActivity.this, "Password is required", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    reauthenticateAndDeleteAccount(password);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void reauthenticateAndDeleteAccount(String password) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user == null || user.getEmail() == null) {
+            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), password);
+
+        user.reauthenticate(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (userKey != null) {
+                    usersRef.child(userKey).removeValue().addOnCompleteListener(dbTask -> {
+                        if (dbTask.isSuccessful()) {
+                            user.delete().addOnCompleteListener(deleteTask -> {
+                                if (deleteTask.isSuccessful()) {
+                                    Toast.makeText(AccountActivity.this, "Account deleted successfully", Toast.LENGTH_SHORT).show();
+
+                                    // امسح بيانات SharedPreferences بعد الحذف
+                                    SharedPreferences sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                                    sp.edit().clear().apply();
+
+                                    // ارجع لصفحة تسجيل الدخول ونظف التاريخ
+                                    Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(AccountActivity.this, "Failed to delete account: " + deleteTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(AccountActivity.this, "Failed to delete user data: " + dbTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(AccountActivity.this, "User key not found", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(AccountActivity.this, "Incorrect password", Toast.LENGTH_SHORT).show();
+            }
         });
     }
+
+
+
+
 
     private void loadUserData() {
         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);

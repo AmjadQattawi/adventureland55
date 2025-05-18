@@ -146,9 +146,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
     private void handleLogin() {
-        // Check if Firebase is initialized
         if (firebaseAuth == null) {
             Toast.makeText(this, "Firebase Auth is not initialized. Please restart the app.", Toast.LENGTH_LONG).show();
             return;
@@ -177,31 +175,50 @@ public class LoginActivity extends AppCompatActivity {
                         String dbPassword = userSnapshot.child("password").getValue(String.class);
 
                         if (dbPassword != null && dbPassword.equals(password)) {
-                            // ✅ Login with Firebase Auth using "dummy email"
+                            String userKey = userSnapshot.getKey(); // **احصل على المفتاح الحقيقي للمستخدم**
+
                             String email = fullPhoneNumber + "@example.com";
 
                             firebaseAuth.signInWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(task -> {
                                         if (task.isSuccessful()) {
-
                                             if (cbRememberMe.isChecked()) {
                                                 saveLoginData(phone, password);
                                             }
 
-                                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                                            startActivity(i);
-                                            finish();
+                                            // **حفظ userKey في SharedPreferences**
+                                            saveUserKey(userKey);
+
+                                            // تحميل بيانات المستخدم أو الانتقال
+                                            usersRef.child(userKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    if (snapshot.exists()) {
+                                                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                                        startActivity(i);
+                                                        finish();
+                                                    } else {
+                                                        Toast.makeText(LoginActivity.this, "User data not found in database", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                    Toast.makeText(LoginActivity.this, "Failed to load user data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
                                         } else {
-                                            // If account doesn't exist in FirebaseAuth, create it now
+                                            // إنشاء حساب جديد إذا لم يكن موجود
                                             firebaseAuth.createUserWithEmailAndPassword(email, password)
                                                     .addOnCompleteListener(signUpTask -> {
                                                         if (signUpTask.isSuccessful()) {
-                                                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-
                                                             if (cbRememberMe.isChecked()) {
                                                                 saveLoginData(phone, password);
                                                             }
+                                                            // **حفظ userKey الجديد بعد إنشاء الحساب**
+                                                            saveUserKey(signUpTask.getResult().getUser().getUid());
 
+                                                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                                             Intent i = new Intent(LoginActivity.this, MainActivity.class);
                                                             startActivity(i);
                                                             finish();
@@ -229,12 +246,24 @@ public class LoginActivity extends AppCompatActivity {
                 editor.apply();
             }
 
+            // **دالة جديدة لحفظ userKey في SharedPreferences**
+            private void saveUserKey(String userKey) {
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("userKey", userKey);
+                editor.apply();
+            }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(LoginActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
+
+
 
 
     private void openForgotPasswordDialog() {

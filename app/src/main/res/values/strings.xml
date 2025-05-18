@@ -40,6 +40,7 @@
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="update_password">Update Password</string>
     <string name="not_now">Not Now</string>
+    <string name="back_button_description">Back button</string>
 
 
 </resources>

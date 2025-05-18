@@ -1,9 +1,8 @@
 package com.example.adventureland.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.adventureland.R;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.*;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
@@ -48,7 +50,7 @@ public class VerifiactionFragment extends Fragment {
 
     public void setUserPhone(String phone) {
         this.userPhone = phone;
-        sendVerificationCode(phone);
+        // لا تستدعي sendVerificationCode هنا مباشرة بعد الآن
     }
 
     @Override
@@ -90,6 +92,18 @@ public class VerifiactionFragment extends Fragment {
         backVerfication.setOnClickListener(v -> {
             requireActivity().onBackPressed();
         });
+
+        // استدعاء إرسال رمز التحقق هنا بعد التأكد من الربط ووجود رقم الهاتف
+        if (userPhone != null && !userPhone.isEmpty()) {
+            Activity activity = getActivity();
+            if (activity != null) {
+                sendVerificationCode(userPhone);
+            } else {
+                Toast.makeText(getContext(), "Fragment not attached to Activity", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getContext(), "Phone number is empty or null", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setupOtpInputs() {
@@ -112,8 +126,10 @@ public class VerifiactionFragment extends Fragment {
                 resentTv.setText("Resend code");
                 resentTv.setEnabled(true);
                 resentTv.setOnClickListener(v -> {
-                    sendVerificationCode(userPhone);
-                    startCountDown();
+                    if (userPhone != null && !userPhone.isEmpty() && getActivity() != null) {
+                        sendVerificationCode(userPhone);
+                        startCountDown();
+                    }
                 });
             }
         };
@@ -121,11 +137,17 @@ public class VerifiactionFragment extends Fragment {
     }
 
     private void sendVerificationCode(String phoneNumber) {
+        Activity activity = getActivity();
+        if (activity == null) {
+            Toast.makeText(getContext(), "Fragment not attached to Activity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(firebaseAuth)
                         .setPhoneNumber(phoneNumber)
                         .setTimeout(60L, TimeUnit.SECONDS)
-                        .setActivity(requireActivity())
+                        .setActivity(activity)
                         .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
                             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
@@ -171,10 +193,10 @@ public class VerifiactionFragment extends Fragment {
 
     private class GenericTextWatcher implements android.text.TextWatcher {
 
-        private android.widget.EditText currentView;
-        private android.widget.EditText nextView;
+        private final EditText currentView;
+        private final EditText nextView;
 
-        public GenericTextWatcher(android.widget.EditText currentView, android.widget.EditText nextView) {
+        public GenericTextWatcher(EditText currentView, EditText nextView) {
             this.currentView = currentView;
             this.nextView = nextView;
         }

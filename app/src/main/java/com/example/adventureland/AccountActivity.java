@@ -230,7 +230,7 @@ public class AccountActivity extends AppCompatActivity {
                 Toast.makeText(this, "Current phone number not found, can't verify", Toast.LENGTH_SHORT).show();
                 return;
             }
-            sendVerificationCodeForUpdate(currentPhoneFull, newName, newPhone);
+            sendVerificationCodeForUpdate("+962" + newPhone, newName, newPhone);
             return;
         }
 

@@ -1,23 +1,27 @@
 package com.example.adventureland;
 
+
+
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
+import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+
+
 
 public class GamesActivity extends AppCompatActivity {
 
@@ -49,33 +53,34 @@ public class GamesActivity extends AppCompatActivity {
             }
         });
 
-        ImageView filterIcon = findViewById(R.id.filterIcon);
-        filterIcon.setOnClickListener(v -> showFilterBottomSheet());
-
         recyclerView = findViewById(R.id.games_rv_games);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // **قائمة الألعاب - قيم التقييم الأولية = -1 (يعني لم يتم تحميل التقييم بعد)**
         gameList = new ArrayList<>();
-        gameList.add(new Game("Bumper Cars", 4, 4.0f, R.drawable.bumpercars,
+        gameList.add(new Game("Bumper Cars", 4, -1f, R.drawable.bumpercars,
                 "Drive small, electric-powered cars equipped with rubber bumpers and collide safely with other players in a controlled arena. This game is perfect for kids and adults looking for friendly competition and lots of laughs.", 1.500));
-        gameList.add(new Game("Ferris Wheel", 4, 3.5f, R.drawable.ferriswheel,
+        gameList.add(new Game("Ferris Wheel", 4, -1f, R.drawable.ferriswheel,
                 "Enjoy a relaxing ride on a giant wheel with enclosed seats, offering a bird's-eye view of the amusement park and its surroundings. It's ideal for families and anyone seeking a peaceful yet memorable experience.", 1.250));
-        gameList.add(new Game("Swing Ride", 8, 4.5f, R.drawable.swingride,
+        gameList.add(new Game("Swing Ride", 8, -1f, R.drawable.swingride,
                 "Feel the breeze as you soar through the air in a circular motion on this exciting swing ride. It’s thrilling yet comfortable, perfect for those seeking a mix of adrenaline and joy.", 1.250));
-        gameList.add(new Game("Roller Coaster", 10, 5.0f, R.drawable.rollercoaster,
+        gameList.add(new Game("Roller Coaster", 10, -1f, R.drawable.rollercoaster,
                 "Experience the ultimate thrill with high-speed loops, drops, and turns on this exhilarating ride. Perfect for adrenaline lovers looking for a heart-racing adventure.", 2.000));
-        gameList.add(new Game("Carousel", 3, 5.0f, R.drawable.carousel,
+        gameList.add(new Game("Carousel", 3, -1f, R.drawable.carousel,
                 "Ride beautifully crafted, brightly colored horses as they spin gently to cheerful music. This classic ride is perfect for younger children and those who love nostalgic attractions.", 1.250));
-        gameList.add(new Game("Haunted House", 8, 5.0f, R.drawable.hauntedhouse,
+        gameList.add(new Game("Haunted House", 8, -1f, R.drawable.hauntedhouse,
                 "Enter a spooky, thrilling adventure filled with eerie sounds and mysterious surprises. Ideal for those who enjoy a good scare.", 2.500));
-        gameList.add(new Game("Teacup Ride", 4, 5.0f, R.drawable.teacup,
+        gameList.add(new Game("Teacup Ride", 4, -1f, R.drawable.teacup,
                 "Spin around in colorful teacups that you can control, offering a fun, lighthearted ride for families and younger children.", 1.250));
-        gameList.add(new Game("Drop Tower", 12, 5.0f, R.drawable.droptower,
+        gameList.add(new Game("Drop Tower", 12, -1f, R.drawable.droptower,
                 "Experience the heart-stopping sensation of a sudden free fall from great heights. A must-try for the bravest thrill-seekers.", 2.500));
 
         adapter = new GameAdapter(this, gameList, GameAdapter.TYPE_FULL);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
+
+        // **هنا نبدأ تحميل التقييمات من Firebase لكل لعبة**
+        loadRatingsFromFirebase();
     }
 
     private void searchList(String newText) {
@@ -92,52 +97,48 @@ public class GamesActivity extends AppCompatActivity {
         }
     }
 
-    private void showFilterBottomSheet() {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View sheetView = getLayoutInflater().inflate(R.layout.filter_bottom_sheet, null);
-        bottomSheetDialog.setContentView(sheetView);
+    // دالة لتحميل التقييمات من Firebase وتحديث قائمة الألعاب
+    private void loadRatingsFromFirebase() {
+        DatabaseReference ratingsRef = FirebaseDatabase.getInstance().getReference("Ratings");
 
-        RadioGroup radioGroup = sheetView.findViewById(R.id.filterOptionsGroup);
-        Button applyButton = sheetView.findViewById(R.id.btnApplyFilter);
+        // عداد لعدد الألعاب التي تم تحميل تقييمها
+        final int totalGames = gameList.size();
+        final int[] loadedCount = {0};
 
-        applyButton.setOnClickListener(v -> {
-            int selectedId = radioGroup.getCheckedRadioButtonId();
-            if (selectedId == R.id.filterAge) {
-                sortByAge();
-            } else if (selectedId == R.id.filterRating) {
-                sortByRating();
-            } else if (selectedId == R.id.filterAlphabet) {
-                sortByAlphabet();
-            } else if (selectedId == R.id.filterPrice) {
-                sortByPrice();
-            }
-            bottomSheetDialog.dismiss();
-        });
+        for (Game game : gameList) {
+            String title = game.getTitle();
 
-        bottomSheetDialog.show();
-    }
+            ratingsRef.child(title).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    double totalRating = 0;
+                    int count = 0;
+                    for (DataSnapshot ratingSnapshot : snapshot.getChildren()) {
+                        Double ratingValue = ratingSnapshot.getValue(Double.class);
+                        if (ratingValue != null) {
+                            totalRating += ratingValue;
+                            count++;
+                        }
+                    }
+                    float averageRating = count > 0 ? (float) (totalRating / count) : 0f;
+                    game.setRating(averageRating);
 
-    private void sortByAge() {
-        List<Game> sortedList = new ArrayList<>(gameList);
-        Collections.sort(sortedList, Comparator.comparingInt(Game::getAge));
-        adapter.setSearchList(sortedList);
-    }
+                    loadedCount[0]++;
+                    if (loadedCount[0] == totalGames) {
+                        // تم تحميل كل التقييمات - حدث الـ adapter
+                        adapter.notifyDataSetChanged();
+                    }
+                }
 
-    private void sortByRating() {
-        List<Game> sortedList = new ArrayList<>(gameList);
-        sortedList.sort((g1, g2) -> Float.compare(g2.getRating(), g1.getRating()));
-        adapter.setSearchList(sortedList);
-    }
-
-    private void sortByAlphabet() {
-        List<Game> sortedList = new ArrayList<>(gameList);
-        sortedList.sort(Comparator.comparing(Game::getTitle));
-        adapter.setSearchList(sortedList);
-    }
-
-    private void sortByPrice() {
-        List<Game> sortedList = new ArrayList<>(gameList);
-        sortedList.sort(Comparator.comparingDouble(Game::getPrice));
-        adapter.setSearchList(sortedList);
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // لو حدث خطأ، على الأقل نزيد العد حتى لا يتوقف التحديث
+                    loadedCount[0]++;
+                    if (loadedCount[0] == totalGames) {
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            });
+        }
     }
 }

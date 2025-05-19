@@ -326,8 +326,51 @@ public class AccountActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("phone", newPhone);
             editor.apply();
+
+            // تحديث رقم الهاتف في Firebase Authentication
+            updatePhoneNumberInAuth(fullNewPhone);
         }
 
         Toast.makeText(this, updated ? "User data updated successfully" : "No changes detected", Toast.LENGTH_SHORT).show();
     }
+
+    private void updatePhoneNumberInAuth(String fullNewPhone) {
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(firebaseAuth)
+                .setPhoneNumber(fullNewPhone)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        if (user != null) {
+                            user.updatePhoneNumber(credential)
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(AccountActivity.this, "Phone number updated in Authentication", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(AccountActivity.this, "Failed to update phone in Authentication: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                        }
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        Toast.makeText(AccountActivity.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                        // عادة هنا يمكن تطلب من المستخدم إدخال الرمز، لكن لأنك تستخدم تحديث مباشر يمكن تخطيه
+                        // أو يمكن بناء واجهة OTP إذا أردت تحكم يدوي
+                    }
+                })
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+
+
+
 }

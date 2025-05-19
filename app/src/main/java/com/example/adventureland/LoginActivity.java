@@ -168,6 +168,8 @@ public class LoginActivity extends AppCompatActivity {
         String fullPhoneNumber = "+962" + phone;
 
         usersRef.orderByChild("phone").equalTo(fullPhoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -175,9 +177,10 @@ public class LoginActivity extends AppCompatActivity {
                         String dbPassword = userSnapshot.child("password").getValue(String.class);
 
                         if (dbPassword != null && dbPassword.equals(password)) {
-                            String userKey = userSnapshot.getKey(); // **احصل على المفتاح الحقيقي للمستخدم**
+                            String userKey = userSnapshot.getKey(); // احصل على المفتاح الحقيقي للمستخدم
 
-                            String email = fullPhoneNumber + "@example.com";
+                            String email = fullPhoneNumber + "@gmail.com";
+
 
                             firebaseAuth.signInWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(task -> {
@@ -186,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 saveLoginData(phone, password);
                                             }
 
-                                            // **حفظ userKey في SharedPreferences**
+                                            // حفظ userKey في SharedPreferences
                                             saveUserKey(userKey);
 
                                             // تحميل بيانات المستخدم أو الانتقال
@@ -208,24 +211,8 @@ public class LoginActivity extends AppCompatActivity {
                                                 }
                                             });
                                         } else {
-                                            // إنشاء حساب جديد إذا لم يكن موجود
-                                            firebaseAuth.createUserWithEmailAndPassword(email, password)
-                                                    .addOnCompleteListener(signUpTask -> {
-                                                        if (signUpTask.isSuccessful()) {
-                                                            if (cbRememberMe.isChecked()) {
-                                                                saveLoginData(phone, password);
-                                                            }
-                                                            // **حفظ userKey الجديد بعد إنشاء الحساب**
-                                                            saveUserKey(signUpTask.getResult().getUser().getUid());
-
-                                                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                                                            startActivity(i);
-                                                            finish();
-                                                        } else {
-                                                            Toast.makeText(LoginActivity.this, "Authentication failed: " + signUpTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
+                                            // فقط إظهار رسالة خطأ لا إنشاء حساب جديد
+                                            Toast.makeText(LoginActivity.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
                             return;
@@ -236,6 +223,11 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "User not found", Toast.LENGTH_SHORT).show();
                 }
             }
+
+
+
+
+
 
             private void saveLoginData(String phone, String password) {
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);

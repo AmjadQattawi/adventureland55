@@ -3,6 +3,7 @@ package com.example.adventureland.fragments;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,24 @@ public class MoreFragment extends Fragment {
         });
 
         View accOption = view.findViewById(R.id.acc_option);
+
+
+        View contactOption = view.findViewById(R.id.contact_option);
+
+        contactOption.setOnClickListener(v -> {
+            new AlertDialog.Builder(getContext())
+                    .setTitle(" Call Us")
+                    .setMessage("To cantact us, please call this number : +962798435842")
+                    .setPositiveButton("call", (dialog, which) -> {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:+962798435842"));
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("cancel", null)
+                    .show();
+        });
+
+
 
         accOption.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), com.example.adventureland.AccountActivity.class);

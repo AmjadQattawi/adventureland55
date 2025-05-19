@@ -66,7 +66,9 @@ public class AccountActivity extends AppCompatActivity {
 
         usersRef = FirebaseDatabase.getInstance().getReference("Users");
 
-        backMore.setOnClickListener(view -> finish());
+       backMore.setOnClickListener(view -> finish());
+
+
 
         loadUserData();
 

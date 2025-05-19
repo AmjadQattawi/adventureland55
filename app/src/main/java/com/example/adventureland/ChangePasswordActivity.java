@@ -1,10 +1,12 @@
 package com.example.adventureland;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private EditText editTextCurrentPassword, editTextNewPassword, editTextConfirmPassword;
     private CardView updatePasswordButton;
 
+    private ImageButton backButton;
+
     private FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
 
@@ -45,7 +49,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         editTextNewPassword = findViewById(R.id.new_password_input);
         editTextConfirmPassword = findViewById(R.id.confirm_password_input);
         updatePasswordButton = findViewById(R.id.update_password_button);
-
+        backButton = findViewById(R.id.back_button);
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
@@ -54,6 +58,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
         userPhone = sp.getString("phone", null);
 
         updatePasswordButton.setOnClickListener(v -> startPasswordChangeProcess());
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ChangePasswordActivity.this, AccountActivity.class);
+            startActivity(intent);
+            finish(); // تمنع الرجوع لصفحة تغيير كلمة السر عند الضغط على زر الرجوع في الجهاز
+        });
+
     }
 
     private void startPasswordChangeProcess() {

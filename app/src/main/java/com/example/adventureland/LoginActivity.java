@@ -169,7 +169,6 @@ public class LoginActivity extends AppCompatActivity {
 
         usersRef.orderByChild("phone").equalTo(fullPhoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
 
-
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -181,12 +180,13 @@ public class LoginActivity extends AppCompatActivity {
 
                             String email = fullPhoneNumber + "@gmail.com";
 
-
                             firebaseAuth.signInWithEmailAndPassword(email, password)
                                     .addOnCompleteListener(task -> {
                                         if (task.isSuccessful()) {
                                             if (cbRememberMe.isChecked()) {
                                                 saveLoginData(phone, password);
+                                            } else {
+                                                clearLoginData();
                                             }
 
                                             // حفظ userKey في SharedPreferences
@@ -211,7 +211,6 @@ public class LoginActivity extends AppCompatActivity {
                                                 }
                                             });
                                         } else {
-                                            // فقط إظهار رسالة خطأ لا إنشاء حساب جديد
                                             Toast.makeText(LoginActivity.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
@@ -224,34 +223,41 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
 
-
-
-
-
-
-            private void saveLoginData(String phone, String password) {
-                SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("phone", phone);
-                editor.putString("password", password);
-                editor.putBoolean("remember_me", true);
-                editor.apply();
-            }
-
-            // **دالة جديدة لحفظ userKey في SharedPreferences**
-            private void saveUserKey(String userKey) {
-                SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("userKey", userKey);
-                editor.apply();
-            }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(LoginActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    // حفظ بيانات الدخول
+    private void saveLoginData(String phone, String password) {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("phone", phone);
+        editor.putString("password", password);
+        editor.putBoolean("remember_me", true);
+        editor.apply();
+    }
+
+    // مسح بيانات الدخول عند عدم تفعيل Remember Me
+    private void clearLoginData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("phone");
+        editor.remove("password");
+        editor.putBoolean("remember_me", false);
+        editor.apply();
+    }
+
+    // حفظ userKey كما كان
+    private void saveUserKey(String userKey) {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userKey", userKey);
+        editor.apply();
+    }
+
 
 
 
